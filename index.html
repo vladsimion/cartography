@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cartography & Its Trade-offs | Full Explorer</title>
+    <title>Cartography & Trade-offs | Full Explorer</title>
     <style>
         :root {
             --bg: #0A0806; --text: #D8CDB0; --accent: #C8A96E; --border: #1E1A12;
@@ -13,25 +13,21 @@
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
             margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden;
         }
-        header { padding: 1.2rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        header { padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .logo-main { font-size: 1.4rem; margin: 0; color: #E0D0A8; font-weight: normal; cursor: pointer; }
-        .axis-bar { padding: 0.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; gap: 0.8rem; font-size: 0.65rem; overflow-x: auto; white-space: nowrap; }
+        .axis-bar { padding: 0.5rem 2.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 0.8rem; font-size: 0.65rem; overflow-x: auto; white-space: nowrap; }
         .axis-btn { background: none; border: none; color: #6A5830; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; }
-        .axis-btn.active { color: var(--accent); text-decoration: underline; }
+        .axis-btn.active { color: var(--accent); border-bottom: 1px solid var(--accent); }
         .container { display: flex; flex: 1; overflow: hidden; }
         aside { width: 340px; border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; }
         main { flex: 1; overflow-y: auto; padding: 2rem 3rem; }
-        .era-header { padding: 1rem 1.5rem; cursor: pointer; border-left: 3px solid transparent; background: rgba(255,255,255,0.02); margin-top: 0.5rem; }
-        .map-item { padding: 0.5rem 1.5rem 0.5rem 2.2rem; font-size: 0.75rem; cursor: pointer; border-bottom: 1px solid #14100A; display: flex; justify-content: space-between; transition: 0.2s; }
+        .era-header { padding: 1rem 1.5rem; cursor: pointer; background: rgba(255,255,255,0.02); margin-top: 0.5rem; }
+        .map-item { padding: 0.6rem 1.5rem 0.6rem 2.2rem; font-size: 0.75rem; cursor: pointer; border-bottom: 1px solid #14100A; display: flex; justify-content: space-between; transition: 0.2s; }
         .map-item:hover { background: rgba(255,255,255,0.05); }
         .map-item.active { background: rgba(200, 169, 110, 0.15); }
         .pill { display: inline-flex; padding: 0.3rem 0.6rem; margin: 0.2rem; font-size: 0.7rem; border-radius: 2px; }
         .pill-gain { background: #1A2A18; border: 1px solid #3A5A30; color: var(--gain); }
         .pill-loss { background: #2A1A18; border: 1px solid #5A3020; color: var(--loss); }
-        .radar-box { width: 120px; height: 120px; }
-        #axis-def { background: #0E0A06; padding: 1rem 2rem; border-bottom: 1px solid #2A2010; display: none; }
-        .compare-btn { background: transparent; border: 1px solid var(--compare); color: var(--compare); padding: 0.4rem 0.8rem; cursor: pointer; font-size: 0.7rem; }
-        .compare-btn.active { background: var(--compare); color: #000; }
     </style>
 </head>
 <body>
@@ -41,11 +37,10 @@
         <div style="font-size: 0.6rem; letter-spacing: 0.2em; color: #6A5830; text-transform: uppercase;">Non-Linear History of</div>
         <h1 class="logo-main">Cartography & Its Trade-offs</h1>
     </div>
-    <button id="cmp-toggle" class="compare-btn" onclick="toggleCompareMode()">⇄ Compare Maps</button>
+    <button id="cmp-toggle" style="background:transparent; border:1px solid var(--compare); color:var(--compare); padding:0.4rem 0.8rem; cursor:pointer; font-size:0.7rem;" onclick="toggleCompareMode()">⇄ Compare Maps</button>
 </header>
 
 <div class="axis-bar" id="axis-bar"></div>
-<div id="axis-def"></div>
 
 <div class="container">
     <aside id="sidebar"></aside>
@@ -53,7 +48,7 @@
 </div>
 
 <script>
-// --- FULL DATASET FROM JSX ---
+// --- FULL DATASET ---
 const AXES = [
     { id: "accuracy", label: "Accuracy", icon: "◎" },
     { id: "usability", label: "Usability", icon: "◈" },
@@ -64,104 +59,85 @@ const AXES = [
     { id: "richness", label: "Richness", icon: "◐" }
 ];
 
-const AXIS_DEFS = {
-    accuracy: { what: "Geometric and spatial reality.", tension: "Competes with Usability and Symbolism." },
-    usability: { what: "Legibility for non-specialists.", tension: "Requires simplification/distortion." },
-    navigation: { what: "Enabling movement through space.", tension: "Requires stripping non-essential data." },
-    symbolism: { what: "Encoding cosmology and myth.", tension: "Fidelity usually falls as meaning rises." },
-    politics: { what: "Serving power and claiming territory.", tension: "Distortion is often a political tool." },
-    completeness: { what: "Scope of the known world.", tension: "Complete maps often fill gaps with fiction." },
-    richness: { what: "Layered types of information.", tension: "Rich maps are harder to read quickly." }
-};
-
 const ERAS = [
   {
     id: "ancient", label: "Ancient", years: "6200 BCE – 400 CE", hue: "#C8A96E",
-    thesis: "The first maps were tools of ownership and cosmology. Precision was irrelevant.",
-    gained: ["Representing space", "Mathematical projection", "Territorial assertion"],
-    sacrificed: ["Ecological knowledge", "Oral tradition", "Navigational practicality"],
     maps: [
       { name: "Çatalhöyük Wall Painting", year: "c. 6200 BCE", region: "Anatolia", axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 4 }, gained: ["Oldest spatial representation"], sacrificed: ["Scale accuracy"] },
       { name: "Babylonian World Map", year: "c. 600 BCE", region: "Mesopotamia", axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 5, completeness: 1, richness: 3 }, gained: ["Cosmological framing"], sacrificed: ["Geographic accuracy"] },
-      { name: "Eratosthenes' World Map", year: "c. 194 BCE", region: "Alexandria", axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 1, politics: 1, completeness: 2, richness: 2 }, gained: ["Calculated Earth circumference"], sacrificed: ["Navigational readability"] },
+      { name: "Anaximander's World Map", year: "c. 550 BCE", region: "Greece", axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 3 }, gained: ["Proto-Western cosmological map"], sacrificed: ["All accuracy"] },
+      { name: "Eratosthenes' World Map", year: "c. 194 BCE", region: "Alexandria", axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 1, politics: 1, completeness: 2, richness: 2 }, gained: ["Earth circumference calculation"], sacrificed: ["Navigational readability"] },
       { name: "Tabula Peutingeriana", year: "c. 300 CE", region: "Rome", axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 3, politics: 5, completeness: 4, richness: 3 }, gained: ["Imperial road network"], sacrificed: ["Geographic shape truth"] },
       { name: "Ptolemy's World Map", year: "c. 150 CE", region: "Egypt", axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 2, politics: 3, completeness: 3, richness: 2 }, gained: ["Coordinate system"], sacrificed: ["Navigational ease"] }
     ]
   },
   {
     id: "medieval", label: "Medieval", years: "400 – 1450 CE", hue: "#7B9E6B",
-    thesis: "Maps as cosmologies. The world was mapped as it meant, not as it measured.",
-    gained: ["Theological layering", "Historical integration", "Encyclopedic annotation"],
-    sacrificed: ["Coordinate precision", "Geometric consistency", "Navigational utility"],
     maps: [
       { name: "T-O Map", year: "c. 600 CE", region: "Europe", axes: { accuracy: 1, usability: 3, navigation: 1, symbolism: 5, politics: 5, completeness: 2, richness: 2 }, gained: ["Symbolic clarity"], sacrificed: ["All accuracy"] },
+      { name: "Al-Balkhi School Maps", year: "c. 900 CE", region: "Islamic World", axes: { accuracy: 1, usability: 4, navigation: 3, symbolism: 5, politics: 5, completeness: 2, richness: 3 }, gained: ["Administrative geometry"], sacrificed: ["Physical space"] },
       { name: "Al-Idrisi's Tabula Rogeriana", year: "1154 CE", region: "Sicily", axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 3, completeness: 3, richness: 4 }, gained: ["Synthesis of global knowledge"], sacrificed: ["Christian framing"] },
       { name: "Hereford Mappa Mundi", year: "c. 1300 CE", region: "England", axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 4, completeness: 4, richness: 5 }, gained: ["Visual encyclopedia"], sacrificed: ["Practical use"] },
+      { name: "Ebstorf Map", year: "c. 1234 CE", region: "Germany", axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 5, richness: 5 }, gained: ["Largest Mappa Mundi"], sacrificed: ["Survival (Destroyed)"] },
       { name: "Portolan Charts", year: "c. 1300 CE", region: "Mediterranean", axes: { accuracy: 4, usability: 5, navigation: 5, symbolism: 1, politics: 2, completeness: 2, richness: 2 }, gained: ["Rhumb lines for sailors"], sacrificed: ["Interior land detail"] },
       { name: "Fra Mauro World Map", year: "c. 1450 CE", region: "Venice", axes: { accuracy: 4, usability: 2, navigation: 3, symbolism: 4, politics: 3, completeness: 5, richness: 5 }, gained: ["Pre-Columbian Africa info"], sacrificed: ["Ptolemaic coordinates"] }
     ]
   },
   {
     id: "eastasian", label: "East Asian & Pacific", years: "1300 – 1700 CE", hue: "#C47A7A",
-    thesis: "Non-Eurocentric traditions focused on imperial scale and tactile oceanic knowledge.",
-    gained: ["Global completeness", "Tactile navigation", "Cross-tradition synthesis"],
-    sacrificed: ["Western global influence", "Survival of artifacts", "Western recognition"],
     maps: [
       { name: "Da Ming Hunyi Tu", year: "1389", region: "China", axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 4, politics: 5, completeness: 4, richness: 4 }, gained: ["Africa/Europe in 1300s"], sacrificed: ["Distal accuracy"] },
       { name: "Kangnido Map", year: "1402", region: "Korea", axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 3, politics: 4, completeness: 4, richness: 4 }, gained: ["Korean-Islamic synthesis"], sacrificed: ["Consistent scale"] },
+      { name: "Zheng He Chart", year: "c. 1430", region: "China", axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 2, politics: 4, completeness: 3, richness: 3 }, gained: ["Maritime expedition routes"], sacrificed: ["Coastal shapes"] },
       { name: "Marshall Islands Stick Charts", year: "Ancient", region: "Pacific", axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 5, politics: 1, completeness: 2, richness: 5 }, gained: ["Encoding wave patterns"], sacrificed: ["Visual representation"] },
-      { name: "Ricci's World Map", year: "1602", region: "China", axes: { accuracy: 4, usability: 3, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 4 }, gained: ["Americas in Chinese context"], sacrificed: ["Pure projection"] }
+      { name: "Ricci's World Map", year: "1602", region: "China", axes: { accuracy: 4, usability: 3, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 4 }, gained: ["East-West synthesis"], sacrificed: ["Pure projection"] }
     ]
   },
   {
     id: "renaissance", label: "Renaissance", years: "1400 – 1600 CE", hue: "#7A8FC4",
-    thesis: "Mapping as an instrument of empire and the claim of the New World.",
-    gained: ["Printed distribution", "Global projections", "New World incorporation"],
-    sacrificed: ["Indigenous knowledge", "Symbolic depth", "Truth about uncertainty"],
     maps: [
-      { name: "Cantino Planisphere", year: "1502", region: "Portugal", axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 2, politics: 5, completeness: 3, richness: 3 }, gained: ["Tordesillas Line"], sacrificed: ["Public availability"] },
+      { name: "Cantino Planisphere", year: "1502", region: "Portugal", axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 2, politics: 5, completeness: 3, richness: 3 }, gained: ["Tordesillas Line"], sacrificed: ["Public access"] },
       { name: "Waldseemüller Map", year: "1507", region: "Germany", axes: { accuracy: 3, usability: 3, navigation: 3, symbolism: 2, politics: 5, completeness: 3, richness: 3 }, gained: ["Named 'America'"], sacrificed: ["Indigenous names"] },
+      { name: "Piri Reis Map", year: "1513", region: "Ottoman", axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 4, completeness: 2, richness: 4 }, gained: ["Columbus source synthesis"], sacrificed: ["Pacific coverage"] },
       { name: "Mercator's World Map", year: "1569", region: "Flanders", axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 2 }, gained: ["Navigational standard"], sacrificed: ["Area proportionality"] },
-      { name: "Blaeu's Atlas Maior", year: "1662", region: "Amsterdam", axes: { accuracy: 3, usability: 2, navigation: 3, symbolism: 5, politics: 3, completeness: 5, richness: 5 }, gained: ["Cartographic art peak"], sacrificed: ["Affordability"] }
+      { name: "Ortelius's Atlas", year: "1570", region: "Antwerp", axes: { accuracy: 3, usability: 5, navigation: 3, symbolism: 2, politics: 3, completeness: 4, richness: 3 }, gained: ["First modern atlas"], sacrificed: ["Cutting-edge precision"] },
+      { name: "Blaeu's Atlas Maior", year: "1662", region: "Amsterdam", axes: { accuracy: 3, usability: 2, navigation: 3, symbolism: 5, politics: 3, completeness: 5, richness: 5 }, gained: ["Peak cartographic art"], sacrificed: ["Affordability"] }
     ]
   },
   {
     id: "scientific", label: "Scientific Age", years: "1600 – 1800 CE", hue: "#B07AB0",
-    thesis: "Geodetic precision replaced honest blank spaces with confident geometries.",
-    gained: ["Triangulation", "National surveys", "Coordinate verification"],
-    sacrificed: ["Local texture", "Oral geography", "Cosmological framing"],
     maps: [
-      { name: "Cassini Map of France", year: "1744", region: "France", axes: { accuracy: 5, usability: 3, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 }, gained: ["Geometric rigor"], sacrificed: ["Place lore"] },
-      { name: "Cook's Pacific Charts", year: "1770", region: "Pacific", axes: { accuracy: 5, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 1 }, gained: ["Systematic observation"], sacrificed: ["Polynesian star paths"] }
+      { name: "Coronelli Globes", year: "1681", region: "Venice", axes: { accuracy: 4, usability: 1, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 5 }, gained: ["Royal patronage scale"], sacrificed: ["Portability"] },
+      { name: "Cassini Map of France", year: "1744", region: "France", axes: { accuracy: 5, usability: 3, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 }, gained: ["Geometric rigor"], sacrificed: ["Local lore"] },
+      { name: "Cook's Pacific Charts", year: "1770", region: "Pacific", axes: { accuracy: 5, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 1 }, gained: ["Systematic observation"], sacrificed: ["Polynesian star paths"] },
+      { name: "Bonne Projection", year: "1752", region: "France", axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 3, politics: 2, completeness: 3, richness: 2 }, gained: ["Equal-area preservation"], sacrificed: ["Edge shapes"] }
     ]
   },
   {
     id: "modern", label: "Modern", years: "1800 – 1970 CE", hue: "#C47A5A",
-    thesis: "Industrial precision meets public literacy and radical simplification.",
-    gained: ["Thematic mapping", "Mass literacy", "Topological clarity"],
-    sacrificed: ["Artistic tradition", "Unified symbols", "Neutrality"],
     maps: [
       { name: "Minard's Napoleon Map", year: "1869", region: "France", axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 5, politics: 4, completeness: 3, richness: 5 }, gained: ["Statistical graphic"], sacrificed: ["Orientation"] },
+      { name: "Booth's Poverty Map", year: "1889", region: "London", axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 3, politics: 5, completeness: 3, richness: 5 }, gained: ["Thematic social mapping"], sacrificed: ["Neutral framing"] },
+      { name: "Humboldt's Naturgemälde", year: "1807", region: "Andes", axes: { accuracy: 4, usability: 3, navigation: 1, symbolism: 5, politics: 1, completeness: 3, richness: 5 }, gained: ["Invention of isotherm"], sacrificed: ["Navigational utility"] },
       { name: "Snow's Cholera Map", year: "1854", region: "London", axes: { accuracy: 4, usability: 5, navigation: 1, symbolism: 2, politics: 2, completeness: 3, richness: 3 }, gained: ["Epidemiology"], sacrificed: ["Aesthetic tradition"] },
+      { name: "USGS Topo Maps", year: "1879", region: "USA", axes: { accuracy: 5, usability: 4, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 }, gained: ["Contour standardization"], sacrificed: ["Indigenous names"] },
       { name: "Beck's Tube Map", year: "1933", region: "London", axes: { accuracy: 1, usability: 5, navigation: 5, symbolism: 3, politics: 1, completeness: 2, richness: 2 }, gained: ["Topological clarity"], sacrificed: ["Geographic truth"] },
       { name: "Peters Projection", year: "1973", region: "Germany", axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 4, politics: 5, completeness: 4, richness: 2 }, gained: ["Equal-area fairness"], sacrificed: ["Shape truth"] }
     ]
   },
   {
     id: "digital", label: "Digital Era", years: "1970 – Present", hue: "#5AABAB",
-    thesis: "We have more data than ever, but less spatial memory.",
-    gained: ["Real-time data", "Personalized maps", "Open collaboration"],
-    sacrificed: ["Spatial memory", "Privacy", "Single authoritative voice"],
     maps: [
       { name: "NASA Blue Marble", year: "1972", region: "Orbit", axes: { accuracy: 5, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 3, richness: 2 }, gained: ["Unified planetary view"], sacrificed: ["Practicality"] },
       { name: "Google Maps", year: "2005", region: "Global", axes: { accuracy: 5, usability: 5, navigation: 5, symbolism: 1, politics: 4, completeness: 4, richness: 2 }, gained: ["Turn-by-turn routing"], sacrificed: ["Wayfinding intuition"] },
-      { name: "OpenStreetMap", year: "2004", region: "Global", axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 }, gained: ["Community commons"], sacrificed: ["Quality consistency"] }
+      { name: "OpenStreetMap", year: "2004", region: "Global", axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 }, gained: ["Community commons"], sacrificed: ["Consistency"] },
+      { name: "LiDAR Terrain Maps", year: "2000s", region: "Global", axes: { accuracy: 5, usability: 1, navigation: 3, symbolism: 1, politics: 2, completeness: 5, richness: 1 }, gained: ["Sub-cm precision"], sacrificed: ["Human readability"] }
     ]
   }
 ];
 
 // --- APP LOGIC ---
-let compareA = null, compareB = null, isCompareMode = false, currentAxis = null;
+let currentAxis = null;
 
 function init() {
     const bar = document.getElementById('axis-bar');
@@ -177,7 +153,7 @@ function renderSidebar() {
     sidebar.innerHTML = '';
     ERAS.forEach(era => {
         sidebar.innerHTML += `
-            <div class="era-header" onclick="showEra('${era.id}')" style="color:${era.hue}">
+            <div class="era-header" style="color:${era.hue}">
                 <div style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase">${era.label}</div>
                 <div style="font-size:0.7rem; color:var(--dim)">${era.years}</div>
             </div>
@@ -185,7 +161,7 @@ function renderSidebar() {
         era.maps.forEach(map => {
             const score = currentAxis ? `<span style="color:${era.hue}">${map.axes[currentAxis]}/5</span>` : '';
             sidebar.innerHTML += `
-                <div class="map-item" onclick="handleMapClick('${map.name}')">
+                <div class="map-item" onclick='showMap(${JSON.stringify(map)}, "${era.hue}", "${era.label}")'>
                     <span>${map.name}</span>
                     ${score}
                 </div>
@@ -194,122 +170,41 @@ function renderSidebar() {
     });
 }
 
-function handleMapClick(name) {
-    const map = ERAS.flatMap(e => e.maps).find(m => m.name === name);
-    if (isCompareMode) {
-        if (!compareA) compareA = map;
-        else if (!compareB && compareA !== map) { compareB = map; showComparison(); }
-    } else {
-        showMap(map);
-    }
-}
-
 function filterAxis(id) {
-    if (currentAxis === id) {
-        currentAxis = null;
-        document.querySelectorAll('.axis-btn').forEach(b => b.classList.remove('active'));
-    } else {
-        currentAxis = id;
-        document.querySelectorAll('.axis-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(`btn-${id}`).classList.add('active');
-        showAxisDef(id);
-    }
+    currentAxis = (currentAxis === id) ? null : id;
+    document.querySelectorAll('.axis-btn').forEach(b => b.classList.remove('active'));
+    if (currentAxis) document.getElementById(`btn-${id}`).classList.add('active');
     renderSidebar();
-}
-
-function showAxisDef(id) {
-    const panel = document.getElementById('axis-def');
-    panel.style.display = 'block';
-    panel.innerHTML = `
-        <div style="display:flex; justify-content:space-between">
-            <div>
-                <strong style="color:var(--accent)">${id.toUpperCase()}</strong>: ${AXIS_DEFS[id].what}
-                <div style="font-size:0.75rem; color:var(--loss); margin-top:4px">Tension: ${AXIS_DEFS[id].tension}</div>
-            </div>
-            <button onclick="this.parentElement.parentElement.style.display='none'" style="background:none; border:none; color:var(--dim); cursor:pointer">✕</button>
-        </div>
-    `;
-}
-
-function toggleCompareMode() {
-    isCompareMode = !isCompareMode;
-    compareA = null; compareB = null;
-    document.getElementById('cmp-toggle').classList.toggle('active');
-    if(isCompareMode) alert("Select two maps from the sidebar to compare.");
-    else showOverview();
 }
 
 function showOverview() {
     document.getElementById('content').innerHTML = `
         <h2 style="color:var(--accent)">Progress is a lie maps tell about themselves.</h2>
         <p style="font-style:italic; color:var(--dim)">Every map that replaced another gained something and sacrificed something.</p>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px">
-            <div style="border:1px solid var(--border); padding:10px; font-size:0.8rem">↑ Accuracy vs ↓ Usability</div>
-            <div style="border:1px solid var(--border); padding:10px; font-size:0.8rem">↑ Navigation vs ↓ Symbolism</div>
-        </div>
+        <p>Select a map from the sidebar to begin your exploration.</p>
     `;
 }
 
-function showMap(map) {
-    const era = ERAS.find(e => e.maps.includes(map));
+function showMap(map, hue, eraLabel) {
     document.getElementById('content').innerHTML = `
-        <div style="color:${era.hue}; font-size:0.7rem; text-transform:uppercase">${era.label}</div>
+        <div style="color:${hue}; font-size:0.7rem; text-transform:uppercase">${eraLabel}</div>
         <h2 style="margin:5px 0">${map.name}</h2>
         <div style="color:var(--dim); font-size:0.8rem; margin-bottom:20px">${map.year} · ${map.region}</div>
-        <div style="display:flex; gap:40px">
-            ${createRadar(map.axes, era.hue)}
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px">
             <div>
                 ${AXES.map(ax => `
                     <div style="font-size:0.7rem; margin-bottom:5px">
                         <span style="display:inline-block; width:90px; color:var(--dim)">${ax.label}</span>
-                        <span style="color:${era.hue}">${"■".repeat(map.axes[ax.id])}${"□".repeat(5-map.axes[ax.id])}</span>
+                        <span style="color:${hue}">${"■".repeat(map.axes[ax.id])}${"□".repeat(5-map.axes[ax.id])}</span>
                     </div>
                 `).join('')}
             </div>
-        </div>
-        <div style="margin-top:20px">
-            ${map.gained.map(g => `<span class="pill pill-gain">↑ ${g}</span>`).join('')}
-            ${map.sacrificed.map(s => `<span class="pill pill-loss">↓ ${s}</span>`).join('')}
-        </div>
-        <p style="line-height:1.6; color:#B0A078; margin-top:30px">
-            The <b>${map.name}</b> represents a point in history where the need for ${map.gained[0]} 
-            outweighed the cost of losing ${map.sacrificed[0]}. It is a cultural snapshot of priority.
-        </p>
-    `;
-}
-
-function showComparison() {
-    document.getElementById('content').innerHTML = `
-        <h2 style="color:var(--compare)">Comparison: ${compareA.name} vs ${compareB.name}</h2>
-        <div style="display:flex; gap:20px">
-            <div style="flex:1; border:1px solid #333; padding:15px; text-align:center">
-                <h4>${compareA.name}</h4>
-                ${createRadar(compareA.axes, '#C8A96E')}
-            </div>
-            <div style="flex:1; border:1px solid #333; padding:15px; text-align:center">
-                <h4>${compareB.name}</h4>
-                ${createRadar(compareB.axes, '#5AABAB')}
+            <div>
+                <div class="pill pill-gain">↑ ${map.gained[0]}</div>
+                <div class="pill pill-loss">↓ ${map.sacrificed[0]}</div>
             </div>
         </div>
-        <div style="margin-top:30px">
-            ${AXES.map(ax => `
-                <div style="display:flex; justify-content:space-between; border-bottom:1px solid #222; padding:5px 0; font-size:0.8rem">
-                    <span>${ax.label}</span>
-                    <span>${compareA.axes[ax.id]} <span style="color:var(--dim)">vs</span> ${compareB.axes[ax.id]}</span>
-                </div>
-            `).join('')}
-        </div>
     `;
-}
-
-function createRadar(vals, color) {
-    const size = 120, center = 60, r = 45;
-    const points = AXES.map((ax, i) => {
-        const angle = (Math.PI * 2 * i) / AXES.length - Math.PI / 2;
-        const v = (vals[ax.id] || 0) / 5;
-        return `${center + r * v * Math.cos(angle)},${center + r * v * Math.sin(angle)}`;
-    }).join(' ');
-    return `<svg viewBox="0 0 120 120" class="radar-box"><circle cx="60" cy="60" r="45" fill="none" stroke="#222"/><polygon points="${points}" fill="${color}33" stroke="${color}" stroke-width="2"/></svg>`;
 }
 
 init();
