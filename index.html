@@ -140,34 +140,36 @@ display: none; align-items: center; gap: 1.2rem; flex-wrap: wrap; flex-shrink: 0
 /* ── SIDEBAR OVERLAY ── */
 #sidebar-backdrop {
 display: none;
-position: absolute; inset: 0;
-background: rgba(0,0,0,0.55);
-z-index: 10;
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.65);
+z-index: 100;
 cursor: pointer;
 }
 #sidebar-backdrop.open { display: block; }
 
 aside {
-position: absolute; left: 0; top: 0; bottom: 0;
+position: fixed; left: 0; top: 0; bottom: 0;
 width: var(–sidebar-w);
-background: #0D0A07;
-border-right: 1px solid var(–border);
+background: #100E08;
+border-right: 1px solid var(–border2);
 overflow-y: auto;
 padding: 0.5rem 0;
-z-index: 20;
+z-index: 200;
 transform: translateX(-100%);
 transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
 will-change: transform;
+box-shadow: 4px 0 32px rgba(0,0,0,0.7);
 }
 aside.open { transform: translateX(0); }
 aside::-webkit-scrollbar { width: 3px; }
-aside::-webkit-scrollbar-track { background: var(–bg); }
+aside::-webkit-scrollbar-track { background: #100E08; }
 aside::-webkit-scrollbar-thumb { background: var(–border2); }
 
 /* Main fills full width always */
 main {
 flex: 1; overflow-y: auto; padding: 1.6rem 2rem;
 width: 100%;
+min-width: 0;
 }
 main::-webkit-scrollbar { width: 3px; }
 main::-webkit-scrollbar-thumb { background: var(–border2); }
@@ -292,53 +294,80 @@ cursor: pointer; transition: color 0.15s;
 MOBILE  (≤ 700px)
 ══════════════════════════════════ */
 @media (max-width: 700px) {
+:root { –sidebar-w: min(300px, 88vw); }
 body { font-size: 16px; }
 
 ```
-header { padding: 0.9rem 1rem 0.7rem 3.5rem; }
-h1 { font-size: 1.15rem; }
+header { padding: 0.85rem 0.8rem 0.75rem 3.8rem; }
+h1 { font-size: 1.1rem; }
 .header-sub { display: none; }
-#sidebar-toggle { width: 2.8rem; }
+.header-eyebrow { font-size: 0.6rem; }
 
-#axis-bar { padding: 0.4rem 0.8rem; gap: 0.1rem; }
-.axis-btn { font-size: 0.68rem; padding: 0.15rem 0.3rem; }
-.axis-def-btn { font-size: 0.6rem; }
+/* Tighter axis bar — wrap gracefully */
+#axis-bar { padding: 0.35rem 0.6rem; gap: 0.05rem; overflow-x: auto; flex-wrap: nowrap; }
+.axis-btn { font-size: 0.62rem; padding: 0.12rem 0.25rem; white-space: nowrap; }
+.axis-def-btn { font-size: 0.58rem; padding: 0.08rem 0.2rem; }
 .axis-sep { display: none; }
 .axis-label { display: none; }
 
-#def-panel { padding: 0.8rem 1rem; }
-.def-top-row { grid-template-columns: 1fr; gap: 0.8rem; }
-.def-rubric-row { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+/* Def panel single column on mobile */
+#def-panel { padding: 0.7rem 0.8rem; }
+.def-top-row { grid-template-columns: 1fr; gap: 0.6rem; }
+.def-rubric-row { grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.def-what, .def-notwhat, .def-tension-text { font-size: 0.78rem; }
+.rubric-label { font-size: 0.7rem; }
+.rubric-desc { font-size: 0.67rem; }
 
 #cmp-banner { padding: 0.4rem 0.8rem; }
-.cmp-hint { font-size: 0.78rem; }
+.cmp-hint { font-size: 0.75rem; }
 
-main { padding: 1.2rem 1rem; }
+main { padding: 1rem 0.9rem; }
 
-aside { width: min(var(--sidebar-w), 88vw); }
+/* Content sizing */
+.content-title { font-size: 1.3rem; }
+.overview-title { font-size: 1.3rem; }
+.content-meta { font-size: 0.8rem; }
+.thesis-block { font-size: 0.9rem; }
+.prose { font-size: 0.9rem; }
+.pill { font-size: 0.78rem; padding: 0.25rem 0.5rem; }
 
-/* Stack map top row */
-.map-top-row {
-  grid-template-columns: 1fr;
-}
-.map-image { width: 100%; height: 200px; }
-.map-image-fallback { width: 100%; height: 140px; }
-.map-tradeoff-col { grid-template-columns: 1fr; }
+/* Stack all grid layouts */
+.map-top-row { grid-template-columns: 1fr; gap: 0.8rem; }
+.map-image { width: 100%; height: 180px; }
+.map-image-fallback { width: 100%; height: 120px; }
+.map-tradeoff-col { grid-template-columns: 1fr 1fr; gap: 0 0.6rem; }
 
-/* Stack era view */
-.era-two-col { grid-template-columns: 1fr !important; }
+.era-two-col { grid-template-columns: 1fr !important; gap: 1rem !important; }
 
-/* Stack compare */
-.compare-top { grid-template-columns: 1fr; }
+.compare-top { grid-template-columns: 1fr; gap: 0.8rem; }
 .compare-axis-col { min-width: unset; }
+.compare-card { padding: 0.75rem; }
 
-.content-title { font-size: 1.4rem; }
-.overview-title { font-size: 1.35rem; }
-.tradeoff-grid { grid-template-columns: 1fr; }
+.tradeoff-grid { grid-template-columns: 1fr 1fr; }
+
+/* Ensure pills don't overflow */
+.tradeoffs { flex-direction: column; gap: 0.8rem; }
+.tradeoff-col { min-width: unset; }
+
+/* Compare gained/sacrificed grid */
+.compare-pills-grid { grid-template-columns: 1fr !important; }
 
 #cmp-cancel-wrap { display: none !important; }
+
+/* Ensure nothing overflows horizontally */
+.compare-prose, .prose { overflow-wrap: break-word; word-break: break-word; }
 ```
 
+}
+
+/* ══════════════════════════════════
+NARROW MOBILE (≤ 400px)
+══════════════════════════════════ */
+@media (max-width: 400px) {
+.map-tradeoff-col { grid-template-columns: 1fr; }
+.tradeoff-grid { grid-template-columns: 1fr; }
+.def-rubric-row { grid-template-columns: 1fr; }
+h1 { font-size: 1rem; }
 }
 
 /* ══════════════════════════════════
@@ -347,8 +376,8 @@ TABLET  (701–1024px)
 @media (min-width: 701px) and (max-width: 1024px) {
 .map-top-row { grid-template-columns: 200px 1fr; }
 .map-tradeoff-col { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
-.compare-top { grid-template-columns: 1fr; }
-.compare-card, .compare-axis-col { width: 100%; }
+.compare-top { grid-template-columns: 1fr 1fr; }
+.compare-axis-col { grid-column: 1 / -1; }
 }
 </style>
 
@@ -1393,14 +1422,14 @@ function renderCompare(main) {
 
       <div class="divider" style="background:linear-gradient(to right,var(--border2),transparent);margin-top:1.2rem"></div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1rem">
+      <div class="compare-pills-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1rem">
         ${[{m:a,e:eraA,label:'What A gained'},{m:b,e:eraB,label:'What B gained'}].map(({m,e,label})=>`
           <div>
             <div style="font-size:0.7rem;letter-spacing:0.15em;color:${e.hue};text-transform:uppercase;margin-bottom:0.45rem">${label}</div>
             ${m.gained.map(g=>`<div class="pill pill-gain"><span class="pill-arrow">↑</span>${g}</div><br>`).join('')}
           </div>`).join('')}
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:0.8rem;margin-bottom:1.5rem">
+      <div class="compare-pills-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:0.8rem;margin-bottom:1.5rem">
         ${[{m:a,e:eraA,label:'What A sacrificed'},{m:b,e:eraB,label:'What B sacrificed'}].map(({m,e,label})=>`
           <div>
             <div style="font-size:0.7rem;letter-spacing:0.15em;color:${e.hue};text-transform:uppercase;margin-bottom:0.45rem">${label}</div>
