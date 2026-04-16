@@ -433,11 +433,7 @@ TABLET  (701–1024px)
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════════
-
-const AXES = [
+var AXES = [
   { id: "accuracy",     label: "Accuracy",     icon: "◎" },
   { id: "usability",    label: "Usability",    icon: "◈" },
   { id: "navigation",   label: "Navigation",   icon: "◇" },
@@ -447,7 +443,7 @@ const AXES = [
   { id: "richness",     label: "Richness",     icon: "◐" },
 ];
 
-const AXIS_DEFS = {
+var AXIS_DEFS = {
   accuracy: {
     what: "How closely the map represents geometric, spatial, and geographic reality — coastlines, distances, positions, shapes, proportions.",
     notWhat: "Not completeness (how much is shown) but correctness of what is shown.",
@@ -533,7 +529,8 @@ const AXIS_DEFS = {
     ]
   }
 };
-const ERAS = [
+
+var ERAS = [
   {
     id:"ancient", label:"Ancient", years:"6200 BCE – 400 CE", hue:"#C8A96E",
     thesis:"The first maps were not tools of navigation — they were tools of ownership, cosmology, and power. Precision was irrelevant; claim was everything.",
@@ -911,15 +908,11 @@ const ERAS = [
   }
 ];
 
-// ═══════════════════════════════════════════════════════
-// COMPARISON TEXTS
-// Key: "MapNameA|||MapNameB" (alphabetical order by name)
-// ═══════════════════════════════════════════════════════
 function cmpKey(a, b) {
   return [a,b].sort().join('|||');
 }
 
-const COMPARE_TEXTS = {
+var COMPARE_TEXTS = {
   [cmpKey("Ptolemy's World Map","Hereford Mappa Mundi")]: `<p>These two maps represent the most consequential fork in the history of Western cartography. Ptolemy built a coordinate system — a reproducible mathematical framework that located every place by latitude and longitude. The Hereford map inherited that tradition and discarded it entirely, not out of ignorance but out of conviction: the world was better understood as a moral and theological argument than as a geometric one. Jerusalem is the centre of one; a mathematical grid is the spine of the other.</p><p>Ptolemy gained accuracy and reproducibility; the Hereford map gained meaning. Neither map could do what the other did. The tragedy is that they were treated as competitors rather than answers to entirely different questions. The fifteen centuries between them were not a period of regression — they were a period in which European culture decided that symbolism mattered more than measurement, and mapped accordingly.</p>`,
 
   [cmpKey("Babylonian World Map (Imago Mundi)","T-O Map (Isidore of Seville)")]: `<p>Separated by 1,200 years and an entire civilisational shift, these two maps share an identical ambition: to place the map-maker's culture at the centre of the world and encode that centrality as a fact of geography. Babylon sits at the centre of the Babylonian disc; Jerusalem sits at the crossing of the T-O diagram. Both sacrifice geographic accuracy entirely. Both are weapons of cosmological assertion.</p><p>The difference is compression: the T-O map reduces the Babylonian impulse to its absolute minimum — three strokes of a pen divide all of human geography. Everything the Babylonian map says in clay and cuneiform, the T-O map says in a circle and a cross. Both score 5/5 on Symbolism and Politics. Both score 1/5 on Accuracy and Navigation. They are the same map, made two civilisations apart, each discovering independently that the simplest possible image of the world is the most politically powerful.</p>`,
@@ -970,6 +963,14 @@ const COMPARE_TEXTS = {
 
   [cmpKey("Piri Reis Map","Cantino Planisphere")]: `<p>Both maps were made within eleven years of each other — the Cantino in 1502, Piri Reis in 1513 — and both represent the state of Atlantic geographic knowledge in the immediate aftermath of Columbus's voyages. The Cantino was made by anonymous Portuguese cartographers working from state-secret surveys; Piri Reis was made by an Ottoman admiral who explicitly listed his sources, including one of Columbus's own charts. Both show the Atlantic coasts of Africa and South America with striking accuracy for their date.</p><p>What separates them is perspective. The Cantino is a Portuguese imperial document, showing Portuguese discoveries from a Portuguese standpoint and drawing the Tordesillas Treaty line that divided the world between two Iberian crowns. The Piri Reis map is an Ottoman intellectual synthesis, viewing the same discoveries from Constantinople, asking what this new Atlantic geography means for a power whose interests lay eastward. Same coastlines, different questions. The comparison reveals that the Age of Exploration's cartographic revolution was not a single European event but a global moment of geographic recalibration that different powers interpreted differently for their own strategic purposes.</p>`,
 };
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+
 
 // Generic comparison text generator for pairs without specific text
 function getCompareText(a, b) {
