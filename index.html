@@ -84,60 +84,295 @@ const AXES = [
 
 const ERAS = [
   {
-    id: "ancient",
-    label: "Ancient",
-    years: "6200 BCE – 400 CE",
-    hue: "#C8A96E",
-    thesis: "The first maps were not tools of navigation — they were tools of ownership, cosmology, and power.",
-    gained: ["Conceptual framework", "Projection math", "Political territory"],
-    sacrificed: ["Local knowledge", "Oral tradition", "Navigation"],
+    id: "ancient", label: "Ancient", years: "6200 BCE – 400 CE", hue: "#C8A96E",
+    thesis: "The first maps were not tools of navigation — they were tools of ownership, cosmology, and power. Precision was irrelevant; claim was everything.",
+    gained: ["Conceptual framework for representing space", "Mathematical projection (Ptolemy)", "Political assertion of territorial ownership"],
+    sacrificed: ["Local ecological knowledge", "Oral geographic tradition", "Navigational practicality"],
     maps: [
       {
-        name: "Çatalhöyük Wall Painting",
-        year: "6200 BCE",
-        region: "Anatolia",
-        gained: ["First spatial representation"],
-        sacrificed: ["Accuracy","Navigation"],
-        axes: { accuracy:1, usability:2, navigation:1, symbolism:5, politics:2, completeness:1, richness:4 }
+        name: "Çatalhöyük Wall Painting", year: "c. 6200 BCE", region: "Anatolia",
+        gained: ["Oldest known spatial representation of settlement and landscape", "Integration of human settlement with volcanic topography", "Pictorial convention for representing place"],
+        sacrificed: ["Scale or distance accuracy", "Any navigational utility", "Portability or reproducibility"],
+        axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 4 },
       },
       {
-        name: "Ptolemy's World Map",
-        year: "150 CE",
-        region: "Roman Egypt",
-        gained: ["Coordinates","Projection"],
-        sacrificed: ["Navigation"],
-        axes: { accuracy:4, usability:2, navigation:2, symbolism:2, politics:3, completeness:3, richness:2 }
-      }
-    ]
+        name: "Babylonian World Map (Imago Mundi)", year: "c. 600 BCE", region: "Mesopotamia",
+        gained: ["First known schematic world map", "Explicit cosmological and mythological framing", "Written cuneiform annotations naming distant regions"],
+        sacrificed: ["All geographic accuracy beyond Mesopotamia", "Navigational utility", "Non-Babylonian geographic worldviews"],
+        axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 5, completeness: 1, richness: 3 },
+      },
+      {
+        name: "Anaximander's World Map", year: "c. 550 BCE", region: "Greece",
+        gained: ["First Greek world map — the prototype of Western cosmological mapping", "Ocean-ringed circular disc that framed all European cartography for a millennium", "Separated geography from mythology as an intellectual discipline"],
+        sacrificed: ["All geographic accuracy", "Any coverage beyond the Mediterranean and Near East", "Navigational utility of any kind"],
+        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 3 },
+      },
+      {
+        name: "Eratosthenes' World Map", year: "c. 194 BCE", region: "Alexandria",
+        gained: ["First map based on a calculated Earth circumference — accurate to within 2%", "Grid of parallels and meridians grounded in astronomical observation", "Correct proportions of the known world — better than Ptolemy in some regions"],
+        sacrificed: ["Coverage beyond the Mediterranean and Near East", "Navigational readability for sailors", "Survival — known only through later descriptions"],
+        axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 1, politics: 1, completeness: 2, richness: 2 },
+      },
+      {
+        name: "Tabula Peutingeriana", year: "c. 300 CE (medieval copy)", region: "Roman Empire",
+        gained: ["Comprehensive road network of the entire Roman Empire", "Distances between stations annotated throughout", "Practical itinerary tool for administration and military"],
+        sacrificed: ["Geographic shape (extremely elongated east-west to fit a scroll)", "Any spatial accuracy of landmasses", "Non-Roman territories and peoples"],
+        axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 3, politics: 5, completeness: 4, richness: 3 },
+      },
+      {
+        name: "Ptolemy's World Map", year: "c. 150 CE", region: "Roman Egypt",
+        gained: ["Systematic latitude/longitude coordinate system", "Conical and spherical projection theory", "Reproducible framework — locations given as coordinates"],
+        sacrificed: ["Navigational readability for sailors", "Accuracy east of Persia and in sub-Saharan Africa", "Enclosed Indian Ocean (a damaging error repeated for centuries)"],
+        axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 2, politics: 3, completeness: 3, richness: 2 },
+      },
+    ],
   },
-
   {
-    id: "modern",
-    label: "Modern",
-    years: "1800 – 1970 CE",
-    hue: "#C47A5A",
-    thesis: "Precision vs usability split.",
-    gained: ["Mass literacy","Data visualization"],
-    sacrificed: ["Symbolic unity"],
+    id: "medieval", label: "Medieval", years: "400 – 1450 CE", hue: "#7B9E6B",
+    thesis: "Medieval maps were not failed attempts at accuracy — they were successful cosmologies. The world was mapped as it meant, not as it measured.",
+    gained: ["Moral and theological layering of geography", "Integration of time, history, and myth into space", "Encyclopedic annotation density unmatched before or since"],
+    sacrificed: ["Ptolemaic coordinate precision (deliberately set aside)", "Navigational usefulness for most maps", "Geometric consistency"],
     maps: [
       {
-        name: "Beck's Tube Map",
-        year: "1933",
-        region: "London",
-        gained: ["Clarity","Usability"],
-        sacrificed: ["Geographic truth"],
-        axes: { accuracy:1, usability:5, navigation:5, symbolism:3, politics:1, completeness:2, richness:2 }
+        name: "T-O Map (Isidore of Seville)", year: "c. 600–1300 CE", region: "Europe",
+        gained: ["Simplest and most politically powerful diagram in cartographic history", "Three strokes dividing the world into Asia (top), Europe (left), Africa (right)", "Template for all European medieval world maps — reproduced thousands of times"],
+        sacrificed: ["All geographic accuracy", "Any navigational function", "Non-Christian and non-European worldviews"],
+        axes: { accuracy: 1, usability: 3, navigation: 1, symbolism: 5, politics: 5, completeness: 2, richness: 2 },
       },
       {
-        name: "Peters Projection",
-        year: "1973",
-        region: "Germany",
-        gained: ["Equal-area"],
-        sacrificed: ["Shape"],
-        axes: { accuracy:3, usability:2, navigation:1, symbolism:4, politics:5, completeness:4, richness:2 }
-      }
-    ]
-  }
+        name: "Al-Balkhi School Maps (KMMS)", year: "c. 900–1000 CE", region: "Islamic World",
+        gained: ["World mapped by political and religious boundaries, not geography", "Abstract geometric forms — squares, circles, straight lines — for rivers and coasts", "Deliberately prioritised Muslim administrative reality over physical space"],
+        sacrificed: ["Geographic accuracy entirely — consciously rejected", "Non-Muslim territories (shown as blank or marginal)", "Coverage of Europe, sub-Saharan Africa, East Asia"],
+        axes: { accuracy: 1, usability: 4, navigation: 3, symbolism: 5, politics: 5, completeness: 2, richness: 3 },
+      },
+      {
+        name: "Al-Idrisi's Tabula Rogeriana", year: "1154 CE", region: "Sicily / Islamic World",
+        gained: ["Most geographically accurate world map of its era", "Synthesis of Greek, Arab, Persian, and traveler knowledge", "South-oriented layout that challenged European convention"],
+        sacrificed: ["Christian cosmological framing", "Accurate sub-Saharan Africa and Pacific coverage", "Widespread adoption — largely unknown in Europe for centuries"],
+        axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 3, completeness: 3, richness: 4 },
+      },
+      {
+        name: "Hereford Mappa Mundi", year: "c. 1300 CE", region: "England",
+        gained: ["700+ annotated places combining geography, history, and scripture", "Jerusalem as the spiritual and geometric center of the world", "Visual encyclopedia of the known world in a single image"],
+        sacrificed: ["Geographic accuracy", "Any navigational function", "Non-Christian geographic worldviews and peoples"],
+        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 4, completeness: 4, richness: 5 },
+      },
+      {
+        name: "Ebstorf Map", year: "c. 1234 CE (destroyed 1943)", region: "Germany",
+        gained: ["Largest medieval mappa mundi ever made (3.6m × 3.6m)", "Christ's body literally framing the world — head, hands, feet at the margins", "Over 1,500 place annotations, illustrations, and legends"],
+        sacrificed: ["Geographic accuracy entirely", "Portability or practical use", "Survival — destroyed in WWII bombing"],
+        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 5, richness: 5 },
+      },
+      {
+        name: "Portolan Charts", year: "c. 1275–1500 CE", region: "Mediterranean",
+        gained: ["Highly accurate Mediterranean and Black Sea coastlines", "Dense network of rhumb lines for compass bearing navigation", "Practical utility for sailors — the first 'working' maps"],
+        sacrificed: ["Interior land detail entirely", "Cosmological or narrative meaning", "Coverage beyond known sailing routes"],
+        axes: { accuracy: 4, usability: 5, navigation: 5, symbolism: 1, politics: 2, completeness: 2, richness: 2 },
+      },
+      {
+        name: "Fra Mauro World Map", year: "c. 1450 CE", region: "Venice",
+        gained: ["Most geographically ambitious pre-Columbian European world map", "Africa shown as circumnavigable — anticipating Dias by 40 years", "Synthesis of Ptolemy, Arab geography, Marco Polo, and merchant reports"],
+        sacrificed: ["Ptolemaic coordinate system (rejected deliberately)", "Consistent scale across regions", "The enclosed Indian Ocean error — Fra Mauro correctly rejected it"],
+        axes: { accuracy: 4, usability: 2, navigation: 3, symbolism: 4, politics: 3, completeness: 5, richness: 5 },
+      },
+    ],
+  },
+  {
+    id: "eastasian", label: "East Asian & Pacific", years: "1300 – 1700 CE", hue: "#C47A7A",
+    thesis: "While Europe was rediscovering Ptolemy, China and Korea were making world maps of comparable or greater scope — and Pacific islanders were encoding oceanic knowledge in forms Europeans couldn't recognise as maps at all.",
+    gained: ["Non-Eurocentric world maps of extraordinary completeness", "Tactile and embodied navigation knowledge (Pacific)", "Integration of Islamic, Chinese, and indigenous geographic traditions"],
+    sacrificed: ["Global influence — none of these traditions shaped the cartographic mainstream", "Survival in many cases — Chinese maps were rarely preserved as prestige objects", "Recognition — Western scholarship ignored these traditions for centuries"],
+    maps: [
+      {
+        name: "Da Ming Hunyi Tu", year: "1389", region: "China",
+        gained: ["One of the oldest surviving East Asian world maps", "Shows Africa, Europe, and the Middle East — before European contact with most of these regions", "China correctly scaled as the dominant landmass at centre"],
+        sacrificed: ["Accuracy of Africa and Europe (highly distorted)", "Coverage of the Americas (unknown)", "Western adoption — it circulated only within the Chinese imperial tradition"],
+        axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 4, politics: 5, completeness: 4, richness: 4 },
+      },
+      {
+        name: "Kangnido Map", year: "1402", region: "Korea",
+        gained: ["First Korean world map — synthesises Chinese, Islamic, and Korean geographic sources", "Shows Africa as a peninsula 90 years before Dias rounded the Cape", "Predates European cartographic knowledge of the same regions by decades"],
+        sacrificed: ["The Americas (entirely absent)", "Consistent scale — Korea is dramatically oversized", "Western cartographic influence — developed entirely independently"],
+        axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 3, politics: 4, completeness: 4, richness: 4 },
+      },
+      {
+        name: "Zheng He / Mao Kun Chart", year: "c. 1430", region: "China",
+        gained: ["Nautical chart of the largest maritime expeditions in pre-modern history", "Routes from China to East Africa, Arabia, and Southeast Asia", "Proof that ocean exploration does not require or produce European-style cartography"],
+        sacrificed: ["Accurate coastal shapes (strip-chart format, not spatial)", "The Americas — Zheng He never reached them", "Global influence — China turned inward; the charts were suppressed"],
+        axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 2, politics: 4, completeness: 3, richness: 3 },
+      },
+      {
+        name: "Marshall Islands Stick Charts", year: "Pre-colonial – present", region: "Micronesia / Pacific",
+        gained: ["Encodes ocean swell patterns, island positions, and wave deflection — information invisible to European sailors", "Navigation by feel, not sight — a wholly different epistemology of space", "Still in use and transmitted as living knowledge"],
+        sacrificed: ["Visual representation entirely — these are tactile, not pictorial", "Any geographic accuracy in the European sense", "Recognition as 'maps' by Western cartographic tradition until the 20th century"],
+        axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 5, politics: 1, completeness: 2, richness: 5 },
+      },
+      {
+        name: "Matteo Ricci's Kunyu Wanguo Quantu", year: "1602", region: "China / Jesuit",
+        gained: ["First European-style world map in Chinese — showing the Americas to a Chinese audience", "Placed China near the centre, bridging European projection with Chinese cosmological expectation", "Synthesis of two entirely separate cartographic civilisations in a single object"],
+        sacrificed: ["Pure Ptolemaic projection — deliberately modified to not offend Chinese cosmology", "Consistent treatment of scale across continents", "Broad circulation — printed in limited copies, suppressed after Ricci's death"],
+        axes: { accuracy: 4, usability: 3, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 4 },
+      },
+    ],
+  },
+  {
+    id: "renaissance", label: "Renaissance", years: "1400 – 1600 CE", hue: "#7A8FC4",
+    thesis: "Renaissance cartography didn't discover the world — it claimed it. Accuracy and imperial power advanced in lockstep, inseparably.",
+    gained: ["Printed map distribution at scale", "New World incorporated into European geographic imagination", "Projection mathematics for global mapping"],
+    sacrificed: ["Indigenous geographic knowledge systems", "Symbolic and cosmological depth", "Honest representation of uncertainty and blank space"],
+    maps: [
+      {
+        name: "Cantino Planisphere", year: "1502", region: "Portugal",
+        gained: ["First map showing Portuguese discoveries in Africa, Brazil, and India", "Tordesillas Treaty line drawn for the first time", "Accurate West African coastline from decades of Portuguese exploration"],
+        sacrificed: ["North American interior (depicted as islands)", "Any coverage of the Pacific", "Public availability — it was a state secret, smuggled to Italy"],
+        axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 2, politics: 5, completeness: 3, richness: 3 },
+      },
+      {
+        name: "Waldseemüller Map (Universalis Cosmographia)", year: "1507", region: "Germany",
+        gained: ["First map to name 'America' — and to show it as a separate continent", "Printed in 1,000 copies — first mass-distributed world map", "Pacific Ocean implied for the first time"],
+        sacrificed: ["Indigenous names, geographies, and peoples entirely", "Pacific Ocean scale (drastically underestimated)", "Consistency — Waldseemüller later retracted 'America' but the name stuck"],
+        axes: { accuracy: 3, usability: 3, navigation: 3, symbolism: 2, politics: 5, completeness: 3, richness: 3 },
+      },
+      {
+        name: "Piri Reis Map", year: "1513", region: "Ottoman Empire",
+        gained: ["Synthesis of 20+ source maps including Columbus's own charts", "Accurate Atlantic coastlines of Africa and South America", "First Ottoman world map — non-European cartographic perspective on the New World"],
+        sacrificed: ["Pacific and Asian coverage (largely absent)", "Consistent scale across the map", "Survival of complete original — only a fragment remains"],
+        axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 4, completeness: 2, richness: 4 },
+      },
+      {
+        name: "Mercator's World Map", year: "1569", region: "Flanders",
+        gained: ["Conformal projection — rhumb lines as straight lines for ocean navigation", "Global navigational standard for 400 years", "Consistent angular representation across the entire globe"],
+        sacrificed: ["Area proportionality — Africa and South America severely shrunk", "Accurate polar regions", "Non-Eurocentric spatial framing baked into global consciousness"],
+        axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 2 },
+      },
+      {
+        name: "Ortelius's Theatrum Orbis Terrarum", year: "1570", region: "Antwerp",
+        gained: ["First modern commercial atlas — 70 maps, standardized format", "Full bibliography crediting 87 cartographers — first academic citation in mapping", "Accessible to educated public, not just rulers and sailors"],
+        sacrificed: ["Cutting-edge accuracy (compiled and simplified from others)", "Unpublished local and indigenous knowledge", "Symbolic richness of the manuscript tradition"],
+        axes: { accuracy: 3, usability: 5, navigation: 3, symbolism: 2, politics: 3, completeness: 4, richness: 3 },
+      },
+      {
+        name: "Blaeu's Atlas Maior", year: "1662", region: "Amsterdam",
+        gained: ["Most lavish atlas ever produced — 600 maps, hand-coloured", "Pinnacle of Dutch Golden Age cartographic art", "Comprehensive global coverage with decorative borders and city views"],
+        sacrificed: ["Accuracy (many maps already outdated on publication)", "Portability — 11 volumes", "Affordability — cost of a luxury house"],
+        axes: { accuracy: 3, usability: 2, navigation: 3, symbolism: 5, politics: 3, completeness: 5, richness: 5 },
+      },
+    ],
+  },
+  {
+    id: "scientific", label: "Scientific Age", years: "1600 – 1800 CE", hue: "#B07AB0",
+    thesis: "The Scientific Revolution made maps more precisely wrong in new ways — confident geometries replacing honest blank spaces with false certainty.",
+    gained: ["Triangulation-based geodetic surveys", "Astronomical coordinate verification at scale", "Systematic national geographic coverage for the first time"],
+    sacrificed: ["Honest blank spaces (terra incognita replaced by guesswork)", "Local ecological, cultural, and oral geographic annotation", "Cosmological or narrative framing of any kind"],
+    maps: [
+      {
+        name: "Coronelli's Globe Pair", year: "1681–1683", region: "Venice / France",
+        gained: ["Largest globes ever made (3.9m diameter) — celestial and terrestrial pair", "Commissioned for Louis XIV — peak of royal cartographic patronage", "State-of-the-art knowledge of New World and Asian trade routes"],
+        sacrificed: ["Portability entirely", "Public access — made for one king's library", "Any ability to update without making entirely new globes"],
+        axes: { accuracy: 4, usability: 1, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 5 },
+      },
+      {
+        name: "Cassini Map of France", year: "1744–1815", region: "France",
+        gained: ["First geometrically rigorous national survey of any country", "Triangulation network covering entire France in 182 sheets", "Template for all subsequent national topographic surveys globally"],
+        sacrificed: ["Local place knowledge and oral geographic tradition", "Accessibility — a purely technical document", "Speed — four generations of the Cassini family, 70 years to complete"],
+        axes: { accuracy: 5, usability: 3, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 },
+      },
+      {
+        name: "Cook's Pacific Charts", year: "1768–1779", region: "Pacific Ocean",
+        gained: ["Accurate Pacific coastlines, island positions, and New Zealand / Australia outlines", "Systematic astronomical observation for precise positioning", "Opened the Pacific to European navigation and colonization"],
+        sacrificed: ["Polynesian and Micronesian navigation systems (star paths, wave piloting, stick charts)", "Indigenous place names replaced with European ones", "Ecological, cultural, and spiritual landscape knowledge of Pacific peoples"],
+        axes: { accuracy: 5, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 1 },
+      },
+      {
+        name: "Bonne Projection World Map", year: "c. 1752", region: "France",
+        gained: ["Equal-area representation preserving correct land sizes", "Visually distinctive heart-like world shape", "Accurate area ratios unlike Mercator"],
+        sacrificed: ["Shape accuracy at map edges (severe distortion)", "Navigational usefulness", "Adopted only briefly before replaced by other equal-area projections"],
+        axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 3, politics: 2, completeness: 3, richness: 2 },
+      },
+    ],
+  },
+  {
+    id: "modern", label: "Modern", years: "1800 – 1970 CE", hue: "#C47A5A",
+    thesis: "Modern mapping split into two streams: industrial precision for states and armies, and radical simplification for the public. Both were revolutions — in opposite directions.",
+    gained: ["Mass public literacy of maps", "Thematic mapping as data visualization", "Abstract and schematic cartographies that prioritize clarity over truth"],
+    sacrificed: ["Unified symbolic systems", "Artistic and decorative traditions", "Acknowledgment of political distortion in standard maps"],
+    maps: [
+      {
+        name: "Minard's Napoleon March Map", year: "1869", region: "France",
+        gained: ["Six variables in one image: geography, army size, direction, temperature, time, and death", "Invented the flow map and the biographical map of a catastrophe", "Often called the greatest statistical graphic ever made — a map of loss, not place"],
+        sacrificed: ["Conventional geographic orientation", "Navigational or administrative utility", "Any pretence that a map must depict space rather than process"],
+        axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 5, politics: 4, completeness: 3, richness: 5 },
+      },
+      {
+        name: "Booth's Poverty Map of London", year: "1889", region: "London",
+        gained: ["First street-by-street social class map of any city", "Colour-coded thematic social mapping — precursor to GIS by a century", "Direct policy impact — reshaped understanding of urban poverty"],
+        sacrificed: ["Individual dignity — people's homes labelled by class", "Rural or national context", "Neutral framing — the map encoded the mapmaker's social assumptions as fact"],
+        axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 3, politics: 5, completeness: 3, richness: 5 },
+      },
+      {
+        name: "Humboldt's Naturgemälde", year: "1807", region: "Germany / South America",
+        gained: ["First map linking altitude, climate, vegetation, and species in one image", "Invention of the isotherm — lines connecting equal temperatures", "Foundation of modern biogeography and ecology"],
+        sacrificed: ["Navigational utility", "Standard geographic orientation", "Political and administrative information entirely"],
+        axes: { accuracy: 4, usability: 3, navigation: 1, symbolism: 5, politics: 1, completeness: 3, richness: 5 },
+      },
+      {
+        name: "Snow's Cholera Map", year: "1854", region: "London",
+        gained: ["Invention of epidemiological and spatial statistical mapping", "Direct proof that place causes disease — launched modern public health", "Dot-density thematic technique still in use today"],
+        sacrificed: ["Aesthetic tradition", "Broader geographic context beyond Soho", "Nothing significant — this was an almost unambiguous advance"],
+        axes: { accuracy: 4, usability: 5, navigation: 1, symbolism: 2, politics: 2, completeness: 3, richness: 3 },
+      },
+      {
+        name: "USGS Topographic Survey Maps", year: "1879–present", region: "United States",
+        gained: ["Comprehensive, standardized topographic coverage of entire US territory", "Contour lines as universal topographic language", "Public domain — free to use, copy, build upon"],
+        sacrificed: ["Indigenous place names (systematically replaced)", "Ecological and cultural landscape texture", "Local and vernacular geographic knowledge"],
+        axes: { accuracy: 5, usability: 4, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 },
+      },
+      {
+        name: "Beck's London Underground Map", year: "1933", region: "England",
+        gained: ["Topological clarity sacrificing geography for legibility — a new cartographic genre", "Mass transit schematic as design discipline, copied by every city worldwide", "Proof that usability and accuracy are not the same value"],
+        sacrificed: ["Geographic truth — station positions are systematically wrong", "Surface-level spatial orientation", "Relationship between the map and the city above ground"],
+        axes: { accuracy: 1, usability: 5, navigation: 5, symbolism: 3, politics: 1, completeness: 2, richness: 2 },
+      },
+      {
+        name: "Peters Projection", year: "1973", region: "Germany",
+        gained: ["Equal-area representation correcting Mercator's size distortions", "Explicit political critique of Eurocentric cartographic convention", "Adoption by UN agencies and development organizations"],
+        sacrificed: ["Shape accuracy — continents appear elongated and distorted", "Navigator usability", "Aesthetic credibility — widely criticized by professional cartographers"],
+        axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 4, politics: 5, completeness: 4, richness: 2 },
+      },
+    ],
+  },
+  {
+    id: "digital", label: "Digital Era", years: "1970 – Present", hue: "#5AABAB",
+    thesis: "Digital mapping gave everyone a map and took away their understanding of space. We have more geographic data than any mapmaker in history — and less spatial memory.",
+    gained: ["Real-time, personalized, and interactive maps at global scale", "Satellite and sensor-derived geometric accuracy", "Collaborative and open mapping (OpenStreetMap)"],
+    sacrificed: ["Spatial memory and wayfinding intuition", "Single authoritative perspective replaced by fragmented competing truths", "Permanence — digital maps change silently without notice"],
+    maps: [
+      {
+        name: "NASA Blue Marble", year: "1972 / 2002", region: "Earth Orbit",
+        gained: ["First true photographic image of the whole Earth from space", "Environmental consciousness catalyst — the image that launched Earth Day", "Unified planetary perspective — no borders, no nations"],
+        sacrificed: ["Any navigational or practical function", "Political boundaries (deliberately omitted)", "Human scale — no roads, settlements, or people visible"],
+        axes: { accuracy: 5, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 3, richness: 2 },
+      },
+      {
+        name: "Google Maps", year: "2005–present", region: "Global",
+        gained: ["Turn-by-turn navigation for every person with a smartphone", "Street View ground-level imagery of most inhabited places", "Real-time traffic, transit, and business layer integration"],
+        sacrificed: ["Spatial memory and the human capacity for independent wayfinding", "Privacy — comprehensive surveillance infrastructure", "Non-commercial places: indigenous, rural, informal, sacred"],
+        axes: { accuracy: 5, usability: 5, navigation: 5, symbolism: 1, politics: 4, completeness: 4, richness: 2 },
+      },
+      {
+        name: "OpenStreetMap", year: "2004–present", region: "Global",
+        gained: ["Community-built geographic commons — 10 million contributors", "Coverage of informal settlements, refugee camps, disaster zones", "Fully open data — anyone can use, fork, correct, or improve"],
+        sacrificed: ["Consistency — quality varies enormously by region", "Commercial infrastructure for sustained maintenance", "Unified visual language or authoritative editorial voice"],
+        axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 },
+      },
+      {
+        name: "LiDAR Terrain Maps", year: "2000s–present", region: "Global",
+        gained: ["Sub-centimetre elevation accuracy from aerial laser scanning", "Revealed hidden archaeological sites under forest canopy (Maya, Angkor)", "Enables flood modelling, autonomous vehicles, precision forestry"],
+        sacrificed: ["Human readability — raw data requires software to interpret", "Cultural and named landscape features", "Accessibility — expensive to produce and process"],
+        axes: { accuracy: 5, usability: 1, navigation: 3, symbolism: 1, politics: 2, completeness: 5, richness: 1 },
+      },
+    ],
+  },
 ];
 
 // ⚠️ NOTE:
