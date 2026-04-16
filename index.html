@@ -1473,41 +1473,41 @@ function renderRadarSVG(vals, color, size=90) {
 // BOOT
 // ═══════════════════════════════════════════════════════
 function showError(msg, detail) {
-  document.body.innerHTML = `
-    <div style="font-family:monospace;padding:2rem;background:#0A0806;color:#E8DEC5;min-height:100vh">
-      <div style="max-width:700px;margin:0 auto">
-        <h2 style="color:#D98860;font-size:1.2rem;margin-bottom:1rem">⚠ Cartography Explorer — Load Error</h2>
-        <p style="color:#C0AD88;margin-bottom:1rem">${msg}</p>
-        <pre style="background:#1A1408;border:1px solid #2A2418;padding:1rem;font-size:0.8rem;color:#9A8555;white-space:pre-wrap;overflow-wrap:break-word">${detail}</pre>
+  var d = document.getElementById('main-content');
+  if (!d) d = document.body;
+  d.innerHTML = '<div style="font-family:monospace;padding:2rem;color:#E8DEC5;background:#0A0806;min-height:200px">'
+    + '<h2 style="color:#D98860;margin-bottom:1rem">Load Error</h2>'
+    + '<p style="color:#C0AD88;margin-bottom:1rem">' + msg + '</p>'
+    + '<pre style="background:#1A1408;border:1px solid #2A2418;padding:1rem;font-size:0.8rem;color:#9A8555;white-space:pre-wrap;overflow-wrap:break-word">' + detail + '</pre>'
 
 ```
-    <p style="color:#6A5A35;margin-top:1rem;font-size:0.85rem">
-      Open browser DevTools (F12) → Console tab for full details.<br>
-      URL: ${location.href}<br>
-      UA: ${navigator.userAgent}
-    </p>
-  </div>
-</div>`;
++ '</div>';
 ```
 
 }
 
+// Run immediately — don’t wait for DOMContentLoaded since script is at bottom of body
+// and DOM is already parsed by the time this executes
+(function() {
 try {
+if (document.readyState === ‘loading’) {
 document.addEventListener(‘DOMContentLoaded’, function() {
-try {
-init();
-} catch(e) {
-showError(‘JavaScript initialisation failed.’, e.stack || e.message || String(e));
-}
+try { init(); }
+catch(e) { showError(‘init() failed’, (e.stack || e.message || String(e))); }
 });
+} else {
+init();
+}
 } catch(e) {
-showError(‘Script failed to load.’, e.stack || e.message || String(e));
+showError(‘Boot failed’, (e.stack || e.message || String(e)));
 }
+})();
 
-// Fallback: if DOMContentLoaded already fired (e.g. script at bottom of parsed doc)
-if (document.readyState === ‘complete’ || document.readyState === ‘interactive’) {
-try { init(); } catch(e) { /* already handled above */ }
-}
+// Global error handler catches anything that slips through
+window.onerror = function(msg, src, line, col, err) {
+showError(’Uncaught error at line ’ + line, msg + ‘\n’ + (err && err.stack ? err.stack : ‘’));
+return true;
+};
 </script>
 
 </body>
