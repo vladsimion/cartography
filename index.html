@@ -4,9 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://upload.wikimedia.org; img-src * data:;">
 <title>Cartography & Its Trade-offs — A Non-Linear History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
+<noscript><style>body::after{content:"JavaScript is required to run this explorer.";display:block;padding:2rem;color:#C0AD88;font-family:serif;}</style></noscript>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
 
 :root {
 –bg: #0A0806; –bg2: #0E0C08; –bg3: #141008;
@@ -1469,7 +1473,42 @@ function renderRadarSVG(vals, color, size=90) {
 // ═══════════════════════════════════════════════════════
 // BOOT
 // ═══════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', init);
+function showError(msg, detail) {
+  document.body.innerHTML = `
+    <div style="font-family:monospace;padding:2rem;background:#0A0806;color:#E8DEC5;min-height:100vh">
+      <div style="max-width:700px;margin:0 auto">
+        <h2 style="color:#D98860;font-size:1.2rem;margin-bottom:1rem">⚠ Cartography Explorer — Load Error</h2>
+        <p style="color:#C0AD88;margin-bottom:1rem">${msg}</p>
+        <pre style="background:#1A1408;border:1px solid #2A2418;padding:1rem;font-size:0.8rem;color:#9A8555;white-space:pre-wrap;overflow-wrap:break-word">${detail}</pre>
+
+```
+    <p style="color:#6A5A35;margin-top:1rem;font-size:0.85rem">
+      Open browser DevTools (F12) → Console tab for full details.<br>
+      URL: ${location.href}<br>
+      UA: ${navigator.userAgent}
+    </p>
+  </div>
+</div>`;
+```
+
+}
+
+try {
+document.addEventListener(‘DOMContentLoaded’, function() {
+try {
+init();
+} catch(e) {
+showError(‘JavaScript initialisation failed.’, e.stack || e.message || String(e));
+}
+});
+} catch(e) {
+showError(‘Script failed to load.’, e.stack || e.message || String(e));
+}
+
+// Fallback: if DOMContentLoaded already fired (e.g. script at bottom of parsed doc)
+if (document.readyState === ‘complete’ || document.readyState === ‘interactive’) {
+try { init(); } catch(e) { /* already handled above */ }
+}
 </script>
 
 </body>
