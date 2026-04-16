@@ -1,295 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Cartography Explorer</title>
-<style>
-body {
-  margin:0;
-  background:#0A0806;
-  color:#D8CDB0;
-  font-family: Georgia, serif;
-  display:flex;
-  height:100vh;
-}
-#sidebar {
-  width:320px;
-  border-right:1px solid #1E1A12;
-  overflow:auto;
-}
-#main {
-  flex:1;
-  overflow:auto;
-  padding:20px;
-}
-.era {
-  padding:12px;
-  cursor:pointer;
-  border-left:3px solid transparent;
-}
-.map {
-  padding:8px 20px;
-  cursor:pointer;
-  font-size:0.85em;
-}
-.map:hover, .era:hover {
-  background:#1A140C;
-}
-.pill {
-  display:inline-block;
-  padding:4px 8px;
-  margin:2px;
-  font-size:0.75em;
-}
-.gain { background:#1A2A18; color:#88BB78; }
-.loss { background:#2A1A18; color:#CC7755; }
-.bar { display:flex; gap:2px; }
-.bar div {
-  width:10px; height:10px;
-  background:#1E1A14;
-}
-.bar .on { background:#C8A96E; }
-button {
-  background:none;
-  border:1px solid #5AABAB;
-  color:#5AABAB;
-  padding:4px 8px;
-  cursor:pointer;
-}
-</style>
-</head>
-
-<body>
-
-<div id="sidebar"></div>
-
-<div id="main">
-<h1>Cartography Explorer</h1>
-<p>Select something.</p>
-</div>
-
-<script>
-
-// ─────────────────────────────────────
-// FULL DATA (PASTE YOUR FULL ERAS HERE)
-// ─────────────────────────────────────
-
-const ERAS = [
-  {
-    id:"ancient",
-    label:"Ancient",
-    years:"6200 BCE – 400 CE",
-    hue:"#C8A96E",
-    thesis:"Maps began as symbolic power structures.",
-    gained:["Conceptual space"],
-    sacrificed:["Accuracy"],
-    maps:[
-      {
-        name:"Babylonian World Map",
-        year:"600 BCE",
-        region:"Mesopotamia",
-        gained:["Cosmology"],
-        sacrificed:["Accuracy"],
-        axes:{accuracy:1, usability:2, navigation:1, symbolism:5}
-      }
-    ]
-  }
-
-  // ⛔ PASTE THE REST OF YOUR DATA HERE (unchanged)
-];
-
-// AXES
-const AXES = [
-  { id:"accuracy", label:"Accuracy" },
-  { id:"usability", label:"Usability" },
-  { id:"navigation", label:"Navigation" },
-  { id:"symbolism", label:"Symbolism" },
-  { id:"politics", label:"Politics" },
-  { id:"completeness", label:"Completeness" },
-  { id:"richness", label:"Richness" }
-];
-
-// AXIS DEFINITIONS (trimmed example)
-const AXIS_DEFS = {
-  accuracy: "How closely the map represents reality.",
-  usability: "Ease of use for humans."
-};
-
-// ─────────────────────────────────────
-// STATE
-// ─────────────────────────────────────
-
-let state = {
-  view:"overview",
-  era:null,
-  map:null,
-  compareA:null,
-  compareB:null,
-  compareMode:false
-};
-
-// ─────────────────────────────────────
-// RENDER SIDEBAR
-// ─────────────────────────────────────
-
-function renderSidebar() {
-  const el = document.getElementById("sidebar");
-  el.innerHTML = "";
-
-  ERAS.forEach(e => {
-    const eraDiv = document.createElement("div");
-    eraDiv.className = "era";
-    eraDiv.innerHTML = `<strong>${e.label}</strong><br><small>${e.years}</small>`;
-    eraDiv.onclick = () => openEra(e);
-    el.appendChild(eraDiv);
-
-    e.maps.forEach(m => {
-      const mapDiv = document.createElement("div");
-      mapDiv.className = "map";
-      mapDiv.innerText = "– " + m.name;
-      mapDiv.onclick = () => handleMapClick(m,e);
-      el.appendChild(mapDiv);
-    });
-  });
-}
-
-// ─────────────────────────────────────
-// VIEW LOGIC
-// ─────────────────────────────────────
-
-function openEra(e) {
-  state.view="era";
-  state.era=e;
-  render();
-}
-
-function handleMapClick(m,e) {
-  if(state.compareMode){
-    if(!state.compareA){ state.compareA=m; return; }
-    if(!state.compareB){ state.compareB=m; openCompare(); }
-    return;
-  }
-  openMap(m,e);
-}
-
-function openMap(m,e){
-  state.view="map";
-  state.map=m;
-  state.era=e;
-  render();
-}
-
-function openCompare(){
-  state.view="compare";
-  render();
-}
-
-// ─────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────
-
-function bar(v){
-  let h='<div class="bar">';
-  for(let i=1;i<=5;i++){
-    h+=`<div class="${i<=v?'on':''}"></div>`;
-  }
-  return h+"</div>";
-}
-
-function pills(arr,type){
-  return arr.map(x=>`<span class="pill ${type}">${x}</span>`).join("");
-}
-
-// ─────────────────────────────────────
-// RADAR CHART
-// ─────────────────────────────────────
-
-function radar(axes){
-  const size=120, r=40, cx=60, cy=60;
-  const n=AXES.length;
-  let pts=[];
-
-  AXES.forEach((ax,i)=>{
-    const angle = (Math.PI*2*i/n)-Math.PI/2;
-    const v=(axes[ax.id]||0)/5;
-    pts.push([
-      cx + r*v*Math.cos(angle),
-      cy + r*v*Math.sin(angle)
-    ]);
-  });
-
-  return `
-  <svg width="120" height="120">
-    <polygon points="${pts.map(p=>p.join(",")).join(" ")}"
-      fill="rgba(200,169,110,0.3)"
-      stroke="#C8A96E"/>
-  </svg>`;
-}
-
-// ─────────────────────────────────────
-// MAIN RENDER
-// ─────────────────────────────────────
-
-function render(){
-  const main = document.getElementById("main");
-
-  if(state.view==="overview"){
-    main.innerHTML = `<h1>Cartography Explorer</h1>`;
-  }
-
-  if(state.view==="era"){
-    const e=state.era;
-    main.innerHTML = `
-      <h2>${e.label}</h2>
-      <p>${e.thesis}</p>
-      <h3>Gained</h3>${pills(e.gained,"gain")}
-      <h3>Sacrificed</h3>${pills(e.sacrificed,"loss")}
-    `;
-  }
-
-  if(state.view==="map"){
-    const m=state.map;
-    main.innerHTML = `
-      <h2>${m.name}</h2>
-      <p>${m.year} · ${m.region}</p>
-
-      ${radar(m.axes)}
-
-      ${AXES.map(ax=>`
-        ${ax.label} ${bar(m.axes[ax.id]||0)}
-      `).join("")}
-
-      <h3>Gained</h3>${pills(m.gained,"gain")}
-      <h3>Sacrificed</h3>${pills(m.sacrificed,"loss")}
-    `;
-  }
-
-  if(state.view==="compare"){
-    const a=state.compareA, b=state.compareB;
-
-    main.innerHTML = `
-      <h2>Compare</h2>
-      <div style="display:flex; gap:20px;">
-        <div>
-          <h3>${a.name}</h3>
-          ${radar(a.axes)}
-        </div>
-        <div>
-          <h3>${b.name}</h3>
-          ${radar(b.axes)}
-        </div>
+{/* ── Fixed Sidebar: Renders EVERY map in the data ── */}
+<aside style={{
+  width: "clamp(220px, 30%, 340px)",
+  borderRight: "1px solid #1E1A12",
+  overflowY: "auto",
+  padding: "1rem 0",
+}}>
+  {ERAS.map((e) => (
+    <div key={e.id}>
+      {/* Era Header */}
+      <div 
+        onClick={() => !cmpMode && openEra(e)}
+        style={{
+          padding: "0.9rem 1.5rem",
+          cursor: cmpMode ? "default" : "pointer",
+          background: era?.id === e.id ? e.hue + "12" : "transparent",
+        }}>
+        <span style={{ fontSize: "0.62rem", letterSpacing: "0.2em", color: e.hue, textTransform: "uppercase" }}>
+          {e.label}
+        </span>
+        <div style={{ fontSize: "0.68rem", color: "#5A4A28", fontStyle: "italic" }}>{e.years}</div>
       </div>
-    `;
-  }
-}
 
-// ─────────────────────────────────────
-// INIT
-// ─────────────────────────────────────
-
-renderSidebar();
-render();
-
-</script>
-</body>
-</html>
+      {/* Map List: This ensures Eratosthenes, Ricci, etc. are visible */}
+      {e.maps.map(m => (
+        <div key={m.name}
+          onClick={() => {
+            if (cmpMode) {
+              if (!compareA) { setCompareA(m); return; }
+              if (!compareB && m.name !== compareA.name) { openCompare(compareA, m); }
+              return;
+            }
+            openMap(m, e); // This opens the specific map entry
+          }}
+          style={{
+            padding: "0.6rem 1.4rem 0.6rem 2rem",
+            cursor: "pointer",
+            borderLeft: `3px solid ${map?.name === m.name ? e.hue : "transparent"}`,
+            background: map?.name === m.name ? e.hue + "18" : "transparent",
+            borderBottom: "1px solid #14100A",
+          }}>
+          <div style={{ fontSize: "0.75rem", color: "#C8B888" }}>{m.name}</div>
+          <div style={{ fontSize: "0.62rem", color: "#5A4A28" }}>{m.year}</div>
+        </div>
+      ))}
+    </div>
+  ))}
+</aside>
