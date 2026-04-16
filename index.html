@@ -1,620 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cartography &amp; Its Trade-offs</title>
-  <meta name="description" content="A non-linear history of cartography — 39 maps, 7 eras, and the trade-offs that shaped how humanity understood the world." />
-  <style>
-    :root{--bg:#0A0806;--bg-card:#0E0B07;--border:#1E1A12;--border-mid:#2A2418;--text:#E0D0A8;--muted:#A09060;--faint:#6A5830;--vfaint:#3A2E18;--gold:#C8A96E;--green:#88BB78;--red:#CC7755;--teal:#5AABAB;--font:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;--r:2px;--t:0.15s ease}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{font-size:16px;scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;height:100vh;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
-    button{cursor:pointer;font-family:inherit;background:none;border:none}
-    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px}
-    #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-    #header{padding:1.2rem 1.8rem 0.9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;flex-shrink:0;background:var(--bg);position:sticky;top:0;z-index:100}
-    #axis-strip{padding:.45rem 1.8rem;border-bottom:1px solid var(--border);display:flex;gap:.2rem;flex-wrap:wrap;align-items:center;flex-shrink:0}
-    #cmp-banner{padding:.55rem 1.8rem;background:#0D1A1A;border-bottom:1px solid #1A3030;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;flex-shrink:0;animation:slideDown .2s ease}
-    #body{display:flex;flex:1;min-height:0}
-    #sidebar{width:280px;min-width:220px;max-width:320px;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
-    #main{flex:1;overflow-y:auto;padding:2.2rem 2.2rem 4rem}
-    .logo{cursor:pointer}.logo-sub{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--vfaint);margin-bottom:.2rem}
-    .logo-title{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:normal;letter-spacing:.05em}
-    .btn{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .9rem;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;border-radius:var(--r);border:1px solid currentColor;transition:background var(--t),color var(--t);white-space:nowrap}
-    .btn-teal{color:var(--teal)}.btn-teal.active{background:var(--teal);color:var(--bg)}
-    .btn-ghost{color:var(--faint);border-color:var(--border-mid)}.btn-ghost:hover{color:var(--muted)}
-    .btn:disabled{opacity:.35;cursor:default}
-    .ax-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--vfaint);margin-right:.4rem}
-    .ax-btn{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .4rem;color:var(--faint);border-bottom:1px solid transparent;transition:all var(--t)}.ax-btn.active{color:var(--text);border-bottom:1px solid var(--gold)}
-    .ax-help{font-size:.52rem;color:var(--vfaint);padding:.1rem .18rem;transition:color var(--t)}.ax-help.open,.ax-help:hover{color:var(--gold)}
-    #def-panel{background:#0D0B07;border-bottom:1px solid var(--border-mid);padding:1rem 1.8rem;animation:slideDown .2s ease;flex-shrink:0}
-    .def-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;max-width:860px}
-    .def-what{grid-column:1/3}.def-label{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
-    .def-p{font-size:.76rem;color:var(--muted);line-height:1.7;margin-bottom:.5rem}
-    .def-tension{padding:.6rem .8rem;background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--red);border-radius:var(--r)}
-    .def-tl{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:.2rem}
-    .def-tp{font-size:.71rem;color:#8A7040;line-height:1.6}
-    .rub-row{display:flex;gap:.5rem;margin-bottom:.4rem;align-items:flex-start}
-    .rub-dots{display:flex;gap:2px;flex-shrink:0;padding-top:2px}
-    .rdot{width:5px;height:5px;border-radius:1px}
-    .rub-txt{font-size:.61rem;color:var(--faint);line-height:1.4}.rub-lbl{color:var(--gold)}
-    .era-row{padding:.8rem 1.2rem;cursor:pointer;border-left:3px solid transparent;transition:background var(--t)}
-    .era-row.active{border-left-color:var(--era-hue,var(--gold));background:rgba(200,169,110,.08)}
-    .era-tag{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
-    .era-yrs{font-size:.63rem;color:var(--vfaint);font-style:italic;margin-top:.1rem}
-    .era-th{font-size:.66rem;color:#8A7848;margin-top:.3rem;line-height:1.4}
-    .era-ct{font-size:.56rem;color:var(--vfaint)}
-    .map-row{padding:.5rem 1.2rem .5rem 1.7rem;cursor:pointer;border-left:3px solid transparent;border-bottom:1px solid #0E0A06;display:flex;justify-content:space-between;align-items:flex-start;transition:background var(--t)}
-    .map-row.active{border-left-color:var(--era-hue,var(--gold));background:rgba(200,169,110,.1)}
-    .map-row.cmp-a{border-left-color:var(--teal)}
-    .map-nm{font-size:.71rem;color:var(--text);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:185px}
-    .map-mt{font-size:.58rem;color:var(--vfaint);margin-top:.12rem}
-    .cmp-badge{font-size:.5rem;background:var(--teal);color:var(--bg);padding:0 .28rem;border-radius:1px}
-    .ax-sc{font-size:.6rem;font-weight:bold}
-    .connector{margin-left:1.4rem;height:.5rem;border-left:1px dashed var(--border)}
-    .page{animation:fadeIn .22s ease;max-width:700px}
-    .page-wide{animation:fadeIn .22s ease;max-width:760px}
-    .pg-lbl{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:.38rem}
-    .pg-title{font-weight:normal;font-size:1.65rem;color:var(--text);margin-bottom:.2rem}
-    .pg-sub{font-size:.73rem;color:var(--vfaint);font-style:italic;margin-bottom:1.2rem}
-    .thesis{font-size:.8rem;color:var(--faint);line-height:1.75;font-style:italic;border-left:2px solid rgba(200,169,110,.25);padding-left:.85rem;margin-bottom:1.1rem}
-    .divider{height:1px;background:linear-gradient(to right,rgba(200,169,110,.4),transparent);margin:1.4rem 0}
-    .tradeoff{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.1rem}
-    .to-col{flex:1;min-width:170px}
-    .to-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
-    .pill{display:inline-flex;align-items:flex-start;gap:.3rem;padding:.28rem .6rem;font-size:.68rem;line-height:1.4;border-radius:var(--r);margin:0 .3rem .3rem 0}
-    .pill-g{background:#1A2A18;border:1px solid #3A5A30;color:var(--green)}
-    .pill-s{background:#2A1A18;border:1px solid #5A3020;color:var(--red)}
-    .radar-wrap{display:flex;gap:1.8rem;align-items:flex-start;margin-bottom:1.4rem;flex-wrap:wrap}
-    .axes-list{flex:1;min-width:200px}
-    .ax-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.42rem}
-    .ax-nb{font-size:.58rem;color:var(--faint);width:86px;text-align:right;padding:0;transition:color var(--t);cursor:pointer;letter-spacing:.04em}
-    .ax-nb.open,.ax-nb:hover{color:var(--gold);text-decoration:underline}
-    .ax-dots{display:flex;gap:3px}
-    .adot{width:9px;height:9px;border-radius:1px}
-    .ax-hint{font-size:.56rem;color:var(--vfaint);font-style:italic;margin-top:.3rem}
-    .inline-def{background:#0D0B07;border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem;animation:slideDown .18s ease}
-    .idef-lbl{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.28rem}
-    .idef-p{font-size:.72rem;color:var(--muted);line-height:1.65;margin-bottom:.4rem}
-    .idef-ten{font-size:.68rem;color:var(--faint);font-style:italic;line-height:1.55;margin-bottom:.4rem}
-    .idef-rub{display:flex;gap:.6rem;flex-wrap:wrap}
-    .idef-ri{font-size:.58rem;color:var(--faint)}.idef-rs{color:var(--gold)}
-    .static-text{line-height:1.85;color:var(--muted);font-size:.88rem}
-    .static-text p{margin-bottom:1.1rem}
-    .era-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem}
-    .era-card{background:var(--bg-card);padding:1rem 1.1rem;cursor:pointer;transition:background var(--t)}
-    .ten-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.8rem}
-    .ten-cell{background:var(--bg-card);padding:.8rem 1rem}
-    .t-g{font-size:.61rem;color:var(--green)}.t-l{font-size:.61rem;color:var(--red)}.t-ex{font-size:.64rem;color:var(--vfaint);font-style:italic;margin-top:.22rem}
-    .map-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:.5rem}
-    .map-card{background:var(--bg-card);padding:.9rem 1rem;cursor:pointer;transition:background var(--t);border-left:2px solid transparent}
-    .cmp-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.3rem}
-    .cmp-card{padding:1.1rem;border-radius:var(--r)}
-    .dp{font-size:.58rem;color:var(--green)}.dn{font-size:.58rem;color:var(--red)}
-    .nav-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--border)}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-    @keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
-    @media(max-width:680px){
-      #sidebar{display:none}
-      #sidebar.mob-open{display:block;position:fixed;top:0;left:0;width:80vw;height:100vh;z-index:200;box-shadow:4px 0 20px rgba(0,0,0,.7)}
-      #mob-bd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199}
-      #mob-bd.show{display:block}
-      #main{padding:1.4rem 1.2rem 3rem}
-      .def-grid{grid-template-columns:1fr}.def-what{grid-column:1/2}
-      .cmp-cards{grid-template-columns:1fr}
-    }
-    @media(min-width:681px){#mob-btn{display:none!important}}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cartography & Its Trade-offs</title>
+<style>
+:root{
+  --bg:#0A0806;--bg-card:#0E0B07;--border:#1E1A12;--text:#E0D0A8;
+  --muted:#A09060;--vfaint:#3A2E18;--gold:#C8A96E;--teal:#5AABAB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,serif}
+#app{display:flex;flex-direction:column;height:100vh}
+#header{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+#body{display:flex;flex:1}
+#sidebar{width:280px;border-right:1px solid var(--border);overflow:auto}
+#main{flex:1;padding:24px;overflow:auto}
+.row{padding:10px 14px;border-bottom:1px solid #111;cursor:pointer;color:#bfae7a}
+.row:hover{background:#1f1a12;color:#e0d0a8}
+.row.active{border-left:2px solid var(--gold);background:#1a150d}
+.card{background:var(--bg-card);border:1px solid var(--border);padding:16px;margin-bottom:16px}
+.header-title{font-size:20px}
+.sub{font-size:13px;color:var(--muted)}
+.btn{border:1px solid var(--teal);color:var(--teal);background:none;padding:6px 12px;cursor:pointer}
+.axis{font-size:11px;color:var(--gold);margin-right:8px;cursor:pointer}
+.panel{border:1px solid var(--border);padding:10px;margin-top:10px}
+</style>
 </head>
 <body>
 <div id="app">
-  <header id="header">
-    <div class="logo" onclick="nav('home')">
-      <div class="logo-sub">Non-Linear History of</div>
-      <div class="logo-title">Cartography &amp; Its Trade-offs</div>
+  <div id="header">
+    <div>
+      <div style="font-size:10px;letter-spacing:.2em;color:var(--vfaint)">NON-LINEAR HISTORY OF</div>
+      <div class="header-title">Cartography & Its Trade-offs</div>
     </div>
-    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
-      <span id="cmp-status" style="font-size:.62rem;color:var(--teal);display:none"></span>
-      <button class="btn btn-teal" id="cmp-btn" onclick="toggleCmp()">&#8644; Compare</button>
-      <button class="btn btn-ghost" id="mob-btn" onclick="toggleMob()">&#9776;</button>
-    </div>
-  </header>
-  <div id="axis-strip"></div>
-  <div id="def-panel" style="display:none"></div>
-  <div id="cmp-banner" style="display:none">
-    <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)">Compare mode</span>
-    <span id="cmp-msg" style="font-size:.76rem;color:#6AABAB"></span>
-    <button class="btn btn-ghost" onclick="toggleCmp()" style="margin-left:auto;font-size:.58rem">Cancel</button>
+    <button id="cmpBtn" class="btn">⇄ Compare</button>
   </div>
   <div id="body">
-    <nav id="sidebar"></nav>
-    <div id="mob-bd" onclick="toggleMob()"></div>
-    <main id="main"></main>
+    <div id="sidebar"></div>
+    <div id="main"></div>
   </div>
 </div>
+
 <script>
-const AXES = [
-  { id: "accuracy",    label: "Accuracy",     icon: "◎" },
-  { id: "usability",   label: "Usability",    icon: "◈" },
-  { id: "navigation",  label: "Navigation",   icon: "◇" },
-  { id: "symbolism",   label: "Symbolism",    icon: "◉" },
-  { id: "politics",    label: "Politics",     icon: "◆" },
-  { id: "completeness",label: "Completeness", icon: "○" },
-  { id: "richness",    label: "Richness",     icon: "◐" },
+const AXES=["accuracy","usability","navigation","symbolism","politics","completeness","richness"];
+
+const AXIS_DEFS={
+ accuracy:"Geometric correctness.", usability:"Ease of reading.", navigation:"Movement guidance.",
+ symbolism:"Meaning beyond geography.", politics:"Power and claims.", completeness:"Scope.", richness:"Depth of info."
+};
+
+const ERAS=[
+{ id:"ancient",label:"Ancient",maps:[
+ {name:"Babylonian World Map",year:"600 BCE",text:"Cosmological map.",axes:{accuracy:1,usability:2,navigation:1,symbolism:5,politics:5,completeness:1,richness:3}},
+ {name:"Ptolemy",year:"150 CE",text:"Coordinate system.",axes:{accuracy:4,usability:2,navigation:2,symbolism:2,politics:3,completeness:3,richness:2}}
+]},
+{ id:"modern",label:"Modern",maps:[
+ {name:"Beck Tube",year:"1933",text:"Topology over geography.",axes:{accuracy:1,usability:5,navigation:5,symbolism:3,politics:1,completeness:2,richness:2}},
+ {name:"Google Maps",year:"2005",text:"Real-time navigation.",axes:{accuracy:5,usability:5,navigation:5,symbolism:1,politics:4,completeness:4,richness:2}}
+]}
 ];
 
-const ERAS = [
-  {
-    id: "ancient", label: "Ancient", years: "6200 BCE – 400 CE", hue: "#C8A96E",
-    thesis: "The first maps were not tools of navigation — they were tools of ownership, cosmology, and power. Precision was irrelevant; claim was everything.",
-    gained: ["Conceptual framework for representing space", "Mathematical projection (Ptolemy)", "Political assertion of territorial ownership"],
-    sacrificed: ["Local ecological knowledge", "Oral geographic tradition", "Navigational practicality"],
-    maps: [
-      {
-        name: "Çatalhöyük Wall Painting", year: "c. 6200 BCE", region: "Anatolia",
-        gained: ["Oldest known spatial representation of settlement and landscape", "Integration of human settlement with volcanic topography", "Pictorial convention for representing place"],
-        sacrificed: ["Scale or distance accuracy", "Any navigational utility", "Portability or reproducibility"],
-        axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 4 },
-      },
-      {
-        name: "Babylonian World Map (Imago Mundi)", year: "c. 600 BCE", region: "Mesopotamia",
-        gained: ["First known schematic world map", "Explicit cosmological and mythological framing", "Written cuneiform annotations naming distant regions"],
-        sacrificed: ["All geographic accuracy beyond Mesopotamia", "Navigational utility", "Non-Babylonian geographic worldviews"],
-        axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 5, completeness: 1, richness: 3 },
-      },
-      {
-        name: "Anaximander's World Map", year: "c. 550 BCE", region: "Greece",
-        gained: ["First Greek world map — the prototype of Western cosmological mapping", "Ocean-ringed circular disc that framed all European cartography for a millennium", "Separated geography from mythology as an intellectual discipline"],
-        sacrificed: ["All geographic accuracy", "Any coverage beyond the Mediterranean and Near East", "Navigational utility of any kind"],
-        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 3 },
-      },
-      {
-        name: "Eratosthenes' World Map", year: "c. 194 BCE", region: "Alexandria",
-        gained: ["First map based on a calculated Earth circumference — accurate to within 2%", "Grid of parallels and meridians grounded in astronomical observation", "Correct proportions of the known world — better than Ptolemy in some regions"],
-        sacrificed: ["Coverage beyond the Mediterranean and Near East", "Navigational readability for sailors", "Survival — known only through later descriptions"],
-        axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 1, politics: 1, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Tabula Peutingeriana", year: "c. 300 CE (medieval copy)", region: "Roman Empire",
-        gained: ["Comprehensive road network of the entire Roman Empire", "Distances between stations annotated throughout", "Practical itinerary tool for administration and military"],
-        sacrificed: ["Geographic shape (extremely elongated east-west to fit a scroll)", "Any spatial accuracy of landmasses", "Non-Roman territories and peoples"],
-        axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 3, politics: 5, completeness: 4, richness: 3 },
-      },
-      {
-        name: "Ptolemy's World Map", year: "c. 150 CE", region: "Roman Egypt",
-        gained: ["Systematic latitude/longitude coordinate system", "Conical and spherical projection theory", "Reproducible framework — locations given as coordinates"],
-        sacrificed: ["Navigational readability for sailors", "Accuracy east of Persia and in sub-Saharan Africa", "Enclosed Indian Ocean (a damaging error repeated for centuries)"],
-        axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 2, politics: 3, completeness: 3, richness: 2 },
-      },
-    ],
-  },
-  {
-    id: "medieval", label: "Medieval", years: "400 – 1450 CE", hue: "#7B9E6B",
-    thesis: "Medieval maps were not failed attempts at accuracy — they were successful cosmologies. The world was mapped as it meant, not as it measured.",
-    gained: ["Moral and theological layering of geography", "Integration of time, history, and myth into space", "Encyclopedic annotation density unmatched before or since"],
-    sacrificed: ["Ptolemaic coordinate precision (deliberately set aside)", "Navigational usefulness for most maps", "Geometric consistency"],
-    maps: [
-      {
-        name: "T-O Map (Isidore of Seville)", year: "c. 600–1300 CE", region: "Europe",
-        gained: ["Simplest and most politically powerful diagram in cartographic history", "Three strokes dividing the world into Asia (top), Europe (left), Africa (right)", "Template for all European medieval world maps — reproduced thousands of times"],
-        sacrificed: ["All geographic accuracy", "Any navigational function", "Non-Christian and non-European worldviews"],
-        axes: { accuracy: 1, usability: 3, navigation: 1, symbolism: 5, politics: 5, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Al-Balkhi School Maps (KMMS)", year: "c. 900–1000 CE", region: "Islamic World",
-        gained: ["World mapped by political and religious boundaries, not geography", "Abstract geometric forms — squares, circles, straight lines — for rivers and coasts", "Deliberately prioritised Muslim administrative reality over physical space"],
-        sacrificed: ["Geographic accuracy entirely — consciously rejected", "Non-Muslim territories (shown as blank or marginal)", "Coverage of Europe, sub-Saharan Africa, East Asia"],
-        axes: { accuracy: 1, usability: 4, navigation: 3, symbolism: 5, politics: 5, completeness: 2, richness: 3 },
-      },
-      {
-        name: "Al-Idrisi's Tabula Rogeriana", year: "1154 CE", region: "Sicily / Islamic World",
-        gained: ["Most geographically accurate world map of its era", "Synthesis of Greek, Arab, Persian, and traveler knowledge", "South-oriented layout that challenged European convention"],
-        sacrificed: ["Christian cosmological framing", "Accurate sub-Saharan Africa and Pacific coverage", "Widespread adoption — largely unknown in Europe for centuries"],
-        axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 3, completeness: 3, richness: 4 },
-      },
-      {
-        name: "Hereford Mappa Mundi", year: "c. 1300 CE", region: "England",
-        gained: ["700+ annotated places combining geography, history, and scripture", "Jerusalem as the spiritual and geometric center of the world", "Visual encyclopedia of the known world in a single image"],
-        sacrificed: ["Geographic accuracy", "Any navigational function", "Non-Christian geographic worldviews and peoples"],
-        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 4, completeness: 4, richness: 5 },
-      },
-      {
-        name: "Ebstorf Map", year: "c. 1234 CE (destroyed 1943)", region: "Germany",
-        gained: ["Largest medieval mappa mundi ever made (3.6m × 3.6m)", "Christ's body literally framing the world — head, hands, feet at the margins", "Over 1,500 place annotations, illustrations, and legends"],
-        sacrificed: ["Geographic accuracy entirely", "Portability or practical use", "Survival — destroyed in WWII bombing"],
-        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 5, richness: 5 },
-      },
-      {
-        name: "Portolan Charts", year: "c. 1275–1500 CE", region: "Mediterranean",
-        gained: ["Highly accurate Mediterranean and Black Sea coastlines", "Dense network of rhumb lines for compass bearing navigation", "Practical utility for sailors — the first 'working' maps"],
-        sacrificed: ["Interior land detail entirely", "Cosmological or narrative meaning", "Coverage beyond known sailing routes"],
-        axes: { accuracy: 4, usability: 5, navigation: 5, symbolism: 1, politics: 2, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Fra Mauro World Map", year: "c. 1450 CE", region: "Venice",
-        gained: ["Most geographically ambitious pre-Columbian European world map", "Africa shown as circumnavigable — anticipating Dias by 40 years", "Synthesis of Ptolemy, Arab geography, Marco Polo, and merchant reports"],
-        sacrificed: ["Ptolemaic coordinate system (rejected deliberately)", "Consistent scale across regions", "The enclosed Indian Ocean error — Fra Mauro correctly rejected it"],
-        axes: { accuracy: 4, usability: 2, navigation: 3, symbolism: 4, politics: 3, completeness: 5, richness: 5 },
-      },
-    ],
-  },
-  {
-    id: "eastasian", label: "East Asian & Pacific", years: "1300 – 1700 CE", hue: "#C47A7A",
-    thesis: "While Europe was rediscovering Ptolemy, China and Korea were making world maps of comparable or greater scope — and Pacific islanders were encoding oceanic knowledge in forms Europeans couldn't recognise as maps at all.",
-    gained: ["Non-Eurocentric world maps of extraordinary completeness", "Tactile and embodied navigation knowledge (Pacific)", "Integration of Islamic, Chinese, and indigenous geographic traditions"],
-    sacrificed: ["Global influence — none of these traditions shaped the cartographic mainstream", "Survival in many cases — Chinese maps were rarely preserved as prestige objects", "Recognition — Western scholarship ignored these traditions for centuries"],
-    maps: [
-      {
-        name: "Da Ming Hunyi Tu", year: "1389", region: "China",
-        gained: ["One of the oldest surviving East Asian world maps", "Shows Africa, Europe, and the Middle East — before European contact with most of these regions", "China correctly scaled as the dominant landmass at centre"],
-        sacrificed: ["Accuracy of Africa and Europe (highly distorted)", "Coverage of the Americas (unknown)", "Western adoption — it circulated only within the Chinese imperial tradition"],
-        axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 4, politics: 5, completeness: 4, richness: 4 },
-      },
-      {
-        name: "Kangnido Map", year: "1402", region: "Korea",
-        gained: ["First Korean world map — synthesises Chinese, Islamic, and Korean geographic sources", "Shows Africa as a peninsula 90 years before Dias rounded the Cape", "Predates European cartographic knowledge of the same regions by decades"],
-        sacrificed: ["The Americas (entirely absent)", "Consistent scale — Korea is dramatically oversized", "Western cartographic influence — developed entirely independently"],
-        axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 3, politics: 4, completeness: 4, richness: 4 },
-      },
-      {
-        name: "Zheng He / Mao Kun Chart", year: "c. 1430", region: "China",
-        gained: ["Nautical chart of the largest maritime expeditions in pre-modern history", "Routes from China to East Africa, Arabia, and Southeast Asia", "Proof that ocean exploration does not require or produce European-style cartography"],
-        sacrificed: ["Accurate coastal shapes (strip-chart format, not spatial)", "The Americas — Zheng He never reached them", "Global influence — China turned inward; the charts were suppressed"],
-        axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 2, politics: 4, completeness: 3, richness: 3 },
-      },
-      {
-        name: "Marshall Islands Stick Charts", year: "Pre-colonial – present", region: "Micronesia / Pacific",
-        gained: ["Encodes ocean swell patterns, island positions, and wave deflection — information invisible to European sailors", "Navigation by feel, not sight — a wholly different epistemology of space", "Still in use and transmitted as living knowledge"],
-        sacrificed: ["Visual representation entirely — these are tactile, not pictorial", "Any geographic accuracy in the European sense", "Recognition as 'maps' by Western cartographic tradition until the 20th century"],
-        axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 5, politics: 1, completeness: 2, richness: 5 },
-      },
-      {
-        name: "Matteo Ricci's Kunyu Wanguo Quantu", year: "1602", region: "China / Jesuit",
-        gained: ["First European-style world map in Chinese — showing the Americas to a Chinese audience", "Placed China near the centre, bridging European projection with Chinese cosmological expectation", "Synthesis of two entirely separate cartographic civilisations in a single object"],
-        sacrificed: ["Pure Ptolemaic projection — deliberately modified to not offend Chinese cosmology", "Consistent treatment of scale across continents", "Broad circulation — printed in limited copies, suppressed after Ricci's death"],
-        axes: { accuracy: 4, usability: 3, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 4 },
-      },
-    ],
-  },
-  {
-    id: "renaissance", label: "Renaissance", years: "1400 – 1600 CE", hue: "#7A8FC4",
-    thesis: "Renaissance cartography didn't discover the world — it claimed it. Accuracy and imperial power advanced in lockstep, inseparably.",
-    gained: ["Printed map distribution at scale", "New World incorporated into European geographic imagination", "Projection mathematics for global mapping"],
-    sacrificed: ["Indigenous geographic knowledge systems", "Symbolic and cosmological depth", "Honest representation of uncertainty and blank space"],
-    maps: [
-      {
-        name: "Cantino Planisphere", year: "1502", region: "Portugal",
-        gained: ["First map showing Portuguese discoveries in Africa, Brazil, and India", "Tordesillas Treaty line drawn for the first time", "Accurate West African coastline from decades of Portuguese exploration"],
-        sacrificed: ["North American interior (depicted as islands)", "Any coverage of the Pacific", "Public availability — it was a state secret, smuggled to Italy"],
-        axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 2, politics: 5, completeness: 3, richness: 3 },
-      },
-      {
-        name: "Waldseemüller Map (Universalis Cosmographia)", year: "1507", region: "Germany",
-        gained: ["First map to name 'America' — and to show it as a separate continent", "Printed in 1,000 copies — first mass-distributed world map", "Pacific Ocean implied for the first time"],
-        sacrificed: ["Indigenous names, geographies, and peoples entirely", "Pacific Ocean scale (drastically underestimated)", "Consistency — Waldseemüller later retracted 'America' but the name stuck"],
-        axes: { accuracy: 3, usability: 3, navigation: 3, symbolism: 2, politics: 5, completeness: 3, richness: 3 },
-      },
-      {
-        name: "Piri Reis Map", year: "1513", region: "Ottoman Empire",
-        gained: ["Synthesis of 20+ source maps including Columbus's own charts", "Accurate Atlantic coastlines of Africa and South America", "First Ottoman world map — non-European cartographic perspective on the New World"],
-        sacrificed: ["Pacific and Asian coverage (largely absent)", "Consistent scale across the map", "Survival of complete original — only a fragment remains"],
-        axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 4, completeness: 2, richness: 4 },
-      },
-      {
-        name: "Mercator's World Map", year: "1569", region: "Flanders",
-        gained: ["Conformal projection — rhumb lines as straight lines for ocean navigation", "Global navigational standard for 400 years", "Consistent angular representation across the entire globe"],
-        sacrificed: ["Area proportionality — Africa and South America severely shrunk", "Accurate polar regions", "Non-Eurocentric spatial framing baked into global consciousness"],
-        axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 2 },
-      },
-      {
-        name: "Ortelius's Theatrum Orbis Terrarum", year: "1570", region: "Antwerp",
-        gained: ["First modern commercial atlas — 70 maps, standardized format", "Full bibliography crediting 87 cartographers — first academic citation in mapping", "Accessible to educated public, not just rulers and sailors"],
-        sacrificed: ["Cutting-edge accuracy (compiled and simplified from others)", "Unpublished local and indigenous knowledge", "Symbolic richness of the manuscript tradition"],
-        axes: { accuracy: 3, usability: 5, navigation: 3, symbolism: 2, politics: 3, completeness: 4, richness: 3 },
-      },
-      {
-        name: "Blaeu's Atlas Maior", year: "1662", region: "Amsterdam",
-        gained: ["Most lavish atlas ever produced — 600 maps, hand-coloured", "Pinnacle of Dutch Golden Age cartographic art", "Comprehensive global coverage with decorative borders and city views"],
-        sacrificed: ["Accuracy (many maps already outdated on publication)", "Portability — 11 volumes", "Affordability — cost of a luxury house"],
-        axes: { accuracy: 3, usability: 2, navigation: 3, symbolism: 5, politics: 3, completeness: 5, richness: 5 },
-      },
-    ],
-  },
-  {
-    id: "scientific", label: "Scientific Age", years: "1600 – 1800 CE", hue: "#B07AB0",
-    thesis: "The Scientific Revolution made maps more precisely wrong in new ways — confident geometries replacing honest blank spaces with false certainty.",
-    gained: ["Triangulation-based geodetic surveys", "Astronomical coordinate verification at scale", "Systematic national geographic coverage for the first time"],
-    sacrificed: ["Honest blank spaces (terra incognita replaced by guesswork)", "Local ecological, cultural, and oral geographic annotation", "Cosmological or narrative framing of any kind"],
-    maps: [
-      {
-        name: "Coronelli's Globe Pair", year: "1681–1683", region: "Venice / France",
-        gained: ["Largest globes ever made (3.9m diameter) — celestial and terrestrial pair", "Commissioned for Louis XIV — peak of royal cartographic patronage", "State-of-the-art knowledge of New World and Asian trade routes"],
-        sacrificed: ["Portability entirely", "Public access — made for one king's library", "Any ability to update without making entirely new globes"],
-        axes: { accuracy: 4, usability: 1, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 5 },
-      },
-      {
-        name: "Cassini Map of France", year: "1744–1815", region: "France",
-        gained: ["First geometrically rigorous national survey of any country", "Triangulation network covering entire France in 182 sheets", "Template for all subsequent national topographic surveys globally"],
-        sacrificed: ["Local place knowledge and oral geographic tradition", "Accessibility — a purely technical document", "Speed — four generations of the Cassini family, 70 years to complete"],
-        axes: { accuracy: 5, usability: 3, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 },
-      },
-      {
-        name: "Cook's Pacific Charts", year: "1768–1779", region: "Pacific Ocean",
-        gained: ["Accurate Pacific coastlines, island positions, and New Zealand / Australia outlines", "Systematic astronomical observation for precise positioning", "Opened the Pacific to European navigation and colonization"],
-        sacrificed: ["Polynesian and Micronesian navigation systems (star paths, wave piloting, stick charts)", "Indigenous place names replaced with European ones", "Ecological, cultural, and spiritual landscape knowledge of Pacific peoples"],
-        axes: { accuracy: 5, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 1 },
-      },
-      {
-        name: "Bonne Projection World Map", year: "c. 1752", region: "France",
-        gained: ["Equal-area representation preserving correct land sizes", "Visually distinctive heart-like world shape", "Accurate area ratios unlike Mercator"],
-        sacrificed: ["Shape accuracy at map edges (severe distortion)", "Navigational usefulness", "Adopted only briefly before replaced by other equal-area projections"],
-        axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 3, politics: 2, completeness: 3, richness: 2 },
-      },
-    ],
-  },
-  {
-    id: "modern", label: "Modern", years: "1800 – 1970 CE", hue: "#C47A5A",
-    thesis: "Modern mapping split into two streams: industrial precision for states and armies, and radical simplification for the public. Both were revolutions — in opposite directions.",
-    gained: ["Mass public literacy of maps", "Thematic mapping as data visualization", "Abstract and schematic cartographies that prioritize clarity over truth"],
-    sacrificed: ["Unified symbolic systems", "Artistic and decorative traditions", "Acknowledgment of political distortion in standard maps"],
-    maps: [
-      {
-        name: "Minard's Napoleon March Map", year: "1869", region: "France",
-        gained: ["Six variables in one image: geography, army size, direction, temperature, time, and death", "Invented the flow map and the biographical map of a catastrophe", "Often called the greatest statistical graphic ever made — a map of loss, not place"],
-        sacrificed: ["Conventional geographic orientation", "Navigational or administrative utility", "Any pretence that a map must depict space rather than process"],
-        axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 5, politics: 4, completeness: 3, richness: 5 },
-      },
-      {
-        name: "Booth's Poverty Map of London", year: "1889", region: "London",
-        gained: ["First street-by-street social class map of any city", "Colour-coded thematic social mapping — precursor to GIS by a century", "Direct policy impact — reshaped understanding of urban poverty"],
-        sacrificed: ["Individual dignity — people's homes labelled by class", "Rural or national context", "Neutral framing — the map encoded the mapmaker's social assumptions as fact"],
-        axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 3, politics: 5, completeness: 3, richness: 5 },
-      },
-      {
-        name: "Humboldt's Naturgemälde", year: "1807", region: "Germany / South America",
-        gained: ["First map linking altitude, climate, vegetation, and species in one image", "Invention of the isotherm — lines connecting equal temperatures", "Foundation of modern biogeography and ecology"],
-        sacrificed: ["Navigational utility", "Standard geographic orientation", "Political and administrative information entirely"],
-        axes: { accuracy: 4, usability: 3, navigation: 1, symbolism: 5, politics: 1, completeness: 3, richness: 5 },
-      },
-      {
-        name: "Snow's Cholera Map", year: "1854", region: "London",
-        gained: ["Invention of epidemiological and spatial statistical mapping", "Direct proof that place causes disease — launched modern public health", "Dot-density thematic technique still in use today"],
-        sacrificed: ["Aesthetic tradition", "Broader geographic context beyond Soho", "Nothing significant — this was an almost unambiguous advance"],
-        axes: { accuracy: 4, usability: 5, navigation: 1, symbolism: 2, politics: 2, completeness: 3, richness: 3 },
-      },
-      {
-        name: "USGS Topographic Survey Maps", year: "1879–present", region: "United States",
-        gained: ["Comprehensive, standardized topographic coverage of entire US territory", "Contour lines as universal topographic language", "Public domain — free to use, copy, build upon"],
-        sacrificed: ["Indigenous place names (systematically replaced)", "Ecological and cultural landscape texture", "Local and vernacular geographic knowledge"],
-        axes: { accuracy: 5, usability: 4, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 },
-      },
-      {
-        name: "Beck's London Underground Map", year: "1933", region: "England",
-        gained: ["Topological clarity sacrificing geography for legibility — a new cartographic genre", "Mass transit schematic as design discipline, copied by every city worldwide", "Proof that usability and accuracy are not the same value"],
-        sacrificed: ["Geographic truth — station positions are systematically wrong", "Surface-level spatial orientation", "Relationship between the map and the city above ground"],
-        axes: { accuracy: 1, usability: 5, navigation: 5, symbolism: 3, politics: 1, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Peters Projection", year: "1973", region: "Germany",
-        gained: ["Equal-area representation correcting Mercator's size distortions", "Explicit political critique of Eurocentric cartographic convention", "Adoption by UN agencies and development organizations"],
-        sacrificed: ["Shape accuracy — continents appear elongated and distorted", "Navigator usability", "Aesthetic credibility — widely criticized by professional cartographers"],
-        axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 4, politics: 5, completeness: 4, richness: 2 },
-      },
-    ],
-  },
-  {
-    id: "digital", label: "Digital Era", years: "1970 – Present", hue: "#5AABAB",
-    thesis: "Digital mapping gave everyone a map and took away their understanding of space. We have more geographic data than any mapmaker in history — and less spatial memory.",
-    gained: ["Real-time, personalized, and interactive maps at global scale", "Satellite and sensor-derived geometric accuracy", "Collaborative and open mapping (OpenStreetMap)"],
-    sacrificed: ["Spatial memory and wayfinding intuition", "Single authoritative perspective replaced by fragmented competing truths", "Permanence — digital maps change silently without notice"],
-    maps: [
-      {
-        name: "NASA Blue Marble", year: "1972 / 2002", region: "Earth Orbit",
-        gained: ["First true photographic image of the whole Earth from space", "Environmental consciousness catalyst — the image that launched Earth Day", "Unified planetary perspective — no borders, no nations"],
-        sacrificed: ["Any navigational or practical function", "Political boundaries (deliberately omitted)", "Human scale — no roads, settlements, or people visible"],
-        axes: { accuracy: 5, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 3, richness: 2 },
-      },
-      {
-        name: "Google Maps", year: "2005–present", region: "Global",
-        gained: ["Turn-by-turn navigation for every person with a smartphone", "Street View ground-level imagery of most inhabited places", "Real-time traffic, transit, and business layer integration"],
-        sacrificed: ["Spatial memory and the human capacity for independent wayfinding", "Privacy — comprehensive surveillance infrastructure", "Non-commercial places: indigenous, rural, informal, sacred"],
-        axes: { accuracy: 5, usability: 5, navigation: 5, symbolism: 1, politics: 4, completeness: 4, richness: 2 },
-      },
-      {
-        name: "OpenStreetMap", year: "2004–present", region: "Global",
-        gained: ["Community-built geographic commons — 10 million contributors", "Coverage of informal settlements, refugee camps, disaster zones", "Fully open data — anyone can use, fork, correct, or improve"],
-        sacrificed: ["Consistency — quality varies enormously by region", "Commercial infrastructure for sustained maintenance", "Unified visual language or authoritative editorial voice"],
-        axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 },
-      },
-      {
-        name: "LiDAR Terrain Maps", year: "2000s–present", region: "Global",
-        gained: ["Sub-centimetre elevation accuracy from aerial laser scanning", "Revealed hidden archaeological sites under forest canopy (Maya, Angkor)", "Enables flood modelling, autonomous vehicles, precision forestry"],
-        sacrificed: ["Human readability — raw data requires software to interpret", "Cultural and named landscape features", "Accessibility — expensive to produce and process"],
-        axes: { accuracy: 5, usability: 1, navigation: 3, symbolism: 1, politics: 2, completeness: 5, richness: 1 },
-      },
-    ],
-  },
-];
+const S={page:"home",era:null,map:null,cmp:false,a:null,b:null,axis:null};
 
-const ERA_TEXT = {"ancient":"The earliest maps were not attempts to represent the world as it was — they were attempts to claim it, order it, and make it meaningful. The Babylonians placed themselves at the centre of a circular cosmos; the Romans stretched their empire across a scroll that deliberately distorted shape to show roads and distances. When Anaximander drew the first Greek world map, he was not surveying territory but constructing a cosmology. Even Ptolemy, the most mathematically rigorous ancient cartographer, embedded his coordinate system inside a worldview that would mislead European navigators for over a thousand years by enclosing the Indian Ocean.\n\nThe great sacrifice of the ancient world was navigational usability — almost none of these maps could guide you anywhere. What they gave in return was something richer: a framework for thinking about where human existence sat within a larger order.","medieval":"Medieval European maps are routinely dismissed as ignorant — replaced by the supposedly superior spatial knowledge of the Renaissance. This is a fundamental misreading. The Hereford Mappa Mundi and the T-O tradition were not failed attempts at accuracy. They were successful encyclopedias. Their makers knew perfectly well that Jerusalem was not geometrically at the centre of the Earth; placing it there was a theological argument, not a navigational error.\n\nWhat medieval Christian cartography sacrificed in geometric truth it more than compensated for in knowledge density. The Hereford map alone contains over 700 annotated places drawn from scripture, natural history, classical literature, and traveller accounts. The portolan charts, running parallel to this tradition, demonstrate that medieval sailors could produce geometrically accurate coastlines when navigation required it. They simply chose not to apply that standard to world maps, because world maps served a different purpose entirely.","nonwestern":"The standard history of cartography moves from Greek projection theory through medieval mappae mundi to the Renaissance explosion of accurate world maps. This narrative is Eurocentric to the point of distortion. While European monks were placing Jerusalem at the centre of parchment worlds, Korean cartographers were drawing a triangular Africa they had never visited, Chinese admirals were charting the Indian Ocean coast from memory, and Micronesian navigators were encoding ocean swell patterns into palm-frond grids they read by feel in the dark.\n\nThe Da Ming Hunyi Tu of 1389 shows a recognisable Africa decades before Dias rounded the Cape. The Kangnido of 1402 depicts Europe with roughly correct proportions drawn from Islamic sources. These traditions were not lagging behind European cartography. They were parallel, sophisticated, and largely invisible to the history that followed because European empire, not intellectual merit, determined which maps became canonical.","renaissance":"The Renaissance did not discover the world — it claimed it. The explosion of new geographic knowledge that followed Columbus and Vasco da Gama was inseparable from the political project of dividing the globe between competing empires. The Cantino Planisphere was smuggled out of Portugal because it was a state secret. The Waldseemüller map named a continent after one explorer and erased the civilisations already living there. Mercator's projection, optimised for ocean navigation, encoded a Eurocentric worldview into classrooms for four centuries.\n\nThe Renaissance cartographic tradition gained mathematical rigour, printed distribution, and global scope. What it sacrificed was harder to name: the honesty of blank space, the humility of terra incognita, and the geographic knowledge systems of every culture it overwrote.","scientific":"The Scientific Revolution transformed cartography from an art of synthesis into a technology of measurement. The Cassini family spent seventy years triangulating France; Cook's Pacific charts replaced Polynesian wave-piloting traditions with astronomical coordinates. The great paradox of this era is that as maps became more precise, they also became more confidently wrong in new ways: blank spaces were filled not with honest uncertainty but with speculative coastlines that looked authoritative.\n\nThe encyclopedic richness of earlier maps — the mill notations, the forest names, the local knowledge accumulated over generations — was stripped away in favour of a single, standardised data layer. The scientific map gained accuracy and coverage. It sacrificed local knowledge and the admission of ignorance.","modern":"The nineteenth and twentieth centuries split cartography into two irreconcilable streams. The state tradition pushed toward precision: geodetic surveys, contour lines, standardised symbols, the systematic replacement of indigenous place names. Simultaneously, a counter-tradition emerged that deliberately sacrificed geographic accuracy for analytical power.\n\nJohn Snow's dot map proved that place causes disease. Charles Booth colour-coded London's streets by social class. Charles Minard compressed Napoleon's entire Russian catastrophe into a single image. Harry Beck stripped the London Underground of all geographic truth and produced the most legible transit map ever made. These maps disagree fundamentally about what a map is for. The tension between them is still unresolved.","digital":"Digital mapping gave everyone a map and took away their ability to read one. The generation that grew up with GPS can navigate anywhere without developing any mental model of where they are. Google Maps knows the fastest route to your destination; it cannot tell you which direction is north.\n\nOpenStreetMap built the most comprehensive geographic database in history through ten million volunteers — and its quality in rural regions is still unreliable. LiDAR can reveal Maya cities invisible to aerial photography — and produces data that requires specialist software to interpret. The digital era has not solved the trade-offs that structured cartographic history since the Babylonians. It has accelerated them, democratised them, and made them harder to see."};
-const MAP_TEXT = {"Çatalhöyük Wall Painting":"The painting discovered at Çatalhöyük in modern Turkey is, depending on how liberally you define the term, the oldest map ever made. Dating to approximately 6200 BCE, it depicts a settlement plan — rectangular buildings arranged in rows — with what appears to be a twin-peaked volcano erupting in the background, identified with Hasan Dağ some 130 kilometres to the northeast. Whether this constitutes a map in any meaningful sense is genuinely contested. It may be a decorative panel, a ritual object, or a record of a specific observed event.\n\nWhat makes it significant is precisely its ambiguity: it demonstrates that the impulse to represent space pictorially, to link human settlement to landscape feature, predates writing, mathematics, and every subsequent cartographic tradition by millennia. The painting asks nothing of its viewer in terms of orientation or scale. It is a picture of a place, not an instruction for navigating to one.\n\nIn this sense it represents the irreducible core of what a map is before it becomes a technology: a shared image of where we are and what surrounds us. What it sacrificed — portability, reproducibility, abstract spatial reasoning — would be developed over the following six thousand years.","Babylonian World Map (Imago Mundi)":"The Babylonian world map, inscribed on a clay tablet around 600 BCE and now held in the British Museum, is the oldest surviving intentional world map — a document that attempts to represent not a local area but the totality of existence. Babylon sits at the centre. The Euphrates runs through it. A circular ocean rings the known world. Beyond the ocean, eight triangular regions are labelled with mythological names — places where the sun does not shine, where a horned bull lives, where the light is brighter than any star.\n\nThe map makes no attempt to represent geographic reality as we understand it. Regions the Babylonians knew well — Assyria, Elam, Urartu — are present but distorted beyond recognition. The point is not accuracy. The point is cosmological order: to show how human civilisation, and specifically Babylonian civilisation, relates to the structure of the universe.\n\nThis is the first fully explicit statement of a principle that cartographic history will replay endlessly: the map is not the territory. It is an argument about the territory, made by someone with a particular interest in how that argument comes out.","Anaximander's World Map":"Anaximander of Miletus, working around 550 BCE, is credited with producing the first Greek world map — a work known only through later descriptions, since no original survives. What we know suggests a circular disc of land surrounded by ocean, with Greece at the centre, the Mediterranean as its axis, and the known world extending east toward Persia and India. It was, by any geometric standard, wildly inaccurate. But that misses the point entirely.\n\nWhat Anaximander actually did was conceptually revolutionary: he treated the question of what the world looks like as a rational inquiry rather than a mythological one. His predecessors had answered the question through narrative and cosmology. Anaximander answered it through observation, analogy, and geometric reasoning. He was wrong about the proportions. He was right that the question deserved a rational answer.\n\nEvery subsequent cartographic tradition in the Western world descends from this decision. The sacrifice Anaximander made was epistemic humility — his map was far more confident about regions he had never visited than any honest surveyor should be. The gain was the idea that space could be systematically reasoned about, measured, and represented.","Eratosthenes' World Map":"Eratosthenes of Cyrene, working in Alexandria around 194 BCE, produced the first map built on a calculated circumference of the Earth — and his calculation was accurate to within approximately two percent. He measured the angle of the sun's shadow at Alexandria and at Syene on the same day, applied basic geometry, and arrived at a figure that would not be significantly improved upon for over a thousand years. His world map incorporated this calculation into a grid of parallels and meridians grounded in real astronomical observation.\n\nThe map was not a navigational tool. It was a scientific argument — a demonstration that the Earth's surface could be measured, subdivided, and represented at consistent scale. Eratosthenes' Africa extended too far east. His India was too small. His Atlantic coast was largely invented. But the framework he established — longitude, latitude, consistent scale — is the framework every world map since has inherited.\n\nWhat Eratosthenes sacrificed was the visual richness of earlier Greek geographic writing. His map was an instrument, not a picture. It contained coordinates and proportions rather than the mythological annotations that made earlier accounts compelling. The trade was worth making. But something was lost: the map became a technical document rather than a window onto the strangeness of the world.","Tabula Peutingeriana":"The Tabula Peutingeriana is a medieval copy of a Roman road map, probably based on a document from around 300 CE, that depicts the entire road network of the Roman Empire from Britain to India across a scroll nearly seven metres long and just thirty-four centimetres wide. The world is stretched to extreme horizontal elongation because the thing being mapped is not space but connectivity: which roads lead where, how far the staging posts are, where the military installations sit.\n\nGeographic truth is comprehensively sacrificed. The Mediterranean is a thin horizontal band. Britain is a tiny appendage. Italy points the wrong direction. None of this matters, because the Peutinger Table was never intended to tell you what the world looks like. It was intended to tell you how long it would take to march a legion from Rome to Constantinople.\n\nThe conceptual move the Peutinger Table makes is the same move Harry Beck would make fifteen centuries later with the London Underground map: replace geographic accuracy with topological clarity. Show the connections, not the space between them. The result is a document of extraordinary practical power and almost zero spatial truth.","Ptolemy's World Map":"Claudius Ptolemy's Geographia, written in Alexandria around 150 CE, is the founding document of Western mathematical cartography. It introduced a systematic framework of latitude and longitude coordinates, described multiple projection methods for representing a spherical surface on a flat plane, and provided a gazetteer of some eight thousand place names with their coordinates. It was the most sophisticated geographic work produced in the ancient world.\n\nIt was also wrong in ways that would mislead European explorers for over a millennium. Ptolemy underestimated the Earth's circumference, leading Columbus to believe Asia was within sailing distance to the west. He enclosed the Indian Ocean as a landlocked sea — a fiction that Fra Mauro correctly rejected in 1450 but that persisted in many maps long after. His knowledge deteriorated rapidly east of Persia and south of the Sahara, regions he populated with informed speculation that later cartographers treated as established fact.\n\nThe cruelest irony of the Ptolemaic tradition is that its very systematisation — the coordinate framework, the reproducible methodology — made its errors more durable. A mythology can be locally contradicted. A mathematical system provides the scaffolding for its own authority.","T-O Map (Isidore of Seville)":"The T-O map, codified by Isidore of Seville around 600 CE and reproduced in hundreds of medieval manuscripts, reduces the world to its barest conceptual skeleton: a circle divided by a T into three continents. The vertical stroke is the Mediterranean. The horizontal stroke is the Nile and the Don. Above the crossbar is Asia. Below left is Europe, below right is Africa. Jerusalem is sometimes marked at the centre. East is at the top, because that is where Eden lies.\n\nIn geographic terms, this is not a map at all. It contains no distances, no coastlines, no navigational information whatsoever. In conceptual terms, it is one of the most powerful documents in the history of cartography — a diagram so simple that it could be drawn in seconds and so charged with meaning that it organised European thinking about the shape of the world for nearly a thousand years.\n\nThe T-O map is not a failure of geographic knowledge. Medieval scholars had access to Ptolemy and knew the world was more complicated than three triangles. The T-O map served a different function: a mnemonic device for the Christian cosmological order. Calling it inaccurate is like calling a crucifix an inaccurate representation of a human body.","Al-Balkhi School Maps (KMMS)":"The Balkhi school of Islamic cartography, flourishing in the tenth century, produced a tradition of maps so different from contemporary European or Chinese practice that Western scholars long dismissed them as primitive. They are nothing of the kind. The KMMS maps deliberately chose abstraction over representation. Rivers appear as straight lines or perfect arcs. Coastlines are geometric. Distances between cities are equalised. The maps cover only the Islamic world, with non-Muslim territories rendered as blank margins.\n\nThis is not ignorance but a principled decision about what a map is for. The Balkhi school maps were administrative and devotional instruments. They showed the Muslim world as a coherent political and spiritual entity, with Arabia at the centre, internally connected by routes that mattered to Muslim merchants and pilgrims. Geographic accuracy for its own sake was not the goal.\n\nThe parallel with Beck's Underground map is exact: both traditions sacrificed geographic truth to produce topological clarity about a network that mattered. The difference is that the Balkhi school sacrificed truth in service of a worldview, while Beck sacrificed it in service of commuters.","Al-Idrisi's Tabula Rogeriana":"Muhammad al-Idrisi was born in Ceuta, studied in Córdoba, and spent the last decades of his career at the court of Roger II of Sicily — a Norman king who collected Arabic scholars. The map al-Idrisi completed in 1154 was the most accurate world map produced anywhere in the twelfth century. It synthesised Greek mathematical geography, Arab merchant accounts, Persian itineraries, and Norman diplomatic intelligence into a single image that correctly depicted the shape of Africa, the configuration of the Indian Ocean, and the existence of Scandinavia.\n\nAl-Idrisi drew his maps with south at the top — a convention of Islamic cartography that oriented the world toward Mecca. This meant that when his maps were reproduced by European scholars, they had to be flipped, a process that introduced errors and created the impression that the original was somehow inverted rather than differently oriented.\n\nThe Tabula Rogeriana is the clearest evidence that the cartographic dark ages attributed to the medieval period were a specifically European phenomenon. Elsewhere, at exactly the same moment, cartography was advancing.","Hereford Mappa Mundi":"The Hereford Mappa Mundi, produced in England around 1300 CE and still displayed in Hereford Cathedral, is the largest surviving medieval world map. It is oriented with east at the top, Jerusalem at the centre, Paradise at the apex, and the monsters of the classical tradition filling the marginal regions. To dismiss it as geographically ignorant is to fundamentally misunderstand what it is.\n\nThe Hereford map is a visual encyclopaedia of medieval knowledge — geographic, historical, scriptural, and natural historical — compressed into a single image intended for display and contemplation rather than navigation. It locates the Ark of Noah, the Labyrinth of Crete, Alexander's Wall, and the garden of Gethsemane. It contains, in some sense, everything an educated thirteenth-century European knew or believed about the shape of the world.\n\nTo ask whether it is accurate is to ask whether a cathedral window is a good source of light. The question mistakes the object's purpose entirely.","Ebstorf Map":"The Ebstorf Map, created at a Benedictine monastery in northern Germany around 1234, was the largest mappa mundi ever made — a circular composition approximately 3.6 metres in diameter, painted on thirty goatskins sewn together. Christ's head appeared at the top, his hands at the sides, his feet at the bottom: the world was literally inscribed within the body of God. The map contained over 1,500 illustrations, place names, and legends drawn from scripture, classical literature, and traveller accounts.\n\nThe Ebstorf Map was destroyed in an Allied bombing raid on Hanover in 1943. It survives only in nineteenth-century photographs and facsimiles, which means that all modern scholars of the map are studying a copy of a copy — a document about a document about the world. This recursion seems appropriate for an object whose makers understood representation not as the accurate capture of reality but as the construction of meaning.\n\nWhat the Ebstorf Map reveals, in its enormous ambition, is the fundamental choice that underlies every map ever made: what is this for? The Ebstorf answer — to show the world as the body of Christ, to integrate human geography into divine order — is not a less sophisticated answer than the surveyor's. It is a different answer to a different question.","Portolan Charts":"Portolan charts first appeared in the Mediterranean in the late thirteenth century and represent one of the most sudden and dramatic advances in the history of cartography. Their coastlines — particularly of the Mediterranean and Black Sea — are accurate to a degree that would not be surpassed until the era of geodetic survey. The mechanism by which this accuracy was achieved is still debated: the charts appear to have been compiled from compass bearings and estimated distances taken by generations of sailors.\n\nThe portolan chart sacrificed interior knowledge entirely. The land behind the coastline is mostly blank, occasionally decorated with city symbols and the names of rulers. The sea is covered by a dense web of rhumb lines — lines connecting compass roses — that a navigator could use to determine a sailing direction. The chart was a working tool, not a display object.\n\nWhat the portolan tradition established was a principle that would run through all subsequent navigational cartography: coastal geometry matters more than interior understanding. This is true for sailors. It is not true for almost anyone else.","Fra Mauro World Map":"Fra Mauro was a Venetian monk who died around 1459 having produced what is arguably the greatest world map of the pre-Columbian era. His circular planisphere, roughly two metres in diameter, was commissioned by King Afonso V of Portugal and compiled from Ptolemy, Arab geographical texts, Marco Polo's accounts, Ethiopian Christian pilgrims, and Venetian merchants with experience of the Indian Ocean trade.\n\nWhat makes the Fra Mauro map historically decisive is a single choice: he rejected Ptolemy's enclosed Indian Ocean. Every major European map for the previous thousand years had treated the Indian Ocean as a landlocked sea, making circumnavigation impossible. Fra Mauro drew Africa as a peninsula, surrounded by ocean, with a navigable sea route to Asia around its southern tip. He did this forty years before Bartolomeu Dias actually rounded the Cape. He was right, and he based his decision on Arab and Ethiopian sources that had known this for centuries.\n\nThe Fra Mauro map sits at the precise hinge point between medieval cosmological cartography and Renaissance navigational cartography. It retains the circular form and encyclopaedic richness of the mappae mundi. But its geographic intelligence points directly toward the age of exploration.","Da Ming Hunyi Tu":"The Da Ming Hunyi Tu — the Amalgamated Map of the Great Ming Empire — was produced in China around 1389. What makes it extraordinary is not its coverage of China but its representation of the regions beyond: Africa appears as a recognisable triangular peninsula, correctly oriented, with a label indicating its southernmost extent. Europe is present, compressed but identifiable.\n\nThis map was produced before Bartolomeu Dias rounded the Cape of Good Hope in 1488, before Vasco da Gama reached India in 1498, and before any European had direct geographic knowledge of sub-Saharan Africa's true shape. Its accurate African outline derives from Chinese access to Islamic geographic sources — the accumulated knowledge of Arab merchants who had been trading along the East African coast for centuries.\n\nThe map's existence is a direct challenge to the narrative that places European Renaissance cartography at the origin of accurate world geography. The knowledge existed. It was documented. It simply existed outside the tradition that subsequently became canonical.","Kangnido Map":"The Kangnido was produced in Korea in 1402 by two government officials working from Chinese and Islamic source maps. It depicts the entire known world from Korea's perspective: China dominates the centre, Korea is shown prominently in the east, and to the west appear India, the Islamic world, Africa, and a small but recognisable Europe.\n\nAfrica on the Kangnido is shown as a roughly triangular landmass with a correct southward taper — the same shape that appears on the Da Ming Hunyi Tu and that would not appear on a European map until the late fifteenth century. The relative sizes are wrong, and the distances between regions are severely compressed. But the basic geographic structure of the Old World is correctly represented.\n\nThe Kangnido is a monument to the geographic knowledge assembled by the Islamic cartographic tradition and transmitted eastward through Chinese intermediaries. It is also a monument to the contingency of cartographic history: had East Asian geographic knowledge driven the age of exploration, the canonical world map might have been centred on Beijing rather than Lisbon.","Zheng He / Mao Kun Chart":"Between 1405 and 1433, the Chinese admiral Zheng He led seven voyages of extraordinary scale — fleets of hundreds of ships carrying tens of thousands of men across the Indian Ocean to Southeast Asia, India, Arabia, and the East African coast. The navigational charts that resulted, preserved in a compilation known as the Mao Kun map, represent the most extensive maritime geographic knowledge assembled by any civilisation before the European age of exploration.\n\nThe Mao Kun charts are route maps: long, narrow strips showing coastlines, anchorages, sailing directions, and distances along specific routes. They are oriented to the direction of travel rather than to compass north. To read them, you must already know where you are going — they are records of voyages already made rather than guides to voyages yet to be taken.\n\nThe political decision to end the voyages — made by Chinese emperors who regarded maritime expansion as expensive and destabilising — ensured that this geographic knowledge would not become the foundation for a global cartographic tradition. The ships were burned. The records were suppressed. The routes that Zheng He's navigators had charted were subsequently rediscovered by Portuguese sailors who needed decades to match what Chinese navigators had accomplished in a generation.","Marshall Islands Stick Charts":"The stick charts produced by navigators of the Marshall Islands are among the most conceptually radical objects in the entire history of cartography. Made from coconut palm frond midribs tied into grids and weighted with shells marking island positions, they do not represent the visual appearance of ocean space. They encode the behaviour of ocean swells — the way deep-water wave patterns are bent, reflected, and refracted by islands — as a tactile diagram that a navigator reads by feel, not by sight.\n\nA Marshall Islands navigator sailing at night would lie in the bottom of a canoe and feel the motion of the hull — the rhythmic rise and fall indicating open-ocean swell, the cross-chop appearing when two swell patterns intersected near an island. The stick chart was a training device for developing this embodied knowledge, not an operational instrument used at sea.\n\nThe stick charts represent something no other cartographic tradition seriously attempted: the mapping of sensory experience rather than visual space. They are incompatible with the assumption — so deeply embedded in European and East Asian cartography — that a map is fundamentally a picture. Their suppression by colonial European navigation represents the loss not just of local knowledge but of an entire alternative conception of what geographic representation can be.","Matteo Ricci's Kunyu Wanguo Quantu":"Matteo Ricci was a Jesuit missionary who arrived in China in 1582 and spent three decades becoming one of the most sophisticated cultural translators in the history of East-West encounter. His world map, the Kunyu Wanguo Quantu, was produced in Beijing in 1602 at the request of the Wanli Emperor and represents one of the most remarkable cartographic documents ever created.\n\nThe map is, in its geographic content, a European world map: it uses European projection methods and European knowledge of the Americas. But Ricci made one crucial adaptation: he moved the central meridian so that China, rather than Europe, lay at the centre of the world. This was not a geographic decision. It was a diplomatic one — a recognition that a world map presented to a Chinese emperor would need to show China in its proper position at the centre of civilisation.\n\nThe Kunyu Wanguo Quantu is the clearest single illustration of the argument that the choice of what to place at the centre of a world map is always a political act. Every world map centres something. The choice of what that something is reflects not geographic reality — the Earth has no centre — but power, identity, and the audience being addressed.","Cantino Planisphere":"The Cantino Planisphere takes its name not from its maker — who remains anonymous — but from Alberto Cantino, an Italian agent who paid to smuggle it out of Lisbon in 1502. It was a state secret: a map summarising the accumulated geographic intelligence of decades of Portuguese exploration along the coasts of Africa, Brazil, and the Indian Ocean.\n\nThe West African coastline, the result of systematic Portuguese coastal exploration since the 1430s, is drawn with accuracy that would not be significantly improved for another century. Brazil appears, correctly identified as a separate landmass. The Tordesillas Line — the 1494 papal division of the world between Spain and Portugal — is drawn across the Atlantic, making this the earliest surviving map to show the treaty boundary that divided the New World between two empires before either had fully explored it.\n\nWhat the Cantino Planisphere reveals most starkly is the nature of cartographic knowledge in the age of exploration: it was proprietary intelligence, not public knowledge. Maps like this were produced at state expense, kept in locked archives, and treated as military secrets.","Waldseemüller Map (Universalis Cosmographia)":"Martin Waldseemüller's world map of 1507 is known, with only slight exaggeration, as America's birth certificate — the document in which the New World first received its name. Waldseemüller printed the name America across the southern landmass in honour of Amerigo Vespucci, who had argued that the lands Columbus had reached were not Asia but a previously unknown continent. The name stuck despite Waldseemüller himself later removing it from subsequent editions.\n\nThe map was produced in an edition of approximately one thousand copies — an unprecedented print run, made possible by the printing press. It is large, beautifully executed, and ambitious: it shows a Pacific Ocean that Columbus had not reached and Magellan would not cross for another decade, based on reasoning from Vespucci's accounts about the width of the newly discovered landmass.\n\nThe Waldseemüller map is also an act of comprehensive erasure. The millions of people already living in the Americas, with their own geographic knowledge and their own place names, are present only as a blank continent awaiting the name of a Florentine navigator.","Piri Reis Map":"The Ottoman admiral and cartographer Piri Reis produced his world map in Constantinople in 1513, less than two decades after Columbus's first voyage. Only the western portion survives, but it is enough to make clear that Piri Reis had access to an extraordinary range of source material. He annotated the map himself, noting that he had drawn on twenty sources including eight Ptolemaic maps, four Portuguese charts, and a map that Columbus himself had drawn of the Caribbean.\n\nThe Piri Reis map is one of the few surviving cartographic documents that shows the early European discoveries from a non-European perspective — the view from Constantinople, where Islamic geographic tradition, Ptolemaic scholarship, and the new Atlantic discoveries were synthesised by a cartographer working in an intellectual tradition entirely distinct from the Lisbon or Antwerp schools.\n\nThe map has attracted, since the twentieth century, a persistent fringe literature claiming that it proves ancient knowledge of Antarctica. These claims are not serious. What is serious is the evidence the map provides that the cartographic revolution of the early sixteenth century was not a uniquely European phenomenon.","Mercator's World Map":"Gerardus Mercator's world map of 1569 solved a specific problem with such elegance that its solution became the default representation of the world for the following four centuries. The problem: on a spherical surface, lines of constant compass bearing are curves. A navigator sailing at a fixed compass bearing needs a chart on which those curves appear as straight lines. Mercator produced a projection that achieved exactly this, by progressively expanding the scale toward the poles.\n\nThe map was brilliant for its intended purpose. Its unintended consequence was that it made Greenland appear the size of Africa, and made Europe and North America appear far larger relative to tropical regions than they are. This distortion was subsequently adopted as the default world map in European schools, embedded in the visual intuition of generations who came to believe the world was shaped the way Mercator showed it.\n\nThe Mercator projection is not a conspiracy. It is not primarily a political document. It is a navigational instrument that was misapplied as a general-purpose world map, with the result that European children's intuition about the relative sizes of continents was systematically distorted in favour of Europe.","Ortelius's Theatrum Orbis Terrarum":"Abraham Ortelius published the Theatrum Orbis Terrarum in Antwerp in 1570 and in doing so invented a new kind of cartographic object: the commercial atlas. Ortelius produced something qualitatively different from previous map collections — a uniform-format collection of seventy maps accompanied by text, printed by the same press, sold as a single commercial product, and updated through multiple editions.\n\nThe Theatrum was not the most accurate atlas of its day. Ortelius was a compiler rather than an original surveyor, and he worked with the best available sources while acknowledging their limitations — he included, in a remarkable gesture of scholarly transparency, a bibliography of the 87 cartographers whose work he had used.\n\nThe Theatrum made geographic knowledge available to the educated European public for the first time on a systematic basis. It went through forty-two editions in his lifetime and was translated into multiple languages. It established the expectation that maps should be produced as a series, updated as knowledge improved, and sold as books — an expectation that structured the cartographic industry for the next three centuries.","Blaeu's Atlas Maior":"Joan Blaeu's Atlas Maior, published in Amsterdam in 1662, was the most expensive book produced in the seventeenth century and, by many accounts, the most beautiful atlas ever made. Eleven volumes, six hundred maps, hand-coloured in brilliant pigments, with decorative borders depicting the peoples and landscapes of each region: it was cartography as luxury object, the supreme achievement of the Dutch Golden Age cartographic industry.\n\nThe irony of the Atlas Maior is that much of it was already outdated when it was published. The Dutch East India Company's navigators had been accumulating more accurate knowledge of Asian coasts for decades, but this information was proprietary. The publicly available maps in Blaeu's atlas were therefore often inferior to the classified charts in the VOC's archives. Spectacular inaccuracy and spectacular beauty existed simultaneously in the same city.\n\nThe Atlas Maior asks a question that every collector must eventually answer: what is a map worth when its geographic information is wrong? The answer, for four centuries of collectors who have paid extraordinary prices for Blaeu's work, has been: very much indeed.","Coronelli's Globe Pair":"Vincenzo Coronelli was a Franciscan friar and the most celebrated globe-maker of the seventeenth century. The pair of globes he constructed between 1681 and 1683 — one terrestrial, one celestial, each nearly four metres in diameter — were commissioned for presentation to Louis XIV, and remain the largest globes ever made. They required specially constructed rooms and two years of craftsmanship.\n\nThe Coronelli globes make every trade-off in the history of cartography physical. They are so large that no individual can see more than a fraction of the surface at once. They are so heavy and fragile that they have never been moved from the Bibliothèque nationale de France. They were made for one person — a king — and have been accessible to scholars only with difficulty ever since.\n\nWhat Coronelli's globes reveal is that the history of cartography is not only a history of maps as information systems. It is a history of maps as cultural objects — prestige items, political gifts, aesthetic achievements — whose value lies as much in what they represent about their makers as in what they reveal about the world.","Cassini Map of France":"The Cassini map of France is the founding document of modern topographic cartography — the first geometrically rigorous national survey ever completed. Produced by four successive generations of the Cassini family over nearly a century and a half, the 182-sheet series established a triangulation network across the entire country that accurately represented distances, elevations, roads, rivers, towns, forests, and administrative boundaries at a consistent scale.\n\nThe methodology was revolutionary: a network of triangulation points established by precise angular measurement, extended across the entire country in a systematic grid. The result was a map of France that allowed you to navigate by map rather than by local knowledge. It became the template for every national topographic survey that followed.\n\nWhat the Cassini map systematically sacrificed was the local knowledge it replaced. The vernacular place names, the oral geographic traditions, the ecological observations that had made earlier regional maps rich were stripped away in favour of standardised, reproducible, official information. The map told you where you were. It did not tell you anything about what that place was like.","Cook's Pacific Charts":"James Cook's three voyages, conducted between 1768 and 1779, produced the most comprehensive and accurate charts of the Pacific Ocean that the world had ever seen. Cook brought to his surveys a combination of astronomical observation, careful dead reckoning, and meticulous record-keeping that made his charts reliable for navigation in a way that no previous Pacific geographic knowledge had been.\n\nCook's charts also represent one of the most thoroughgoing acts of epistemic erasure in the history of cartography. The Pacific was not an empty ocean waiting to be mapped. It was home to Polynesian and Micronesian navigators who could find islands hundreds of miles away using star paths, wave patterns, and bird behaviour — who had settled the largest ocean on Earth without compass or chart. Cook's charts made their knowledge invisible by replacing it with a different kind of knowledge, one legible to European instruments.\n\nThe Pacific charts demonstrate the colonial structure of cartographic knowledge: what gets counted as knowledge, what gets recorded, and what gets erased is determined not by epistemological merit but by which tradition holds institutional and military power.","Bonne Projection World Map":"The Bonne projection, developed by the French cartographer Rigobert Bonne in the eighteenth century, was one of several attempts to solve the fundamental problem of world-map projection: the Mercator projection preserves angles but distorts areas, making tropical regions appear smaller than they are. An equal-area projection would be more honest about the proportions of the world.\n\nThe Bonne projection achieves equal-area representation at the cost of severe shape distortion toward the map's edges. The continents appear stretched and bent in the margins, in a way that strikes most viewers as more disturbing than Mercator's area distortion, even though the Bonne projection is in one mathematical sense more accurate. The map was used for official French cartography in the late eighteenth century, then largely abandoned.\n\nThe Bonne projection's brief career illustrates a recurring theme: the problem of projection has no solution, only trade-offs. Every flat map of a spherical world sacrifices something. The choice of what to sacrifice is not a technical decision but a values decision.","Minard's Napoleon March Map":"Charles Joseph Minard's 1869 graphic of Napoleon's 1812 Russian campaign is widely considered the greatest statistical chart ever produced. It encodes six variables simultaneously: the geographic path of the army's advance and retreat, the size of the army at each point shown as band width, the direction of movement, the dates of key events, and the temperature during the winter retreat. The band that begins at the Polish border representing 422,000 men shrinks as it advances toward Moscow and returns as a thin ribbon representing fewer than 10,000 survivors.\n\nMinard was a civil engineer who spent his retirement producing what he called cartes figuratives — statistical maps that made quantitative information visually immediate. His Napoleon graphic is the culmination of this project: a document that makes the scale of military catastrophe comprehensible in a single glance in a way that no table of numbers, no narrative, and no conventional map could achieve.\n\nThe Napoleon map is also a profoundly anti-heroic document. It does not show battles, victories, or the movements of commanders. It shows an arithmetic: men in, men out, temperature, distance. The absence of any heroic framing is not accidental. Minard was using his graphic skills to make an argument about the true cost of military ambition — an argument that the statistics make unanswerable.","Booth's Poverty Map of London":"Charles Booth was a Victorian shipping magnate who set out in the 1880s to refute the claim that a third of London's population lived in poverty. He suspected the figure was exaggerated. After years of systematic street-by-street inquiry — interviewing school board visitors, clergy, police constables, and charity workers — he concluded that the figure was, if anything, an underestimate. The resulting poverty maps colour-coded every street in London from black through shades of blue, purple, pink, red to yellow for the wealthiest.\n\nThe maps are extraordinary acts of social documentation — nothing like them had ever been produced before, and they directly influenced housing policy, welfare legislation, and the emerging discipline of urban sociology. They are also, inevitably, the product of their maker's assumptions. Booth's categories encode Victorian class anxieties: the people labelled vicious and semi-criminal were assigned their colours by police constables and charity workers whose assessments reflected prejudice as much as observation.\n\nBooth's maps demonstrate the inescapable reflexivity of social cartography: the map of poverty is made by people who are not poor, using categories that reflect the mapper's values, and the result is both a document of social reality and a construction of it.","Humboldt's Naturgemälde":"Alexander von Humboldt's Naturgemälde — the word means something like nature portrait — was published in 1807 as the frontispiece to his account of the ascent of Chimborazo in Ecuador. It is a cross-section of the mountain from base to summit, annotated along both margins with the corresponding data for every other mountain and climate zone on Earth: the altitude at which specific plants grow, the atmospheric pressure at each elevation, the temperature, the species of insects found at each level.\n\nThe Naturgemälde is not a map in any conventional sense. What it has is something no previous geographic document had attempted: the systematic representation of the relationships between altitude, climate, vegetation, and species across a single cross-section of the Earth's surface. It is the founding document of ecology as a science.\n\nHumboldt understood that the distribution of species was not random but structured — that the plants growing at 3,000 metres on an Andean volcano were the same species as those growing at sea level in the Arctic, because the determining variable was temperature, not latitude. The Naturgemälde makes this relationship visible for the first time. It is a map of a relationship rather than a place.","Snow's Cholera Map":"John Snow was a London physician who, during the cholera epidemic of August and September 1854, mapped every death from the disease in the Soho district of London. Each death was marked with a small bar at the location of the victim's home. When Snow looked at the resulting map, the pattern was unmistakable: the deaths clustered around a single water pump on Broad Street, with a striking absence of cases near the local brewery whose workers drank beer rather than water.\n\nSnow presented his map to the local Board of Guardians and persuaded them to remove the handle from the Broad Street pump. The epidemic stopped. Snow's map is credited with founding the discipline of epidemiology and with providing the clearest early evidence that cholera was a waterborne rather than airborne disease, overturning the dominant miasma theory.\n\nThe Broad Street map is one of the few examples in cartographic history of a map that directly and verifiably saved lives. It is also, in its elegant simplicity, a masterclass in what a thematic map can do that no other form of evidence can: make a spatial pattern visible in a way that demands a causal explanation.","USGS Topographic Survey Maps":"The United States Geological Survey, established in 1879, produced over the following century the most comprehensive topographic survey of any large country in the world. The resulting maps — standardised sheets showing terrain through contour lines, drainage in blue, human settlement in black, and vegetation in green — became the foundation for American land management, military planning, environmental science, and outdoor recreation.\n\nThe USGS topographic map is the closest thing the modern world has produced to a neutral, authoritative representation of landscape. Its conventions are so deeply embedded in American geographic literacy that the contour line has become almost invisible — a natural feature of the landscape rather than a cartographic choice. This invisibility is worth examining. The decision to represent terrain through contour lines was a choice with consequences.\n\nThe USGS maps also participated, as all national surveys do, in the systematic replacement of indigenous place names with European ones. The landscape of the American West documented in these maps is a landscape that has been renamed — a process of cartographic colonisation whose effects persist in every road atlas, GPS database, and hiking map that descends from the USGS survey.","Beck's London Underground Map":"Harry Beck was a technical draughtsman at London Underground who, in 1931, produced a redesign of the Underground map as a personal project. His insight was simple and radical: the only information that passengers needed was which line to take, where to change, and what order the stations appeared in. Geographic accuracy was irrelevant to this task and actively interfered with legibility.\n\nBeck's map replaced geography with topology. Stations were spaced evenly. Lines ran at 45 or 90 degrees. The scale expanded in the centre and compressed in the suburbs. The result was a map that bore almost no relationship to the physical geography of London — King's Cross is not really equidistant from Euston and St Pancras — but that allowed any passenger to find a route in seconds.\n\nThe map was initially rejected by London Underground's publicity department as too radical. When they trialled it, it was immediately and permanently popular. Beck's Underground map has since been copied by every major transit system in the world. It is the clearest possible demonstration that usability and accuracy are not the same value, and that choosing one over the other is a legitimate and consequential design decision.","Peters Projection":"Arno Peters, a German historian, published his world map projection in 1974 with a polemical argument: the Mercator projection, by distorting the sizes of continents in favour of Europe and North America, encoded colonialism into the visual imagination of the world. His alternative — an equal-area cylindrical projection — was, he argued, not just mathematically more honest but politically more just.\n\nThe Peters projection does what it claims: Greenland appears correctly smaller than Africa rather than larger. South America appears correctly larger than Europe. The distortion is shifted from area to shape — the continents appear stretched vertically, giving them an unfamiliar elongated appearance that many viewers find more disturbing than the Mercator's area errors.\n\nThe cartographic profession largely rejected the Peters projection on technical grounds. But the political argument Peters made — that the choice of map projection is not a neutral technical decision but a choice with ideological consequences — was correct and important. The Mercator projection is still the default world map in most digital applications.","NASA Blue Marble":"On December 7, 1972, the crew of Apollo 17 photographed the Earth from approximately 45,000 kilometres. The resulting image — the Blue Marble — is the most widely reproduced photograph in history. It shows the whole Earth as a small, fragile, luminous sphere suspended in absolute blackness: Africa and Antarctica visible, weather systems swirling across the southern hemisphere.\n\nThe Blue Marble is a map only in the loosest sense — it contains no coordinate system, no political boundaries, no place names. What it provides is something no previous cartographic document could: a view of the Earth as a single object. All previous world maps had been abstractions — projections of a sphere onto a plane. The Blue Marble was a photograph, and photographs carry a different kind of epistemic authority.\n\nThe image's environmental consequences were immediate. It is credited with galvanising the environmental movement — with making viscerally visible the argument that the Earth was finite, whole, and shared. It did this by sacrificing precisely the information that all other maps provided: it showed no borders, no nations, no human presence at all.","Google Maps":"Google Maps launched in February 2005 and within a decade had become the most widely used navigation tool in human history. It offered, for the first time, turn-by-turn navigation integrated with real-time traffic data, accessible to anyone with a smartphone. Finding an unfamiliar address in an unfamiliar city, once a skill requiring either local knowledge or effort with printed maps, became trivial.\n\nThe costs of this democratisation are real. Research on spatial cognition consistently shows that GPS navigation degrades the development and maintenance of cognitive maps — the internal representations of space that humans use to orient themselves. People who use GPS navigation extensively become better at following instructions and worse at knowing where they are.\n\nGoogle Maps is also, in ways not always visible to users, a profoundly political document. Its representation of disputed territories changes depending on which country you access it from. Its coverage of commercial establishments reflects advertising relationships. It systematically under-represents informal settlements, indigenous territories, and regions without economic significance to Google's business model. It is not a neutral representation of geography. It is a commercial product that happens to be shaped like a map.","OpenStreetMap":"OpenStreetMap was founded in 2004 by Steve Coast, a British computer science student frustrated that the Ordnance Survey charged prohibitive fees for access to geographic data that British taxpayers had funded. His solution was to build a free, open, collaborative alternative — a wiki of geographic data that anyone could contribute to, correct, and use without restriction.\n\nTwenty years later, OpenStreetMap contains more geographic data than any previous mapping project in history — contributed by over ten million registered users, covering every continent. It is the only world map that documented the layout of refugee camps in Syria within weeks of their creation, that shows the footpaths of rural Malawi and the informal market stalls of Lagos, that can be freely downloaded and modified by anyone.\n\nIts weaknesses are the mirror image of its strengths. Coverage in wealthy, tech-connected regions is extraordinarily detailed. Coverage in remote or poor regions is patchy and sometimes years out of date. The community of contributors, overwhelmingly male and from the global north, produces a map that reflects their priorities. OpenStreetMap is the most democratic mapping project ever created — and also, in its demographics and coverage gaps, a map of who has internet access and time to volunteer.","LiDAR Terrain Maps":"LiDAR — Light Detection and Ranging — works by firing millions of laser pulses per second from an aircraft toward the ground and measuring the precise time each pulse takes to return. The result is a point cloud of extraordinary density: a three-dimensional record of the Earth's surface, accurate to a few centimetres, that can penetrate forest canopy to reveal the ground surface beneath.\n\nThe most dramatic consequence of LiDAR for cartography has been archaeological: surveys of jungle-covered regions have revealed, hidden beneath vegetation, urban landscapes of extraordinary scale. In 2018, a LiDAR survey of the Cambodian jungle around Angkor Wat revealed a medieval city far larger than archaeologists had imagined. Similar surveys in the Maya lowlands have revealed urban networks connecting millions of people in a civilisation far more sophisticated than the jungle ruins had suggested.\n\nLiDAR produces data, not maps. The point clouds it generates require specialist software to process and considerable expertise to interpret. The gap between the raw data and the map that a non-specialist can read is enormous. LiDAR gives us the most accurate picture of the Earth's surface ever produced, in a form that almost nobody can directly use."};
+const sidebar=document.getElementById("sidebar");
+const main=document.getElementById("main");
 
-const AXIS_DEFS={accuracy:{what:"How closely the map represents geometric, spatial, and geographic reality — coastlines, distances, positions, shapes, proportions.",notWhat:"Not completeness (how much is shown) but correctness of what is shown.",tension:"Accuracy competes with usability (Beck's Tube Map), symbolism (mappae mundi reject it), and navigation (Mercator trades area accuracy for bearing accuracy).",rubric:[{score:1,label:"Symbolic",desc:"No geographic fidelity"},{score:2,label:"Rough",desc:"Significant distortion"},{score:3,label:"Mixed",desc:"Uneven quality by region"},{score:4,label:"High",desc:"Accurate for its era"},{score:5,label:"Ground truth",desc:"Verified by observation or satellite"}]},usability:{what:"Can a non-specialist use this map effectively? Clear visual hierarchy, legible annotation, appropriate scale.",notWhat:"Not accuracy. Beck's Tube Map is usable but geometrically wrong. Ptolemy's tables are accurate but unreadable.",tension:"Usability requires simplification, which erases intellectual richness. A map that means many things is harder to read quickly.",rubric:[{score:1,label:"Specialist only",desc:"Requires expert knowledge"},{score:2,label:"Trained reader",desc:"Needs scholarly effort"},{score:3,label:"Educated user",desc:"Moderate effort required"},{score:4,label:"Practical",desc:"Designed for practical use"},{score:5,label:"Intuitive",desc:"Immediately legible by anyone"}]},navigation:{what:"Does this map enable someone to move through space — by sea, road, rail, or air? Does it give bearings, distances, or routes?",notWhat:"Not the same as accuracy. Humboldt's map is accurate but useless for navigation. The Peutinger Table navigates perfectly despite geometric absurdity.",tension:"Navigation requires stripping everything irrelevant to movement. Richness, symbolism, and completeness are all its enemies.",rubric:[{score:1,label:"None",desc:"Symbolic or thematic only"},{score:2,label:"Orientation",desc:"General geographic sense"},{score:3,label:"Planning",desc:"Useful for planning, not real-time"},{score:4,label:"Active",desc:"Provides bearings or routes"},{score:5,label:"Operational",desc:"Used actively during travel"}]},symbolism:{what:"How richly does the map encode meaning beyond geography — cosmology, theology, myth, political ideology, or moral order?",notWhat:"Not decoration. Crude maps can have profound symbolic density (Babylonian Imago Mundi). Ornate maps can have low symbolic content.",tension:"Symbolism and accuracy are almost always in direct competition. The world is reshaped to express a worldview rather than measure one.",rubric:[{score:1,label:"Functional",desc:"No symbolic layering"},{score:2,label:"Incidental",desc:"Decorative only"},{score:3,label:"Moderate",desc:"Iconography or political claims"},{score:4,label:"Primary",desc:"Symbolism co-equal to geography"},{score:5,label:"The map IS the symbol",desc:"Geography serves ideology or theology"}]},politics:{what:"How directly does this map assert, justify, or serve political power? Does it claim territory, define borders, or erase peoples?",notWhat:"Not the same as symbolism. All maps are subtly political — this scores explicit, operational political function.",tension:"Political utility and geographic honesty are in fundamental tension. The most powerful maps often distorted most deliberately.",rubric:[{score:1,label:"Neutral",desc:"No power agenda"},{score:2,label:"Implicit",desc:"Serves a worldview subtly"},{score:3,label:"Commissioned",desc:"Made for a political authority"},{score:4,label:"Assertive",desc:"Claims territory or erases rivals"},{score:5,label:"Weapon",desc:"Reshapes global consciousness"}]},completeness:{what:"How much of the known world does this map attempt to show? Ambition of scope, not accuracy of what is shown.",notWhat:"Not accuracy. A portolan chart covers the Mediterranean with precision but scores 2/5 — it ignores the rest of the world.",tension:"Completeness and accuracy trade off sharply. Maps that cover everything fill gaps with speculation. The honest map leaves blanks; the complete map invents.",rubric:[{score:1,label:"Local",desc:"A city or single route"},{score:2,label:"Regional",desc:"A sea, country, or trade network"},{score:3,label:"Continental",desc:"Multi-regional with gaps"},{score:4,label:"Near-global",desc:"World with notable omissions"},{score:5,label:"Total",desc:"Comprehensive world coverage"}]},richness:{what:"How much layered, heterogeneous information does this map carry? Multiple knowledge types — topography, ecology, culture, history, annotation.",notWhat:"Not the same as accuracy or symbolism. A regional map with roads, forests, mills, and parish boundaries is rich without being symbolic.",tension:"Richness competes with usability (more information = harder to read fast) and navigation (a rich map is a slow map).",rubric:[{score:1,label:"Single layer",desc:"One data type only"},{score:2,label:"Sparse",desc:"Two or three layers"},{score:3,label:"Moderate",desc:"Several integrated layers"},{score:4,label:"Dense",desc:"Cultural, ecological, historical layers together"},{score:5,label:"Encyclopedic",desc:"Compressed world — removing it destroys knowledge"}]}};
-
-const S={page:'home',eraId:null,mapIdx:null,cmpMode:false,cmpA:null,cmpB:null,axFilter:null,openDef:null,openInline:null};
-const g=id=>ERAS.find(e=>e.id===id);
-const gEraForMap=n=>ERAS.find(e=>e.maps.some(m=>m.name===n));
-const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-function nav(page,eraId,mapIdx){S.page=page;S.eraId=eraId||null;S.mapIdx=mapIdx!=null?mapIdx:null;S.openInline=null;render();}
-
-function toggleCmp(){
-  S.cmpMode=!S.cmpMode;
-  if(!S.cmpMode){S.cmpA=null;S.cmpB=null;}
-  renderCmpUI();renderSidebar();
-}
-function selCmp(map){
-  if(!S.cmpA){S.cmpA=map;renderCmpUI();renderSidebar();return;}
-  if(map.name===S.cmpA.name)return;
-  S.cmpB=map;S.cmpMode=false;S.page='compare';renderCmpUI();render();
-}
-function resetCmp(){S.cmpA=null;S.cmpB=null;S.cmpMode=false;nav('home');}
-function startCmpFrom(n){const era=gEraForMap(n);const map=era.maps.find(m=>m.name===n);S.cmpMode=true;S.cmpA=map;S.cmpB=null;renderCmpUI();renderSidebar();}
-
-function renderCmpUI(){
-  const btn=document.getElementById('cmp-btn');
-  const banner=document.getElementById('cmp-banner');
-  const status=document.getElementById('cmp-status');
-  const msg=document.getElementById('cmp-msg');
-  btn.classList.toggle('active',S.cmpMode);
-  banner.style.display=S.cmpMode?'flex':'none';
-  if(S.cmpMode){
-    msg.textContent=S.cmpA?'"'+S.cmpA.name+'" selected — pick the second map':'Pick the first map from the sidebar';
-    status.textContent=S.cmpA?'Select map B →':'Select map A →';
-    status.style.display='inline';
-  }else{status.style.display='none';}
+function radar(data){
+ const size=120,c=size/2,r=45;
+ const pts=AXES.map((ax,i)=>{
+  const ang=(Math.PI*2*i)/AXES.length-Math.PI/2;
+  const val=(data[ax]||0)/5;
+  return [c+r*val*Math.cos(ang),c+r*val*Math.sin(ang)].join(",");
+ }).join(" ");
+ return `<svg width="${size}" height="${size}"><polygon points="${pts}" fill="rgba(200,169,110,0.2)" stroke="#C8A96E"/></svg>`;
 }
 
-function renderAxisStrip(){
-  const strip=document.getElementById('axis-strip');
-  const panel=document.getElementById('def-panel');
-  let h='<span class="ax-lbl">Axes:</span>';
-  AXES.forEach(ax=>{
-    h+='<div style="display:inline-flex;align-items:center;gap:1px"><button class="ax-btn'+(S.axFilter===ax.id?' active':'')+'" onclick="toggleAxF(''+ax.id+'')">'+ax.icon+' '+ax.label+'</button><button class="ax-help'+(S.openDef===ax.id?' open':'')+'" onclick="toggleAxD(''+ax.id+'')">?</button></div>';
+function Sidebar(){
+ sidebar.innerHTML="";
+ ERAS.forEach(era=>{
+  const e=document.createElement("div");
+  e.className="row"+(S.era===era.id?" active":"");
+  e.textContent=era.label;
+  e.onclick=()=>{S.page="era";S.era=era.id;render();};
+  sidebar.appendChild(e);
+
+  era.maps.forEach((m,i)=>{
+   const el=document.createElement("div");
+   el.className="row"+(S.map===i&&S.era===era.id?" active":"");
+   el.style.paddingLeft="20px";
+   el.textContent=m.name;
+   el.onclick=()=>{
+    if(S.cmp){cmpSelect(m);return;}
+    S.page="map";S.era=era.id;S.map=i;render();
+   };
+   sidebar.appendChild(el);
   });
-  if(S.openDef)h+='<button class="btn btn-ghost" onclick="closeAxD()" style="margin-left:auto;font-size:.58rem;padding:.15rem .55rem">&#10005;</button>';
-  strip.innerHTML=h;
-  if(S.openDef){
-    const ax=AXES.find(a=>a.id===S.openDef);const def=AXIS_DEFS[S.openDef];
-    panel.style.display='block';
-    panel.innerHTML='<div class="def-grid"><div class="def-what"><div class="def-label">'+ax.icon+' '+ax.label+' — What it measures</div><p class="def-p">'+esc(def.what)+'</p><p class="def-p" style="font-style:italic;color:var(--vfaint)"><strong style="color:var(--faint);font-style:normal">Not:</strong> '+esc(def.notWhat)+'</p><div class="def-tension"><div class="def-tl">Key tension</div><p class="def-tp">'+esc(def.tension)+'</p></div></div><div><div class="def-label" style="margin-bottom:.5rem">Scoring rubric</div>'+def.rubric.map(r=>'<div class="rub-row"><div class="rub-dots">'+[1,2,3,4,5].map(i=>'<div class="rdot" style="background:'+(i<=r.score?'var(--gold)':'#1E1A14')+';border:1px solid '+(i<=r.score?'#C8A96E60':'#2A2418')+'"></div>').join('')+'</div><div class="rub-txt"><span class="rub-lbl">'+r.label+'</span> — '+esc(r.desc)+'</div></div>').join('')+'</div></div>';
-  }else{panel.style.display='none';}
-}
-function toggleAxF(id){S.axFilter=S.axFilter===id?null:id;renderAxisStrip();renderSidebar();}
-function toggleAxD(id){S.openDef=S.openDef===id?null:id;renderAxisStrip();}
-function closeAxD(){S.openDef=null;renderAxisStrip();}
-
-function renderSidebar(){
-  const sb=document.getElementById('sidebar');
-  let h='<div style="padding:.6rem 0">';
-  ERAS.forEach((era,ei)=>{
-    const ea=(S.page==='era'||S.page==='map')&&S.eraId===era.id;
-    const sm=ea||S.cmpMode;
-    h+='<div class="era-row'+(ea?' active':'')+'" style="--era-hue:'+era.hue+'" onclick="handleEraSb(''+era.id+'')"><div style="display:flex;justify-content:space-between"><span class="era-tag" style="color:'+era.hue+'">'+esc(era.label)+'</span><span class="era-ct">'+era.maps.length+'</span></div><div class="era-yrs">'+esc(era.years)+'</div><div class="era-th">'+esc(era.thesis)+'</div></div>';
-    if(sm)era.maps.forEach((map,mi)=>{
-      const ma=S.page==='map'&&S.eraId===era.id&&S.mapIdx===mi;
-      const ca=S.cmpA&&S.cmpA.name===map.name;
-      const sc=S.axFilter?map.axes[S.axFilter]:null;
-      h+='<div class="map-row'+(ma?' active':'')+(ca?' cmp-a':'')+'" style="--era-hue:'+era.hue+'" onclick="handleMapSb(''+era.id+'','+mi+')"><div style="min-width:0"><div class="map-nm">'+esc(map.name)+'</div><div class="map-mt">'+esc(map.year)+' · '+esc(map.region)+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;margin-left:.4rem">'+(ca?'<span class="cmp-badge">A</span>':'')+(sc!=null?'<span class="ax-sc" style="color:'+era.hue+'">'+sc+'/5</span>':'')+'</div></div>';
-    });
-    if(ei<ERAS.length-1)h+='<div class="connector"></div>';
-  });
-  h+='</div>';sb.innerHTML=h;
-}
-function handleEraSb(id){if(S.cmpMode)return;nav('era',id);}
-function handleMapSb(eraId,mi){
-  const era=g(eraId);const map=era.maps[mi];
-  if(S.cmpMode){selCmp(map);return;}
-  nav('map',eraId,mi);
-  document.getElementById('sidebar').classList.remove('mob-open');
-  document.getElementById('mob-bd').classList.remove('show');
+ });
 }
 
-function renderRadar(axes,color,size){
-  const cx=size/2,cy=size/2,r=size*.35,n=AXES.length;
-  const ang=i=>(Math.PI*2*i)/n-Math.PI/2;
-  const pt=(i,f)=>[cx+r*f*Math.cos(ang(i)),cy+r*f*Math.sin(ang(i))];
-  const gp=f=>AXES.map((_,i)=>pt(i,f).join(',')).join(' ');
-  const vp=AXES.map((ax,i)=>pt(i,(axes[ax.id]||0)/5).join(',')).join(' ');
-  let s='<svg width="'+size+'" height="'+size+'" style="overflow:visible;flex-shrink:0">';
-  [.33,.66,1].forEach(f=>s+='<polygon points="'+gp(f)+'" fill="none" stroke="#2A2418" stroke-width=".5"/>');
-  AXES.forEach((_,i)=>{const[x,y]=pt(i,1);s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="#2A2418" stroke-width=".5"/>';});
-  AXES.forEach((ax,i)=>{const[x,y]=pt(i,1.3);s+='<text x="'+x+'" y="'+y+'" text-anchor="middle" dominant-baseline="middle" style="font-size:7px;fill:#6A5830;font-family:inherit">'+ax.icon+'</text>';});
-  s+='<polygon points="'+vp+'" fill="'+color+'28" stroke="'+color+'" stroke-width="1.5"/></svg>';
-  return s;
-}
-function renderTO(gained,sacrificed){
-  return '<div class="tradeoff"><div class="to-col"><div class="to-lbl" style="color:var(--green)">↑ Gained</div>'+gained.map(g=>'<span class="pill pill-g"><span style="opacity:.6">↑</span>'+esc(g)+'</span>').join('')+'</div><div class="to-col"><div class="to-lbl" style="color:var(--red)">↓ Sacrificed</div>'+sacrificed.map(s=>'<span class="pill pill-s"><span style="opacity:.6">↓</span>'+esc(s)+'</span>').join('')+'</div></div>';
-}
-function renderStaticText(text){
-  if(!text)return '';
-  return '<div class="static-text">'+text.split('\n\n').filter(Boolean).map(p=>'<p>'+esc(p)+'</p>').join('')+'</div>';
-}
-function toggleInlineDef(id){
-  S.openInline=S.openInline===id?null:id;
-  const area=document.getElementById('idef-area');
-  if(!area)return;
-  if(!S.openInline){area.innerHTML='';return;}
-  const ax=AXES.find(a=>a.id===S.openInline);const def=AXIS_DEFS[S.openInline];
-  area.innerHTML='<div class="inline-def"><div class="idef-lbl">'+ax.icon+' '+esc(ax.label)+'</div><p class="idef-p">'+esc(def.what)+'</p><p class="idef-ten"><strong style="font-style:normal;color:var(--faint)">Key tension:</strong> '+esc(def.tension)+'</p><div class="idef-rub">'+def.rubric.map(r=>'<div class="idef-ri"><span class="idef-rs">'+r.score+' — '+r.label+':</span> '+esc(r.desc)+'</div>').join('')+'</div></div>';
+function cmpSelect(m){
+ if(!S.a){S.a=m;return;}
+ if(!S.b){S.b=m;S.page="compare";S.cmp=false;render();}
 }
 
-const TENSIONS=[
-  {gain:'Accuracy',loss:'Usability',ex:'Ptolemy grid vs portolan charts'},
-  {gain:'Navigation',loss:'Symbolism',ex:'Portolans vs Hereford Mappa Mundi'},
-  {gain:'Completeness',loss:'Honest blank space',ex:'Fra Mauro vs earlier mappae mundi'},
-  {gain:'Road network',loss:'Geographic shape',ex:'Peutinger Table vs spatial maps'},
-  {gain:'New World claim',loss:'Indigenous geography',ex:'Waldseemüller vs Piri Reis'},
-  {gain:'Political framing',loss:'Physical geography',ex:'Al-Balkhi KMMS vs Al-Idrisi'},
-  {gain:'Non-Eurocentric view',loss:'European recognition',ex:'Kangnido vs Fra Mauro'},
-  {gain:'Tactile navigation',loss:'Visual readability',ex:'Stick Charts vs Cook charts'},
-  {gain:'Data as tragedy',loss:'Geographic accuracy',ex:"Minard vs survey maps"},
-  {gain:'Social insight',loss:'Objectivity',ex:"Booth's Poverty Map vs USGS"},
-  {gain:'Equal-area',loss:'Shape truth',ex:'Peters vs Mercator'},
-  {gain:'Real-time nav',loss:'Spatial memory',ex:'Google Maps vs wayfinding'},
-];
+function Home(){
+ main.innerHTML=`<div class="card">
+ <div class="header-title">Progress is a lie maps tell about themselves.</div>
+ <div class="sub">Every map gains something and sacrifices something.</div>
+ </div>`;
+}
+
+function MapView(era){
+ const m=era.maps[S.map];
+ const axes=AXES.map(ax=>`<span class="axis" data-ax="${ax}">${ax}</span>`).join("");
+ const card=document.createElement("div");
+ card.className="card";
+ card.innerHTML=`<div class="header-title">${m.name}</div>
+ <div class="sub">${m.year}</div>
+ <p>${m.text}</p>
+ ${radar(m.axes)}
+ <div>${axes}</div>`;
+
+ card.querySelectorAll('.axis').forEach(el=>{
+  el.onclick=()=>{S.axis=el.dataset.ax;render();};
+ });
+
+ if(S.axis){
+  const p=document.createElement("div");
+  p.className="panel";
+  p.innerHTML=`<strong>${S.axis}</strong><p>${AXIS_DEFS[S.axis]}</p>`;
+  card.appendChild(p);
+ }
+
+ main.appendChild(card);
+}
+
+function CompareView(){
+ main.innerHTML=`<div class="header-title">${S.a.name} vs ${S.b.name}</div>`;
+ [S.a,S.b].forEach(m=>{
+  const c=document.createElement("div");
+  c.className="card";
+  c.innerHTML=`${m.name}${radar(m.axes)}`;
+  main.appendChild(c);
+ });
+}
 
 function render(){
-  const main=document.getElementById('main');
-  const totalMaps=ERAS.reduce((n,e)=>n+e.maps.length,0);
-
-  if(S.page==='home'){
-    let h='<div class="page"><div class="pg-lbl">A Scholar's Companion</div><h1 style="font-weight:normal;font-size:clamp(1.3rem,3.5vw,2rem);color:var(--gold);margin-bottom:.4rem;line-height:1.2">Progress is a lie<br>maps tell about themselves.</h1><p style="font-size:.88rem;color:var(--faint);font-style:italic;margin-bottom:1.8rem;line-height:1.75">Every map that replaced another gained something and sacrificed something. '+totalMaps+' maps across '+ERAS.length+' eras.</p><div class="era-cards">';
-    ERAS.forEach(era=>{h+='<div class="era-card" style="border-left:2px solid '+era.hue+'30" onmouseover="this.style.background=''+era.hue+'14'" onmouseout="this.style.background=''" onclick="nav('era',''+era.id+'')"><div style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:'+era.hue+';margin-bottom:.2rem">'+esc(era.label)+'</div><div style="font-size:.63rem;color:var(--vfaint);font-style:italic;margin-bottom:.3rem">'+esc(era.years)+'</div><div style="font-size:.65rem;color:var(--faint)">'+era.maps.length+' maps</div></div>';});
-    h+='</div><div class="pg-lbl" style="margin-bottom:.6rem">The recurring trade-offs</div><div class="ten-grid">';
-    TENSIONS.forEach(t=>{h+='<div class="ten-cell"><div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.2rem"><span class="t-g">↑ '+esc(t.gain)+'</span><span style="font-size:.6rem;color:var(--vfaint)">vs</span><span class="t-l">↓ '+esc(t.loss)+'</span></div><div class="t-ex">'+esc(t.ex)+'</div></div>';});
-    h+='</div><p style="font-size:.77rem;color:var(--vfaint);line-height:1.8">Select an era or map from the sidebar. Use <strong style="color:var(--teal)">&#8644; Compare</strong> to analyse any two maps side by side.</p></div>';
-    main.innerHTML=h;
-
-  }else if(S.page==='era'){
-    const era=g(S.eraId);if(!era){nav('home');return;}
-    let h='<div class="page"><div class="pg-lbl" style="color:'+era.hue+'">Era Overview</div><h2 class="pg-title">'+esc(era.label)+' Cartography</h2><div class="pg-sub">'+esc(era.years)+'</div><p class="thesis">'+esc(era.thesis)+'</p>'+renderTO(era.gained,era.sacrificed)+'<div class="divider" style="background:linear-gradient(to right,'+era.hue+'50,transparent)"></div>'+renderStaticText(ERA_TEXT[era.id])+'<div style="height:1.8rem"></div><div class="pg-lbl">'+era.maps.length+' maps in this era</div><div class="map-grid">';
-    era.maps.forEach((map,mi)=>{h+='<div class="map-card" style="border-left-color:'+era.hue+'35" onmouseover="this.style.background=''+era.hue+'12'" onmouseout="this.style.background=''" onclick="nav('map',''+era.id+'','+mi+')"><div style="font-size:.75rem;color:var(--text);line-height:1.3;margin-bottom:.18rem">'+esc(map.name)+'</div><div style="font-size:.6rem;color:var(--vfaint);font-style:italic">'+esc(map.year)+' · '+esc(map.region)+'</div></div>';});
-    h+='</div></div>';main.innerHTML=h;
-
-  }else if(S.page==='map'){
-    const era=g(S.eraId);const map=era&&era.maps[S.mapIdx];if(!era||!map){nav('home');return;}
-    const sz=96;
-    let h='<div class="page"><div class="pg-lbl" style="color:'+era.hue+'">'+esc(era.label)+' · Map '+(S.mapIdx+1)+' of '+era.maps.length+'</div><h2 class="pg-title">'+esc(map.name)+'</h2><div class="pg-sub">'+esc(map.year)+' · '+esc(map.region)+'</div><div class="radar-wrap">'+renderRadar(map.axes,era.hue,sz)+'<div class="axes-list">'+AXES.map(ax=>{const v=map.axes[ax.id]||0;const op=S.openInline===ax.id;return '<div class="ax-row"><button class="ax-nb'+(op?' open':'')+'" onclick="toggleInlineDef(''+ax.id+'')">'+esc(ax.label)+'</button><div class="ax-dots">'+[1,2,3,4,5].map(i=>'<div class="adot" style="background:'+(i<=v?era.hue:'#1E1A14')+';border:1px solid '+(i<=v?era.hue+'80':'#2A2418')+'"></div>').join('')+'</div><span style="font-size:.57rem;color:var(--vfaint)">'+v+'/5</span></div>';}).join('')+'<div class="ax-hint">Click any label to define ↑</div></div></div><div id="idef-area"></div>'+renderTO(map.gained,map.sacrificed)+'<div class="divider" style="background:linear-gradient(to right,'+era.hue+'50,transparent)"></div>'+renderStaticText(MAP_TEXT[map.name])+'<div class="nav-btns"><button class="btn btn-ghost" onclick="nav('map',''+era.id+'','+(S.mapIdx-1)+')"'+(S.mapIdx===0?' disabled':'')+'>&#8592; Prev</button><button class="btn btn-ghost" onclick="nav('map',''+era.id+'','+(S.mapIdx+1)+')"'+(S.mapIdx===era.maps.length-1?' disabled':'')+'>Next &#8594;</button><div style="flex:1"></div><button class="btn btn-teal" onclick="startCmpFrom(''+map.name.replace(/'/g,"\'")+'')">⇄ Compare this map</button></div></div>';
-    main.innerHTML=h;
-
-  }else if(S.page==='compare'){
-    const a=S.cmpA,b=S.cmpB;if(!a||!b){nav('home');return;}
-    const ea=gEraForMap(a.name),eb=gEraForMap(b.name);
-    let h='<div class="page-wide"><div class="pg-lbl" style="color:var(--teal)">Trade-off Comparison</div><h2 style="font-weight:normal;font-size:1.35rem;color:var(--text);margin-bottom:1.4rem;line-height:1.3">'+esc(a.name)+' <span style="color:var(--vfaint);font-size:1rem">vs</span> '+esc(b.name)+'</h2><div class="cmp-cards">'+[{m:a,e:ea},{m:b,e:eb}].map(({m,e})=>'<div class="cmp-card" style="border:1px solid '+e.hue+'30;background:'+e.hue+'08"><div style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:'+e.hue+';margin-bottom:.25rem">'+esc(e.label)+'</div><div style="font-size:.88rem;color:var(--text);margin-bottom:.18rem">'+esc(m.name)+'</div><div style="font-size:.62rem;color:var(--vfaint);font-style:italic;margin-bottom:.8rem">'+esc(m.year)+'</div>'+renderRadar(m.axes,e.hue,80)+'</div>').join('')+'</div><div style="margin-bottom:1.2rem"><div class="pg-lbl" style="margin-bottom:.55rem">Axis by axis</div>'+AXES.map(ax=>{const va=a.axes[ax.id]||0,vb=b.axes[ax.id]||0,diff=vb-va;return '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.42rem"><span style="font-size:.58rem;color:var(--faint);width:90px;text-align:right;letter-spacing:.04em">'+ax.label+'</span><div style="display:flex;gap:3px">'+[1,2,3,4,5].map(i=>'<div style="width:9px;height:9px;border-radius:1px;background:'+(i<=va?ea.hue:'#1E1A14')+';border:1px solid '+(i<=va?ea.hue+'80':'#2A2418')+'"></div>').join('')+'</div><span style="font-size:.62rem;color:var(--vfaint);width:1.2rem;text-align:center">vs</span><div style="display:flex;gap:3px">'+[1,2,3,4,5].map(i=>'<div style="width:9px;height:9px;border-radius:1px;background:'+(i<=vb?eb.hue:'#1E1A14')+';border:1px solid '+(i<=vb?eb.hue+'80':'#2A2418')+'"></div>').join('')+'</div>'+(diff!==0?'<span class="'+(diff>0?'dp':'dn')+'">'+(diff>0?'+':'')+diff+'</span>':'')+'</div>';}).join('')+'</div>';
-
-    // Comparison text: look for stored text, or compose from both map texts
-    const keyA=a.name, keyB=b.name;
-    const tA=MAP_TEXT[keyA]||'', tB=MAP_TEXT[keyB]||'';
-    const cmpText='These two maps represent sharply different answers to the question of what a map is for.\n\n'+
-      esc(a.name)+' ('+esc(a.year)+', '+esc(a.region)+') — '+tA.split('\n\n')[0]+'\n\n'+
-      esc(b.name)+' ('+esc(b.year)+', '+esc(b.region)+') — '+tB.split('\n\n')[0]+'\n\n'+
-      'The axis comparison above makes the trade-off visible. Where one scores high, the other often scores low — not because one is better designed, but because they were made for entirely different purposes, by different cultures, in response to different needs. The history of cartography is not the story of maps getting progressively better. It is the story of different societies choosing different trade-offs, and calling their choice a map.';
-
-    h+='<div class="divider" style="background:linear-gradient(to right,var(--teal),transparent)"></div>'+renderStaticText(cmpText)+'<div class="nav-btns"><button class="btn btn-teal" onclick="resetCmp()">⇄ New comparison</button></div></div>';
-    main.innerHTML=h;
-  }
-  renderSidebar();
+ Sidebar();
+ main.innerHTML="";
+ if(S.page==="home") return Home();
+ const era=ERAS.find(e=>e.id===S.era);
+ if(!era) return Home();
+ if(S.page==="map") return MapView(era);
+ if(S.page==="compare") return CompareView();
 }
 
-function toggleMob(){
-  document.getElementById('sidebar').classList.toggle('mob-open');
-  document.getElementById('mob-bd').classList.toggle('show');
-}
-
-renderAxisStrip();renderCmpUI();render();
+// initial state
+S.page="home";
+render();
 </script>
 </body>
 </html>
