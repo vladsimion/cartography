@@ -3,18 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cartography — Production</title>
+<title>Cartography — Final</title>
 <style>
-:root{--bg:#0A0806;--card:#111;--text:#E0D0A8;--muted:#888;--gold:#C8A96E}
+:root{--bg:#0A0806;--card:#111;--text:#E0D0A8;--muted:#888;--gold:#C8A96E;--green:#88BB78;--red:#CC7755}
 body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui}
 #app{display:flex;height:100vh}
-#sidebar{width:280px;border-right:1px solid #222;overflow:auto}
+#sidebar{width:300px;border-right:1px solid #222;overflow:auto}
 #main{flex:1;padding:20px;overflow:auto}
 .row{padding:10px;border-bottom:1px solid #111;cursor:pointer}
 .row:hover{background:#15120c}
-.card{background:var(--card);padding:12px;border:1px solid #222;margin-bottom:12px}
-.btn{border:1px solid var(--gold);color:var(--gold);background:none;padding:6px 10px;cursor:pointer}
-.header{font-size:20px;margin-bottom:10px}
+.card{background:var(--card);padding:14px;border:1px solid #222;margin-bottom:14px}
+.btn{border:1px solid var(--gold);color:var(--gold);background:none;padding:6px 10px;cursor:pointer;margin-top:10px}
+.header{font-size:22px;margin-bottom:10px}
+.axis{cursor:pointer;color:var(--gold);margin-right:10px}
+.panel{border:1px solid #333;padding:10px;margin:10px 0;background:#0f0c08}
+.diff-pos{color:var(--green)}
+.diff-neg{color:var(--red)}
 </style>
 </head>
 <body>
@@ -27,35 +31,47 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui}
 // ===== AXES =====
 const AXES=["accuracy","usability","navigation","symbolism","politics","completeness","richness"];
 
-// ===== DATA (structure ready for full dataset) =====
+const AXIS_DEFS={
+ accuracy:"Geometric correctness.",
+ usability:"Ease of reading.",
+ navigation:"Movement guidance.",
+ symbolism:"Meaning beyond geography.",
+ politics:"Power and claims.",
+ completeness:"Scope.",
+ richness:"Layered info."
+};
+
+// ===== FULL DATA (compressed representative — extendable) =====
 const ERAS=[
 { id:"ancient",label:"Ancient",maps:[
- {name:"Babylonian World Map",year:"600 BCE",axes:{accuracy:1,usability:2,navigation:1,symbolism:5,politics:5,completeness:1,richness:3}},
- {name:"Ptolemy",year:"150 CE",axes:{accuracy:4,usability:2,navigation:2,symbolism:2,politics:3,completeness:3,richness:2}}
+ {name:"Babylonian World Map",year:"600 BCE",text:"Cosmological map.",axes:{accuracy:1,usability:2,navigation:1,symbolism:5,politics:5,completeness:1,richness:3}},
+ {name:"Ptolemy",year:"150 CE",text:"Coordinate system.",axes:{accuracy:4,usability:2,navigation:2,symbolism:2,politics:3,completeness:3,richness:2}}
+]},
+{ id:"medieval",label:"Medieval",maps:[
+ {name:"Hereford Mappa Mundi",year:"1300",text:"Symbolic world.",axes:{accuracy:1,usability:1,navigation:1,symbolism:5,politics:4,completeness:4,richness:5}}
 ]},
 { id:"modern",label:"Modern",maps:[
- {name:"Beck Tube",year:"1933",axes:{accuracy:1,usability:5,navigation:5,symbolism:3,politics:1,completeness:2,richness:2}},
- {name:"Google Maps",year:"2005",axes:{accuracy:5,usability:5,navigation:5,symbolism:1,politics:4,completeness:4,richness:2}}
+ {name:"Beck Tube",year:"1933",text:"Topological clarity.",axes:{accuracy:1,usability:5,navigation:5,symbolism:3,politics:1,completeness:2,richness:2}},
+ {name:"Google Maps",year:"2005",text:"Real-time navigation.",axes:{accuracy:5,usability:5,navigation:5,symbolism:1,politics:4,completeness:4,richness:2}}
 ]}
 ];
 
 // ===== STATE =====
-const S={page:"home",era:null,map:null,cmp:false,a:null,b:null};
+const S={page:"home",era:null,map:null,cmp:false,a:null,b:null,axis:null};
 
-// ===== DOM =====
 const sidebar=document.getElementById("sidebar");
 const main=document.getElementById("main");
 
 // ===== RADAR =====
 function radar(data){
- const size=120,c=size/2,r=45;
+ const size=140,c=size/2,r=50;
  const pts=AXES.map((ax,i)=>{
   const ang=(Math.PI*2*i)/AXES.length-Math.PI/2;
   const val=(data[ax]||0)/5;
   return [c+r*val*Math.cos(ang),c+r*val*Math.sin(ang)].join(",");
  }).join(" ");
  return `<svg width="${size}" height="${size}">
-  <polygon points="${pts}" fill="rgba(200,169,110,0.2)" stroke="${"#C8A96E"}"/>
+  <polygon points="${pts}" fill="rgba(200,169,110,0.2)" stroke="#C8A96E"/>
  </svg>`;
 }
 
@@ -66,7 +82,7 @@ function Sidebar(){
   const e=document.createElement("div");
   e.className="row";
   e.textContent=era.label;
-  e.addEventListener("click",()=>{S.page="era";S.era=era.id;render();});
+  e.onclick=()=>{S.page="era";S.era=era.id;render();};
   sidebar.appendChild(e);
 
   era.maps.forEach((m,i)=>{
@@ -74,10 +90,10 @@ function Sidebar(){
    el.className="row";
    el.style.paddingLeft="20px";
    el.textContent=m.name;
-   el.addEventListener("click",()=>{
+   el.onclick=()=>{
     if(S.cmp){cmpSelect(m);return;}
     S.page="map";S.era=era.id;S.map=i;render();
-   });
+   };
    sidebar.appendChild(el);
   });
  });
@@ -89,32 +105,42 @@ function cmpSelect(m){
  if(!S.b){S.b=m;S.page="compare";S.cmp=false;render();}
 }
 
+// ===== AXIS PANEL =====
+function AxisPanel(){
+ if(!S.axis) return "";
+ return `<div class='panel'><strong>${S.axis}</strong><p>${AXIS_DEFS[S.axis]}</p></div>`;
+}
+
 // ===== VIEWS =====
 function Home(){
- main.innerHTML="<div class='header'>Select an era</div>";
+ main.innerHTML="<div class='header'>Cartography Explorer</div><p>Select an era</p>";
 }
 
 function EraView(era){
  main.innerHTML=`<div class='header'>${era.label}</div>`;
- era.maps.forEach((m,i)=>{
-  const btn=document.createElement("button");
-  btn.className="btn";
-  btn.textContent=m.name;
-  btn.addEventListener("click",()=>{S.page="map";S.map=i;render();});
-  main.appendChild(btn);
- });
 }
 
 function MapView(era){
  const m=era.maps[S.map];
+ const axesHtml=AXES.map(ax=>`<span class='axis' data-ax='${ax}'>${ax}</span>`).join("");
+
  const card=document.createElement("div");
  card.className="card";
- card.innerHTML=`<div class='header'>${m.name}</div><div>${m.year}</div>${radar(m.axes)}`;
+ card.innerHTML=`<div class='header'>${m.name}</div>
+ <div>${m.year}</div>
+ <p>${m.text}</p>
+ ${radar(m.axes)}
+ <div>${axesHtml}</div>
+ ${AxisPanel()}`;
+
+ card.querySelectorAll('.axis').forEach(el=>{
+  el.onclick=()=>{S.axis=el.dataset.ax;render();};
+ });
 
  const cmp=document.createElement("button");
  cmp.className="btn";
  cmp.textContent="Compare";
- cmp.addEventListener("click",()=>{S.cmp=true;S.a=m;});
+ cmp.onclick=()=>{S.cmp=true;S.a=m;};
 
  card.appendChild(cmp);
  main.appendChild(card);
@@ -126,14 +152,29 @@ function CompareView(){
  [S.a,S.b].forEach(m=>{
   const c=document.createElement("div");
   c.className="card";
-  c.innerHTML=`${m.name}${radar(m.axes)}`;
+  c.innerHTML=`<strong>${m.name}</strong>${radar(m.axes)}`;
   main.appendChild(c);
  });
+
+ // ===== ANALYSIS =====
+ const analysis=document.createElement("div");
+ analysis.className="card";
+
+ let html="<strong>Axis Differences</strong><br>";
+ AXES.forEach(ax=>{
+  const diff=(S.b.axes[ax]||0)-(S.a.axes[ax]||0);
+  if(diff!==0){
+    html+=`${ax}: <span class='${diff>0?"diff-pos":"diff-neg"}'>${diff>0?"+":""}${diff}</span><br>`;
+  }
+ });
+
+ analysis.innerHTML=html;
+ main.appendChild(analysis);
 
  const reset=document.createElement("button");
  reset.className="btn";
  reset.textContent="Reset";
- reset.addEventListener("click",()=>{S.page="home";S.a=null;S.b=null;render();});
+ reset.onclick=()=>{S.page="home";S.a=null;S.b=null;render();};
  main.appendChild(reset);
 }
 
