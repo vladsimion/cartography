@@ -4,600 +4,162 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cartography &amp; Its Trade-offs</title>
-  <meta name="description" content="A non-linear history of cartography — 39 maps, 7 eras, and the trade-offs that shaped how humanity understood the world." />
   <style>
     :root{--bg:#0A0806;--bg-card:#0E0B07;--border:#1E1A12;--border-mid:#2A2418;--text:#E0D0A8;--muted:#A09060;--faint:#6A5830;--vfaint:#3A2E18;--gold:#C8A96E;--green:#88BB78;--red:#CC7755;--teal:#5AABAB;--font:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;--r:2px;--t:0.15s ease}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{font-size:16px;scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;height:100vh;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;height:100vh;display:flex;flex-direction:column;overflow:hidden}
     button{cursor:pointer;font-family:inherit;background:none;border:none}
-    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px}
     #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-    #header{padding:1.2rem 1.8rem 0.9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;flex-shrink:0;background:var(--bg);position:sticky;top:0;z-index:100}
+    #header{padding:1.2rem 1.8rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     #axis-strip{padding:.45rem 1.8rem;border-bottom:1px solid var(--border);display:flex;gap:.2rem;flex-wrap:wrap;align-items:center;flex-shrink:0}
-    #cmp-banner{padding:.55rem 1.8rem;background:#0D1A1A;border-bottom:1px solid #1A3030;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;flex-shrink:0;animation:slideDown .2s ease}
     #body{display:flex;flex:1;min-height:0}
-    #sidebar{width:280px;min-width:220px;max-width:320px;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
-    #main{flex:1;overflow-y:auto;padding:2.2rem 2.2rem 4rem}
-    .logo{cursor:pointer}.logo-sub{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--vfaint);margin-bottom:.2rem}
-    .logo-title{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:normal;letter-spacing:.05em}
-    .btn{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .9rem;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;border-radius:var(--r);border:1px solid currentColor;transition:background var(--t),color var(--t);white-space:nowrap}
-    .btn-teal{color:var(--teal)}.btn-teal.active{background:var(--teal);color:var(--bg)}
-    .btn-ghost{color:var(--faint);border-color:var(--border-mid)}.btn-ghost:hover{color:var(--muted)}
-    .btn:disabled{opacity:.35;cursor:default}
-    .ax-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--vfaint);margin-right:.4rem}
-    .ax-btn{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .4rem;color:var(--faint);border-bottom:1px solid transparent;transition:all var(--t)}.ax-btn.active{color:var(--text);border-bottom:1px solid var(--gold)}
-    .ax-help{font-size:.52rem;color:var(--vfaint);padding:.1rem .18rem;transition:color var(--t)}.ax-help.open,.ax-help:hover{color:var(--gold)}
-    #def-panel{background:#0D0B07;border-bottom:1px solid var(--border-mid);padding:1rem 1.8rem;animation:slideDown .2s ease;flex-shrink:0}
-    .def-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;max-width:860px}
-    .def-what{grid-column:1/3}.def-label{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
-    .def-p{font-size:.76rem;color:var(--muted);line-height:1.7;margin-bottom:.5rem}
-    .def-tension{padding:.6rem .8rem;background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--red);border-radius:var(--r)}
-    .def-tl{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:.2rem}
-    .def-tp{font-size:.71rem;color:#8A7040;line-height:1.6}
-    .rub-row{display:flex;gap:.5rem;margin-bottom:.4rem;align-items:flex-start}
-    .rub-dots{display:flex;gap:2px;flex-shrink:0;padding-top:2px}
-    .rdot{width:5px;height:5px;border-radius:1px}
-    .rub-txt{font-size:.61rem;color:var(--faint);line-height:1.4}.rub-lbl{color:var(--gold)}
-    .era-row{padding:.8rem 1.2rem;cursor:pointer;border-left:3px solid transparent;transition:background var(--t)}
-    .era-row.active{border-left-color:var(--era-hue,var(--gold));background:rgba(200,169,110,.08)}
-    .era-tag{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
-    .era-yrs{font-size:.63rem;color:var(--vfaint);font-style:italic;margin-top:.1rem}
-    .era-th{font-size:.66rem;color:#8A7848;margin-top:.3rem;line-height:1.4}
-    .era-ct{font-size:.56rem;color:var(--vfaint)}
-    .map-row{padding:.5rem 1.2rem .5rem 1.7rem;cursor:pointer;border-left:3px solid transparent;border-bottom:1px solid #0E0A06;display:flex;justify-content:space-between;align-items:flex-start;transition:background var(--t)}
-    .map-row.active{border-left-color:var(--era-hue,var(--gold));background:rgba(200,169,110,.1)}
-    .map-row.cmp-a{border-left-color:var(--teal)}
-    .map-nm{font-size:.71rem;color:var(--text);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:185px}
-    .map-mt{font-size:.58rem;color:var(--vfaint);margin-top:.12rem}
-    .cmp-badge{font-size:.5rem;background:var(--teal);color:var(--bg);padding:0 .28rem;border-radius:1px}
-    .ax-sc{font-size:.6rem;font-weight:bold}
-    .connector{margin-left:1.4rem;height:.5rem;border-left:1px dashed var(--border)}
-    .page{animation:fadeIn .22s ease;max-width:700px}
-    .page-wide{animation:fadeIn .22s ease;max-width:760px}
-    .pg-lbl{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:.38rem}
-    .pg-title{font-weight:normal;font-size:1.65rem;color:var(--text);margin-bottom:.2rem}
-    .pg-sub{font-size:.73rem;color:var(--vfaint);font-style:italic;margin-bottom:1.2rem}
-    .thesis{font-size:.8rem;color:var(--faint);line-height:1.75;font-style:italic;border-left:2px solid rgba(200,169,110,.25);padding-left:.85rem;margin-bottom:1.1rem}
-    .divider{height:1px;background:linear-gradient(to right,rgba(200,169,110,.4),transparent);margin:1.4rem 0}
-    .tradeoff{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.1rem}
-    .to-col{flex:1;min-width:170px}
-    .to-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
-    .pill{display:inline-flex;align-items:flex-start;gap:.3rem;padding:.28rem .6rem;font-size:.68rem;line-height:1.4;border-radius:var(--r);margin:0 .3rem .3rem 0}
-    .pill-g{background:#1A2A18;border:1px solid #3A5A30;color:var(--green)}
-    .pill-s{background:#2A1A18;border:1px solid #5A3020;color:var(--red)}
-    .radar-wrap{display:flex;gap:1.8rem;align-items:flex-start;margin-bottom:1.4rem;flex-wrap:wrap}
-    .axes-list{flex:1;min-width:200px}
-    .ax-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.42rem}
-    .ax-nb{font-size:.58rem;color:var(--faint);width:86px;text-align:right;padding:0;transition:color var(--t);cursor:pointer;letter-spacing:.04em}
-    .ax-nb.open,.ax-nb:hover{color:var(--gold);text-decoration:underline}
+    #sidebar{width:280px;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+    #main{flex:1;overflow-y:auto;padding:2.2rem}
+    .btn{display:inline-flex;align-items:center;padding:.35rem .9rem;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid currentColor;color:var(--teal)}
+    .ax-btn{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .4rem;color:var(--faint);transition:all var(--t)}
+    .ax-btn:hover, .ax-btn.active{color:var(--gold)}
+    #def-panel{background:#0D0B07;border-bottom:1px solid var(--border-mid);padding:1rem 1.8rem;display:none}
+    .era-row{padding:.8rem 1.2rem;cursor:pointer;border-left:3px solid transparent}
+    .era-row.active{background:rgba(200,169,110,.08);border-left-color:var(--gold)}
+    .map-row{padding:.5rem 1.2rem .5rem 1.7rem;cursor:pointer;border-bottom:1px solid #0E0A06}
+    .map-row.active{background:rgba(200,169,110,.1)}
     .ax-dots{display:flex;gap:3px}
-    .adot{width:9px;height:9px;border-radius:1px}
-    .ax-hint{font-size:.56rem;color:var(--vfaint);font-style:italic;margin-top:.3rem}
-    .inline-def{background:#0D0B07;border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem;animation:slideDown .18s ease}
-    .idef-lbl{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.28rem}
-    .idef-p{font-size:.72rem;color:var(--muted);line-height:1.65;margin-bottom:.4rem}
-    .idef-ten{font-size:.68rem;color:var(--faint);font-style:italic;line-height:1.55;margin-bottom:.4rem}
-    .idef-rub{display:flex;gap:.6rem;flex-wrap:wrap}
-    .idef-ri{font-size:.58rem;color:var(--faint)}.idef-rs{color:var(--gold)}
-    .static-text{line-height:1.85;color:var(--muted);font-size:.88rem}
-    .static-text p{margin-bottom:1.1rem}
-    .era-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem}
-    .era-card{background:var(--bg-card);padding:1rem 1.1rem;cursor:pointer;transition:background var(--t)}
-    .ten-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.8rem}
-    .ten-cell{background:var(--bg-card);padding:.8rem 1rem}
-    .t-g{font-size:.61rem;color:var(--green)}.t-l{font-size:.61rem;color:var(--red)}.t-ex{font-size:.64rem;color:var(--vfaint);font-style:italic;margin-top:.22rem}
-    .map-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:.5rem}
-    .map-card{background:var(--bg-card);padding:.9rem 1rem;cursor:pointer;transition:background var(--t);border-left:2px solid transparent}
-    .cmp-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.3rem}
-    .cmp-card{padding:1.1rem;border-radius:var(--r)}
-    .dp{font-size:.58rem;color:var(--green)}.dn{font-size:.58rem;color:var(--red)}
-    .nav-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--border)}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-    @keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
-    @media(max-width:680px){
-      #sidebar{display:none}
-      #sidebar.mob-open{display:block;position:fixed;top:0;left:0;width:80vw;height:100vh;z-index:200;box-shadow:4px 0 20px rgba(0,0,0,.7)}
-      #mob-bd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199}
-      #mob-bd.show{display:block}
-      #main{padding:1.4rem 1.2rem 3rem}
-      .def-grid{grid-template-columns:1fr}.def-what{grid-column:1/2}
-      .cmp-cards{grid-template-columns:1fr}
-    }
-    @media(min-width:681px){#mob-btn{display:none!important}}
+    .adot{width:9px;height:9px;border-radius:1px;background:var(--vfaint)}
+    .adot.on{background:var(--gold)}
+    .pill{display:inline-flex;padding:.28rem .6rem;font-size:.68rem;border-radius:var(--r);margin-right:.3rem}
+    .pill-g{background:#1A2A18;color:var(--green);border:1px solid #3A5A30}
+    .pill-s{background:#2A1A18;color:var(--red);border:1px solid #5A3020}
   </style>
 </head>
 <body>
 <div id="app">
   <header id="header">
     <div class="logo" onclick="nav('home')">
-      <div class="logo-sub">Non-Linear History of</div>
-      <div class="logo-title">Cartography &amp; Its Trade-offs</div>
+      <div style="font-size:.58rem;color:var(--vfaint)">Non-Linear History of</div>
+      <div style="font-size:1.5rem">Cartography &amp; Its Trade-offs</div>
     </div>
-    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
-      <span id="cmp-status" style="font-size:.62rem;color:var(--teal);display:none"></span>
-      <button class="btn btn-teal" id="cmp-btn" onclick="toggleCmp()">&#8644; Compare</button>
-      <button class="btn btn-ghost" id="mob-btn" onclick="toggleMob()">&#9776;</button>
-    </div>
+    <button class="btn" onclick="toggleCmp()">⇄ Compare</button>
   </header>
   <div id="axis-strip"></div>
-  <div id="def-panel" style="display:none"></div>
-  <div id="cmp-banner" style="display:none">
-    <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)">Compare mode</span>
-    <span id="cmp-msg" style="font-size:.76rem;color:#6AABAB"></span>
-    <button class="btn btn-ghost" onclick="toggleCmp()" style="margin-left:auto;font-size:.58rem">Cancel</button>
-  </div>
+  <div id="def-panel"></div>
   <div id="body">
     <nav id="sidebar"></nav>
-    <div id="mob-bd" onclick="toggleMob()"></div>
     <main id="main"></main>
   </div>
 </div>
+
 <script>
 const AXES = [
-  { id: "accuracy",    label: "Accuracy",     icon: "◎" },
-  { id: "usability",   label: "Usability",    icon: "◈" },
-  { id: "navigation",  label: "Navigation",   icon: "◇" },
-  { id: "symbolism",   label: "Symbolism",    icon: "◉" },
-  { id: "politics",    label: "Politics",     icon: "◆" },
-  { id: "completeness",label: "Completeness", icon: "○" },
-  { id: "richness",    label: "Richness",     icon: "◐" },
+  { id: "accuracy", label: "Accuracy" },
+  { id: "usability", label: "Usability" },
+  { id: "navigation", label: "Navigation" },
+  { id: "symbolism", label: "Symbolism" },
+  { id: "politics", label: "Politics" },
+  { id: "completeness",label: "Completeness" },
+  { id: "richness", label: "Richness" }
 ];
+
+const AXIS_DEFS = {
+  accuracy: "Geometric precision and spatial truth. High accuracy means the map reflects real-world coordinates and distances.",
+  usability: "How easily a person can read and interpret the map for its intended purpose.",
+  navigation: "The utility of the map for getting from Point A to Point B.",
+  symbolism: "The depth of meaning, religious framing, or artistic representation within the map.",
+  politics: "The degree to which the map asserts power, claims territory, or centers a specific worldview.",
+  completeness: "The total geographic area or amount of information covered.",
+  richness: "The density of detail, annotations, and cultural information provided."
+};
 
 const ERAS = [
   {
-    id: "ancient", label: "Ancient", years: "6200 BCE – 400 CE", hue: "#C8A96E",
-    thesis: "The first maps were not tools of navigation — they were tools of ownership, cosmology, and power. Precision was irrelevant; claim was everything.",
-    gained: ["Conceptual framework for representing space", "Mathematical projection (Ptolemy)", "Political assertion of territorial ownership"],
-    sacrificed: ["Local ecological knowledge", "Oral geographic tradition", "Navigational practicality"],
+    id: "ancient", label: "Ancient", years: "6200 BCE – 400 CE",
     maps: [
-      {
-        name: "Çatalhöyük Wall Painting", year: "c. 6200 BCE", region: "Anatolia",
-        gained: ["Oldest known spatial representation of settlement and landscape", "Integration of human settlement with volcanic topography", "Pictorial convention for representing place"],
-        sacrificed: ["Scale or distance accuracy", "Any navigational utility", "Portability or reproducibility"],
-        axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 4 },
-      },
-      {
-        name: "Babylonian World Map (Imago Mundi)", year: "c. 600 BCE", region: "Mesopotamia",
-        gained: ["First known schematic world map", "Explicit cosmological and mythological framing", "Written cuneiform annotations naming distant regions"],
-        sacrificed: ["All geographic accuracy beyond Mesopotamia", "Navigational utility", "Non-Babylonian geographic worldviews"],
-        axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 5, completeness: 1, richness: 3 },
-      },
-      {
-        name: "Anaximander's World Map", year: "c. 550 BCE", region: "Greece",
-        gained: ["First Greek world map — the prototype of Western cosmological mapping", "Ocean-ringed circular disc that framed all European cartography for a millennium", "Separated geography from mythology as an intellectual discipline"],
-        sacrificed: ["All geographic accuracy", "Any coverage beyond the Mediterranean and Near East", "Navigational utility of any kind"],
-        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 2, completeness: 1, richness: 3 },
-      },
-      {
-        name: "Eratosthenes' World Map", year: "c. 194 BCE", region: "Alexandria",
-        gained: ["First map based on a calculated Earth circumference — accurate to within 2%", "Grid of parallels and meridians grounded in astronomical observation", "Correct proportions of the known world — better than Ptolemy in some regions"],
-        sacrificed: ["Coverage beyond the Mediterranean and Near East", "Navigational readability for sailors", "Survival — known only through later descriptions"],
-        axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 1, politics: 1, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Tabula Peutingeriana", year: "c. 300 CE (medieval copy)", region: "Roman Empire",
-        gained: ["Comprehensive road network of the entire Roman Empire", "Distances between stations annotated throughout", "Practical itinerary tool for administration and military"],
-        sacrificed: ["Geographic shape (extremely elongated east-west to fit a scroll)", "Any spatial accuracy of landmasses", "Non-Roman territories and peoples"],
-        axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 3, politics: 5, completeness: 4, richness: 3 },
-      },
-      {
-        name: "Ptolemy's World Map", year: "c. 150 CE", region: "Roman Egypt",
-        gained: ["Systematic latitude/longitude coordinate system", "Conical and spherical projection theory", "Reproducible framework — locations given as coordinates"],
-        sacrificed: ["Navigational readability for sailors", "Accuracy east of Persia and in sub-Saharan Africa", "Enclosed Indian Ocean (a damaging error repeated for centuries)"],
-        axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 2, politics: 3, completeness: 3, richness: 2 },
-      },
-    ],
+      { name: "Babylonian World Map", year: "c. 600 BCE", region: "Mesopotamia", gained: ["Cosmological framing"], sacrificed: ["Geometric accuracy"], axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 5, completeness: 1, richness: 3 } },
+      { name: "Ptolemy's World Map", year: "c. 150 CE", region: "Roman Egypt", gained: ["Coordinate system"], sacrificed: ["Navigational readability"], axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 2, politics: 3, completeness: 3, richness: 2 } }
+    ]
   },
   {
-    id: "medieval", label: "Medieval", years: "400 – 1450 CE", hue: "#7B9E6B",
-    thesis: "Medieval maps were not failed attempts at accuracy — they were successful cosmologies. The world was mapped as it meant, not as it measured.",
-    gained: ["Moral and theological layering of geography", "Integration of time, history, and myth into space", "Encyclopedic annotation density unmatched before or since"],
-    sacrificed: ["Ptolemaic coordinate precision (deliberately set aside)", "Navigational usefulness for most maps", "Geometric consistency"],
+    id: "modern", label: "Modern", years: "1800 – 1970 CE",
     maps: [
-      {
-        name: "T-O Map (Isidore of Seville)", year: "c. 600–1300 CE", region: "Europe",
-        gained: ["Simplest and most politically powerful diagram in cartographic history", "Three strokes dividing the world into Asia (top), Europe (left), Africa (right)", "Template for all European medieval world maps — reproduced thousands of times"],
-        sacrificed: ["All geographic accuracy", "Any navigational function", "Non-Christian and non-European worldviews"],
-        axes: { accuracy: 1, usability: 3, navigation: 1, symbolism: 5, politics: 5, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Al-Balkhi School Maps (KMMS)", year: "c. 900–1000 CE", region: "Islamic World",
-        gained: ["World mapped by political and religious boundaries, not geography", "Abstract geometric forms — squares, circles, straight lines — for rivers and coasts", "Deliberately prioritised Muslim administrative reality over physical space"],
-        sacrificed: ["Geographic accuracy entirely — consciously rejected", "Non-Muslim territories (shown as blank or marginal)", "Coverage of Europe, sub-Saharan Africa, East Asia"],
-        axes: { accuracy: 1, usability: 4, navigation: 3, symbolism: 5, politics: 5, completeness: 2, richness: 3 },
-      },
-      {
-        name: "Al-Idrisi's Tabula Rogeriana", year: "1154 CE", region: "Sicily / Islamic World",
-        gained: ["Most geographically accurate world map of its era", "Synthesis of Greek, Arab, Persian, and traveler knowledge", "South-oriented layout that challenged European convention"],
-        sacrificed: ["Christian cosmological framing", "Accurate sub-Saharan Africa and Pacific coverage", "Widespread adoption — largely unknown in Europe for centuries"],
-        axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 3, completeness: 3, richness: 4 },
-      },
-      {
-        name: "Hereford Mappa Mundi", year: "c. 1300 CE", region: "England",
-        gained: ["700+ annotated places combining geography, history, and scripture", "Jerusalem as the spiritual and geometric center of the world", "Visual encyclopedia of the known world in a single image"],
-        sacrificed: ["Geographic accuracy", "Any navigational function", "Non-Christian geographic worldviews and peoples"],
-        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 4, completeness: 4, richness: 5 },
-      },
-      {
-        name: "Ebstorf Map", year: "c. 1234 CE (destroyed 1943)", region: "Germany",
-        gained: ["Largest medieval mappa mundi ever made (3.6m × 3.6m)", "Christ's body literally framing the world — head, hands, feet at the margins", "Over 1,500 place annotations, illustrations, and legends"],
-        sacrificed: ["Geographic accuracy entirely", "Portability or practical use", "Survival — destroyed in WWII bombing"],
-        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 5, richness: 5 },
-      },
-      {
-        name: "Portolan Charts", year: "c. 1275–1500 CE", region: "Mediterranean",
-        gained: ["Highly accurate Mediterranean and Black Sea coastlines", "Dense network of rhumb lines for compass bearing navigation", "Practical utility for sailors — the first 'working' maps"],
-        sacrificed: ["Interior land detail entirely", "Cosmological or narrative meaning", "Coverage beyond known sailing routes"],
-        axes: { accuracy: 4, usability: 5, navigation: 5, symbolism: 1, politics: 2, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Fra Mauro World Map", year: "c. 1450 CE", region: "Venice",
-        gained: ["Most geographically ambitious pre-Columbian European world map", "Africa shown as circumnavigable — anticipating Dias by 40 years", "Synthesis of Ptolemy, Arab geography, Marco Polo, and merchant reports"],
-        sacrificed: ["Ptolemaic coordinate system (rejected deliberately)", "Consistent scale across regions", "The enclosed Indian Ocean error — Fra Mauro correctly rejected it"],
-        axes: { accuracy: 4, usability: 2, navigation: 3, symbolism: 4, politics: 3, completeness: 5, richness: 5 },
-      },
-    ],
+      { name: "Beck's London Underground Map", year: "1933", region: "England", gained: ["Topological clarity"], sacrificed: ["Geographic truth"], axes: { accuracy: 1, usability: 5, navigation: 5, symbolism: 3, politics: 1, completeness: 2, richness: 2 } },
+      { name: "Peters Projection", year: "1973", region: "Germany", gained: ["Equal-area representation"], sacrificed: ["Shape accuracy"], axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 4, politics: 5, completeness: 4, richness: 2 } }
+    ]
   },
   {
-    id: "eastasian", label: "East Asian & Pacific", years: "1300 – 1700 CE", hue: "#C47A7A",
-    thesis: "While Europe was rediscovering Ptolemy, China and Korea were making world maps of comparable or greater scope — and Pacific islanders were encoding oceanic knowledge in forms Europeans couldn't recognise as maps at all.",
-    gained: ["Non-Eurocentric world maps of extraordinary completeness", "Tactile and embodied navigation knowledge (Pacific)", "Integration of Islamic, Chinese, and indigenous geographic traditions"],
-    sacrificed: ["Global influence — none of these traditions shaped the cartographic mainstream", "Survival in many cases — Chinese maps were rarely preserved as prestige objects", "Recognition — Western scholarship ignored these traditions for centuries"],
+    id: "digital", label: "Digital Era", years: "1970 – Present",
     maps: [
-      {
-        name: "Da Ming Hunyi Tu", year: "1389", region: "China",
-        gained: ["One of the oldest surviving East Asian world maps", "Shows Africa, Europe, and the Middle East — before European contact with most of these regions", "China correctly scaled as the dominant landmass at centre"],
-        sacrificed: ["Accuracy of Africa and Europe (highly distorted)", "Coverage of the Americas (unknown)", "Western adoption — it circulated only within the Chinese imperial tradition"],
-        axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 4, politics: 5, completeness: 4, richness: 4 },
-      },
-      {
-        name: "Kangnido Map", year: "1402", region: "Korea",
-        gained: ["First Korean world map — synthesises Chinese, Islamic, and Korean geographic sources", "Shows Africa as a peninsula 90 years before Dias rounded the Cape", "Predates European cartographic knowledge of the same regions by decades"],
-        sacrificed: ["The Americas (entirely absent)", "Consistent scale — Korea is dramatically oversized", "Western cartographic influence — developed entirely independently"],
-        axes: { accuracy: 3, usability: 2, navigation: 2, symbolism: 3, politics: 4, completeness: 4, richness: 4 },
-      },
-      {
-        name: "Zheng He / Mao Kun Chart", year: "c. 1430", region: "China",
-        gained: ["Nautical chart of the largest maritime expeditions in pre-modern history", "Routes from China to East Africa, Arabia, and Southeast Asia", "Proof that ocean exploration does not require or produce European-style cartography"],
-        sacrificed: ["Accurate coastal shapes (strip-chart format, not spatial)", "The Americas — Zheng He never reached them", "Global influence — China turned inward; the charts were suppressed"],
-        axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 2, politics: 4, completeness: 3, richness: 3 },
-      },
-      {
-        name: "Marshall Islands Stick Charts", year: "Pre-colonial – present", region: "Micronesia / Pacific",
-        gained: ["Encodes ocean swell patterns, island positions, and wave deflection — information invisible to European sailors", "Navigation by feel, not sight — a wholly different epistemology of space", "Still in use and transmitted as living knowledge"],
-        sacrificed: ["Visual representation entirely — these are tactile, not pictorial", "Any geographic accuracy in the European sense", "Recognition as 'maps' by Western cartographic tradition until the 20th century"],
-        axes: { accuracy: 2, usability: 5, navigation: 5, symbolism: 5, politics: 1, completeness: 2, richness: 5 },
-      },
-      {
-        name: "Matteo Ricci's Kunyu Wanguo Quantu", year: "1602", region: "China / Jesuit",
-        gained: ["First European-style world map in Chinese — showing the Americas to a Chinese audience", "Placed China near the centre, bridging European projection with Chinese cosmological expectation", "Synthesis of two entirely separate cartographic civilisations in a single object"],
-        sacrificed: ["Pure Ptolemaic projection — deliberately modified to not offend Chinese cosmology", "Consistent treatment of scale across continents", "Broad circulation — printed in limited copies, suppressed after Ricci's death"],
-        axes: { accuracy: 4, usability: 3, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 4 },
-      },
-    ],
-  },
-  {
-    id: "renaissance", label: "Renaissance", years: "1400 – 1600 CE", hue: "#7A8FC4",
-    thesis: "Renaissance cartography didn't discover the world — it claimed it. Accuracy and imperial power advanced in lockstep, inseparably.",
-    gained: ["Printed map distribution at scale", "New World incorporated into European geographic imagination", "Projection mathematics for global mapping"],
-    sacrificed: ["Indigenous geographic knowledge systems", "Symbolic and cosmological depth", "Honest representation of uncertainty and blank space"],
-    maps: [
-      {
-        name: "Cantino Planisphere", year: "1502", region: "Portugal",
-        gained: ["First map showing Portuguese discoveries in Africa, Brazil, and India", "Tordesillas Treaty line drawn for the first time", "Accurate West African coastline from decades of Portuguese exploration"],
-        sacrificed: ["North American interior (depicted as islands)", "Any coverage of the Pacific", "Public availability — it was a state secret, smuggled to Italy"],
-        axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 2, politics: 5, completeness: 3, richness: 3 },
-      },
-      {
-        name: "Waldseemüller Map (Universalis Cosmographia)", year: "1507", region: "Germany",
-        gained: ["First map to name 'America' — and to show it as a separate continent", "Printed in 1,000 copies — first mass-distributed world map", "Pacific Ocean implied for the first time"],
-        sacrificed: ["Indigenous names, geographies, and peoples entirely", "Pacific Ocean scale (drastically underestimated)", "Consistency — Waldseemüller later retracted 'America' but the name stuck"],
-        axes: { accuracy: 3, usability: 3, navigation: 3, symbolism: 2, politics: 5, completeness: 3, richness: 3 },
-      },
-      {
-        name: "Piri Reis Map", year: "1513", region: "Ottoman Empire",
-        gained: ["Synthesis of 20+ source maps including Columbus's own charts", "Accurate Atlantic coastlines of Africa and South America", "First Ottoman world map — non-European cartographic perspective on the New World"],
-        sacrificed: ["Pacific and Asian coverage (largely absent)", "Consistent scale across the map", "Survival of complete original — only a fragment remains"],
-        axes: { accuracy: 4, usability: 3, navigation: 3, symbolism: 3, politics: 4, completeness: 2, richness: 4 },
-      },
-      {
-        name: "Mercator's World Map", year: "1569", region: "Flanders",
-        gained: ["Conformal projection — rhumb lines as straight lines for ocean navigation", "Global navigational standard for 400 years", "Consistent angular representation across the entire globe"],
-        sacrificed: ["Area proportionality — Africa and South America severely shrunk", "Accurate polar regions", "Non-Eurocentric spatial framing baked into global consciousness"],
-        axes: { accuracy: 3, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 2 },
-      },
-      {
-        name: "Ortelius's Theatrum Orbis Terrarum", year: "1570", region: "Antwerp",
-        gained: ["First modern commercial atlas — 70 maps, standardized format", "Full bibliography crediting 87 cartographers — first academic citation in mapping", "Accessible to educated public, not just rulers and sailors"],
-        sacrificed: ["Cutting-edge accuracy (compiled and simplified from others)", "Unpublished local and indigenous knowledge", "Symbolic richness of the manuscript tradition"],
-        axes: { accuracy: 3, usability: 5, navigation: 3, symbolism: 2, politics: 3, completeness: 4, richness: 3 },
-      },
-      {
-        name: "Blaeu's Atlas Maior", year: "1662", region: "Amsterdam",
-        gained: ["Most lavish atlas ever produced — 600 maps, hand-coloured", "Pinnacle of Dutch Golden Age cartographic art", "Comprehensive global coverage with decorative borders and city views"],
-        sacrificed: ["Accuracy (many maps already outdated on publication)", "Portability — 11 volumes", "Affordability — cost of a luxury house"],
-        axes: { accuracy: 3, usability: 2, navigation: 3, symbolism: 5, politics: 3, completeness: 5, richness: 5 },
-      },
-    ],
-  },
-  {
-    id: "scientific", label: "Scientific Age", years: "1600 – 1800 CE", hue: "#B07AB0",
-    thesis: "The Scientific Revolution made maps more precisely wrong in new ways — confident geometries replacing honest blank spaces with false certainty.",
-    gained: ["Triangulation-based geodetic surveys", "Astronomical coordinate verification at scale", "Systematic national geographic coverage for the first time"],
-    sacrificed: ["Honest blank spaces (terra incognita replaced by guesswork)", "Local ecological, cultural, and oral geographic annotation", "Cosmological or narrative framing of any kind"],
-    maps: [
-      {
-        name: "Coronelli's Globe Pair", year: "1681–1683", region: "Venice / France",
-        gained: ["Largest globes ever made (3.9m diameter) — celestial and terrestrial pair", "Commissioned for Louis XIV — peak of royal cartographic patronage", "State-of-the-art knowledge of New World and Asian trade routes"],
-        sacrificed: ["Portability entirely", "Public access — made for one king's library", "Any ability to update without making entirely new globes"],
-        axes: { accuracy: 4, usability: 1, navigation: 2, symbolism: 5, politics: 5, completeness: 4, richness: 5 },
-      },
-      {
-        name: "Cassini Map of France", year: "1744–1815", region: "France",
-        gained: ["First geometrically rigorous national survey of any country", "Triangulation network covering entire France in 182 sheets", "Template for all subsequent national topographic surveys globally"],
-        sacrificed: ["Local place knowledge and oral geographic tradition", "Accessibility — a purely technical document", "Speed — four generations of the Cassini family, 70 years to complete"],
-        axes: { accuracy: 5, usability: 3, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 },
-      },
-      {
-        name: "Cook's Pacific Charts", year: "1768–1779", region: "Pacific Ocean",
-        gained: ["Accurate Pacific coastlines, island positions, and New Zealand / Australia outlines", "Systematic astronomical observation for precise positioning", "Opened the Pacific to European navigation and colonization"],
-        sacrificed: ["Polynesian and Micronesian navigation systems (star paths, wave piloting, stick charts)", "Indigenous place names replaced with European ones", "Ecological, cultural, and spiritual landscape knowledge of Pacific peoples"],
-        axes: { accuracy: 5, usability: 4, navigation: 5, symbolism: 1, politics: 5, completeness: 4, richness: 1 },
-      },
-      {
-        name: "Bonne Projection World Map", year: "c. 1752", region: "France",
-        gained: ["Equal-area representation preserving correct land sizes", "Visually distinctive heart-like world shape", "Accurate area ratios unlike Mercator"],
-        sacrificed: ["Shape accuracy at map edges (severe distortion)", "Navigational usefulness", "Adopted only briefly before replaced by other equal-area projections"],
-        axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 3, politics: 2, completeness: 3, richness: 2 },
-      },
-    ],
-  },
-  {
-    id: "modern", label: "Modern", years: "1800 – 1970 CE", hue: "#C47A5A",
-    thesis: "Modern mapping split into two streams: industrial precision for states and armies, and radical simplification for the public. Both were revolutions — in opposite directions.",
-    gained: ["Mass public literacy of maps", "Thematic mapping as data visualization", "Abstract and schematic cartographies that prioritize clarity over truth"],
-    sacrificed: ["Unified symbolic systems", "Artistic and decorative traditions", "Acknowledgment of political distortion in standard maps"],
-    maps: [
-      {
-        name: "Minard's Napoleon March Map", year: "1869", region: "France",
-        gained: ["Six variables in one image: geography, army size, direction, temperature, time, and death", "Invented the flow map and the biographical map of a catastrophe", "Often called the greatest statistical graphic ever made — a map of loss, not place"],
-        sacrificed: ["Conventional geographic orientation", "Navigational or administrative utility", "Any pretence that a map must depict space rather than process"],
-        axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 5, politics: 4, completeness: 3, richness: 5 },
-      },
-      {
-        name: "Booth's Poverty Map of London", year: "1889", region: "London",
-        gained: ["First street-by-street social class map of any city", "Colour-coded thematic social mapping — precursor to GIS by a century", "Direct policy impact — reshaped understanding of urban poverty"],
-        sacrificed: ["Individual dignity — people's homes labelled by class", "Rural or national context", "Neutral framing — the map encoded the mapmaker's social assumptions as fact"],
-        axes: { accuracy: 4, usability: 4, navigation: 1, symbolism: 3, politics: 5, completeness: 3, richness: 5 },
-      },
-      {
-        name: "Humboldt's Naturgemälde", year: "1807", region: "Germany / South America",
-        gained: ["First map linking altitude, climate, vegetation, and species in one image", "Invention of the isotherm — lines connecting equal temperatures", "Foundation of modern biogeography and ecology"],
-        sacrificed: ["Navigational utility", "Standard geographic orientation", "Political and administrative information entirely"],
-        axes: { accuracy: 4, usability: 3, navigation: 1, symbolism: 5, politics: 1, completeness: 3, richness: 5 },
-      },
-      {
-        name: "Snow's Cholera Map", year: "1854", region: "London",
-        gained: ["Invention of epidemiological and spatial statistical mapping", "Direct proof that place causes disease — launched modern public health", "Dot-density thematic technique still in use today"],
-        sacrificed: ["Aesthetic tradition", "Broader geographic context beyond Soho", "Nothing significant — this was an almost unambiguous advance"],
-        axes: { accuracy: 4, usability: 5, navigation: 1, symbolism: 2, politics: 2, completeness: 3, richness: 3 },
-      },
-      {
-        name: "USGS Topographic Survey Maps", year: "1879–present", region: "United States",
-        gained: ["Comprehensive, standardized topographic coverage of entire US territory", "Contour lines as universal topographic language", "Public domain — free to use, copy, build upon"],
-        sacrificed: ["Indigenous place names (systematically replaced)", "Ecological and cultural landscape texture", "Local and vernacular geographic knowledge"],
-        axes: { accuracy: 5, usability: 4, navigation: 4, symbolism: 1, politics: 4, completeness: 5, richness: 2 },
-      },
-      {
-        name: "Beck's London Underground Map", year: "1933", region: "England",
-        gained: ["Topological clarity sacrificing geography for legibility — a new cartographic genre", "Mass transit schematic as design discipline, copied by every city worldwide", "Proof that usability and accuracy are not the same value"],
-        sacrificed: ["Geographic truth — station positions are systematically wrong", "Surface-level spatial orientation", "Relationship between the map and the city above ground"],
-        axes: { accuracy: 1, usability: 5, navigation: 5, symbolism: 3, politics: 1, completeness: 2, richness: 2 },
-      },
-      {
-        name: "Peters Projection", year: "1973", region: "Germany",
-        gained: ["Equal-area representation correcting Mercator's size distortions", "Explicit political critique of Eurocentric cartographic convention", "Adoption by UN agencies and development organizations"],
-        sacrificed: ["Shape accuracy — continents appear elongated and distorted", "Navigator usability", "Aesthetic credibility — widely criticized by professional cartographers"],
-        axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 4, politics: 5, completeness: 4, richness: 2 },
-      },
-    ],
-  },
-  {
-    id: "digital", label: "Digital Era", years: "1970 – Present", hue: "#5AABAB",
-    thesis: "Digital mapping gave everyone a map and took away their understanding of space. We have more geographic data than any mapmaker in history — and less spatial memory.",
-    gained: ["Real-time, personalized, and interactive maps at global scale", "Satellite and sensor-derived geometric accuracy", "Collaborative and open mapping (OpenStreetMap)"],
-    sacrificed: ["Spatial memory and wayfinding intuition", "Single authoritative perspective replaced by fragmented competing truths", "Permanence — digital maps change silently without notice"],
-    maps: [
-      {
-        name: "NASA Blue Marble", year: "1972 / 2002", region: "Earth Orbit",
-        gained: ["First true photographic image of the whole Earth from space", "Environmental consciousness catalyst — the image that launched Earth Day", "Unified planetary perspective — no borders, no nations"],
-        sacrificed: ["Any navigational or practical function", "Political boundaries (deliberately omitted)", "Human scale — no roads, settlements, or people visible"],
-        axes: { accuracy: 5, usability: 1, navigation: 1, symbolism: 5, politics: 3, completeness: 3, richness: 2 },
-      },
-      {
-        name: "Google Maps", year: "2005–present", region: "Global",
-        gained: ["Turn-by-turn navigation for every person with a smartphone", "Street View ground-level imagery of most inhabited places", "Real-time traffic, transit, and business layer integration"],
-        sacrificed: ["Spatial memory and the human capacity for independent wayfinding", "Privacy — comprehensive surveillance infrastructure", "Non-commercial places: indigenous, rural, informal, sacred"],
-        axes: { accuracy: 5, usability: 5, navigation: 5, symbolism: 1, politics: 4, completeness: 4, richness: 2 },
-      },
-      {
-        name: "OpenStreetMap", year: "2004–present", region: "Global",
-        gained: ["Community-built geographic commons — 10 million contributors", "Coverage of informal settlements, refugee camps, disaster zones", "Fully open data — anyone can use, fork, correct, or improve"],
-        sacrificed: ["Consistency — quality varies enormously by region", "Commercial infrastructure for sustained maintenance", "Unified visual language or authoritative editorial voice"],
-        axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 },
-      },
-      {
-        name: "LiDAR Terrain Maps", year: "2000s–present", region: "Global",
-        gained: ["Sub-centimetre elevation accuracy from aerial laser scanning", "Revealed hidden archaeological sites under forest canopy (Maya, Angkor)", "Enables flood modelling, autonomous vehicles, precision forestry"],
-        sacrificed: ["Human readability — raw data requires software to interpret", "Cultural and named landscape features", "Accessibility — expensive to produce and process"],
-        axes: { accuracy: 5, usability: 1, navigation: 3, symbolism: 1, politics: 2, completeness: 5, richness: 1 },
-      },
-    ],
-  },
+      { name: "Google Maps", year: "2005–present", region: "Global", gained: ["Real-time navigation"], sacrificed: ["Spatial memory"], axes: { accuracy: 5, usability: 5, navigation: 5, symbolism: 1, politics: 4, completeness: 4, richness: 2 } },
+      { name: "OpenStreetMap", year: "2004–present", region: "Global", gained: ["Community-built commons"], sacrificed: ["Editorial consistency"], axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 } }
+    ]
+  }
 ];
 
-const ERA_TEXT = {
-  home: "The history of cartography is not a straight line of progress toward 'perfection.' It is a story of trade-offs. To gain accuracy, we sacrifice symbolism. To gain usability, we sacrifice geographic truth. This tool explores 39 maps across 7 eras, plotting them against seven fundamental axes of cartographic value.",
-  ancient: "The earliest maps were not attempts to represent the world as it was — they were attempts to claim it, order it, and make it meaningful.",
-  medieval: "Medieval maps were successful cosmologies. They mapped the world as it meant, not as it measured.",
-  eastasian: "While Europe rediscovered Ptolemy, East Asian traditions built world maps of extraordinary scope and different priorities.",
-  renaissance: "Renaissance cartography advanced imperial power and scientific accuracy in inseparable lockstep.",
-  scientific: "The Scientific Age replaced honest blank spaces with precise geometries, often at the cost of local ecological knowledge.",
-  modern: "Modern mapping split into industrial precision for states and radical simplification for the public.",
-  digital: "The digital era gives us real-time global accuracy but at the cost of spatial memory and privacy."
-};
+let currentEra = 'ancient';
+let currentMap = null;
 
-const MAP_TEXT = {}; // Optional: populate with map-specific descriptions if needed
+function init() {
+  const strip = document.getElementById('axis-strip');
+  strip.innerHTML = '<span style="font-size:.58rem; color:var(--vfaint); margin-right:.5rem">DEFINITIONS:</span>' + 
+    AXES.map(a => `<button class="ax-btn" onclick="showDef('${a.id}')">${a.label}</button>`).join('');
+  renderSidebar();
+  nav('home');
+}
 
-let curPage = 'home', cmpA = null, isCmp = false;
-
-function esc(t){ return (t||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function showDef(id) {
+  const panel = document.getElementById('def-panel');
+  panel.style.display = 'block';
+  panel.innerHTML = `<div style="font-size:.6rem; color:var(--gold); margin-bottom:.5rem">${id.toUpperCase()}</div>
+                     <div style="font-size:.8rem; color:var(--muted)">${AXIS_DEFS[id]}</div>
+                     <button onclick="this.parentElement.style.display='none'" style="color:var(--faint); font-size:.6rem; margin-top:1rem">Close [x]</button>`;
+}
 
 function renderSidebar() {
-  const nav = document.getElementById('sidebar');
-  let h = `<div class="era-row ${curPage==='home'?'active':''}" onclick="nav('home')">
-    <div class="era-tag">Introduction</div>
-  </div>`;
-  ERAS.forEach(e => {
-    h += `<div class="era-row ${curPage===e.id?'active':''}" onclick="nav('${e.id}')" style="--era-hue:${e.hue}">
-      <div class="era-tag" style="color:${e.hue}">${e.label}</div>
-      <div class="era-yrs">${e.years}</div>
-    </div>`;
-    if (curPage === e.id) {
-      e.maps.forEach(m => {
-        const isA = cmpA && cmpA.name === m.name;
-        h += `<div class="map-row ${isA?'cmp-a':''}" onclick="handleMapClick('${e.id}','${m.name}')">
-          <div>
-            <div class="map-nm">${esc(m.name)}</div>
-            <div class="map-mt">${m.year} • ${m.region}</div>
-          </div>
-          ${isA?'<span class="cmp-badge">A</span>':''}
-        </div>`;
-      });
-    }
-  });
-  nav.innerHTML = h;
+  const side = document.getElementById('sidebar');
+  side.innerHTML = ERAS.map(era => `
+    <div class="era-row ${currentEra === era.id ? 'active' : ''}" onclick="currentEra='${era.id}'; renderSidebar()">
+      <div style="font-size:.7rem">${era.label}</div>
+      <div style="font-size:.55rem; color:var(--vfaint)">${era.years}</div>
+    </div>
+    ${currentEra === era.id ? era.maps.map(m => `
+      <div class="map-row" onclick="renderMap('${era.id}', '${m.name}')">
+        <div style="font-size:.7rem">${m.name}</div>
+      </div>
+    `).join('') : ''}
+  `).join('');
 }
 
-function handleMapClick(eraId, mapName) {
+function renderMap(eraId, mapName) {
   const era = ERAS.find(e => e.id === eraId);
   const map = era.maps.find(m => m.name === mapName);
-  if (isCmp) {
-    if (!cmpA) { cmpA = map; nav(eraId); }
-    else if (cmpA.name === map.name) { cmpA = null; nav(eraId); }
-    else { renderComparison(cmpA, map); }
-  } else {
-    renderMap(map, era);
+  const main = document.getElementById('main');
+  
+  let h = `<h1 style="font-size:2rem; margin-bottom:.5rem">${map.name}</h1>
+           <p style="color:var(--vfaint); margin-bottom:1.5rem">${map.year} | ${map.region}</p>
+           <div style="display:flex; gap:2rem; margin-bottom:2rem">
+             <div style="flex:1">
+               <h3 style="font-size:.6rem; color:var(--gold); margin-bottom:.5rem">TRADE-OFFS</h3>
+               ${map.gained.map(g => `<span class="pill pill-g">+ ${g}</span>`).join('')}
+               ${map.sacrificed.map(s => `<span class="pill pill-s">- ${s}</span>`).join('')}
+             </div>
+             <div style="flex:1">
+               <h3 style="font-size:.6rem; color:var(--gold); margin-bottom:.5rem">AXIS SCORES</h3>
+               ${AXES.map(a => `
+                 <div style="display:flex; justify-content:space-between; margin-bottom:.3rem">
+                   <span style="font-size:.6rem; color:var(--faint)">${a.label}</span>
+                   <div class="ax-dots">${[1,2,3,4,5].map(v => `<div class="adot ${v <= map.axes[a.id] ? 'on' : ''}"></div>`).join('')}</div>
+                 </div>
+               `).join('')}
+             </div>
+           </div>`;
+  main.innerHTML = h;
+}
+
+function nav(page) {
+  if(page === 'home') {
+    document.getElementById('main').innerHTML = `<h1>Select a map to begin.</h1><p style="color:var(--muted)">Explore the shifting trade-offs of cartography through 39 historical landmarks.</p>`;
   }
 }
 
-function nav(id) {
-  curPage = id;
-  const main = document.getElementById('main');
-  if (id === 'home') {
-    main.innerHTML = `<div class="page">
-      <div class="pg-lbl">Introduction</div>
-      <h1 class="pg-title">Maps are not territories.</h1>
-      <div class="static-text"><p>${ERA_TEXT.home}</p></div>
-      <div class="era-cards">${ERAS.map(e => `
-        <div class="era-card" onclick="nav('${e.id}')">
-          <div class="era-tag" style="color:${e.hue}">${e.label}</div>
-          <div class="era-yrs">${e.years}</div>
-        </div>`).join('')}</div>
-    </div>`;
-  } else {
-    const e = ERAS.find(x => x.id === id);
-    main.innerHTML = `<div class="page">
-      <div class="pg-lbl">Era Overview</div>
-      <h1 class="pg-title" style="color:${e.hue}">${e.label}</h1>
-      <div class="pg-sub">${e.years}</div>
-      <div class="thesis">${e.thesis}</div>
-      <div class="tradeoff">
-        <div class="to-col"><div class="to-lbl">Gained</div>${e.gained.map(g => `<div class="pill pill-g">${g}</div>`).join('')}</div>
-        <div class="to-col"><div class="to-lbl">Sacrificed</div>${e.sacrificed.map(s => `<div class="pill pill-s">${s}</div>`).join('')}</div>
-      </div>
-      <div class="divider"></div>
-      <div class="map-grid">${e.maps.map(m => `
-        <div class="map-card" onclick="handleMapClick('${e.id}','${m.name}')">
-          <div class="map-nm">${esc(m.name)}</div>
-          <div class="map-mt">${m.year}</div>
-        </div>`).join('')}</div>
-    </div>`;
-  }
-  renderSidebar();
-}
-
-function renderMap(m, era) {
-  const main = document.getElementById('main');
-  main.innerHTML = `<div class="page-wide">
-    <div class="pg-lbl">${era.label} / ${m.year}</div>
-    <h1 class="pg-title">${esc(m.name)}</h1>
-    <div class="pg-sub">${m.region}</div>
-    <div class="radar-wrap">
-      <div class="axes-list">
-        ${AXES.map(ax => `
-          <div class="ax-row">
-            <span class="ax-nb">${ax.label}</span>
-            <div class="ax-dots">${[1,2,3,4,5].map(v => `<div class="adot" style="background:${v <= m.axes[ax.id] ? era.hue : 'var(--vfaint)'}"></div>`).join('')}</div>
-          </div>`).join('')}
-      </div>
-    </div>
-    <div class="tradeoff">
-      <div class="to-col"><div class="to-lbl">Gained</div>${m.gained.map(g => `<div class="pill pill-g">${g}</div>`).join('')}</div>
-      <div class="to-col"><div class="to-lbl">Sacrificed</div>${m.sacrificed.map(s => `<div class="pill pill-s">${s}</div>`).join('')}</div>
-    </div>
-  </div>`;
-}
-
-function toggleCmp() {
-  isCmp = !isCmp;
-  cmpA = null;
-  document.getElementById('cmp-btn').classList.toggle('active', isCmp);
-  document.getElementById('cmp-banner').style.display = isCmp ? 'flex' : 'none';
-  document.getElementById('cmp-msg').innerText = isCmp ? 'Select first map from sidebar...' : '';
-  renderSidebar();
-}
-
-function renderComparison(a, b) {
-  const main = document.getElementById('main');
-  main.innerHTML = `<div class="page-wide">
-    <div class="pg-lbl">Comparison</div>
-    <h1 class="pg-title">Trade-off Analysis</h1>
-    <div class="cmp-cards">
-      <div class="cmp-card" style="background:#0F1515;border:1px solid #1A3030">
-        <div class="era-tag" style="color:var(--teal)">${esc(a.name)}</div>
-        <div class="era-yrs">${a.year}</div>
-      </div>
-      <div class="cmp-card" style="background:var(--bg-card);border:1px solid var(--border)">
-        <div class="era-tag" style="color:var(--gold)">${esc(b.name)}</div>
-        <div class="era-yrs">${b.year}</div>
-      </div>
-    </div>
-    <div class="axes-list">
-       ${AXES.map(ax => {
-         const diff = b.axes[ax.id] - a.axes[ax.id];
-         return `<div class="ax-row">
-           <span class="ax-nb">${ax.label}</span>
-           <div class="ax-dots">${[1,2,3,4,5].map(v => `<div class="adot" style="background:${v <= a.axes[ax.id] ? 'var(--teal)' : (v <= b.axes[ax.id] ? 'var(--gold)' : 'var(--vfaint)')}"></div>`).join('')}</div>
-           <span class="ax-sc ${diff > 0 ? 'dp' : (diff < 0 ? 'dn' : '')}">${diff > 0 ? '+' : ''}${diff}</span>
-         </div>`;
-       }).join('')}
-    </div>
-    <div class="nav-btns">
-      <button class="btn btn-teal" onclick="toggleCmp()">Exit Comparison</button>
-    </div>
-  </div>`;
-}
-
-function toggleMob(){
-  document.getElementById('sidebar').classList.toggle('mob-open');
-  document.getElementById('mob-bd').classList.toggle('show');
-}
-
-// Start
-nav('home');
+init();
 </script>
 </body>
 </html>
