@@ -1,175 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cartography &amp; Its Trade-offs</title>
-  <style>
-    :root{--bg:#0A0806;--bg-card:#0E0B07;--border:#1E1A12;--border-mid:#2A2418;--text:#E0D0A8;--muted:#A09060;--faint:#6A5830;--vfaint:#3A2E18;--gold:#C8A96E;--green:#88BB78;--red:#CC7755;--teal:#5AABAB;--font:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;--r:2px;--t:0.15s ease}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-    button{cursor:pointer;font-family:inherit;background:none;border:none}
-    #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-    #header{padding:1.2rem 1.8rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    #axis-strip{padding:.45rem 1.8rem;border-bottom:1px solid var(--border);display:flex;gap:.2rem;flex-wrap:wrap;align-items:center;flex-shrink:0}
-    #body{display:flex;flex:1;min-height:0}
-    #sidebar{width:280px;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
-    #main{flex:1;overflow-y:auto;padding:2.2rem}
-    .btn{display:inline-flex;align-items:center;padding:.35rem .9rem;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid currentColor;color:var(--teal)}
-    .ax-btn{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .4rem;color:var(--faint);transition:all var(--t)}
-    .ax-btn:hover, .ax-btn.active{color:var(--gold)}
-    #def-panel{background:#0D0B07;border-bottom:1px solid var(--border-mid);padding:1rem 1.8rem;display:none}
-    .era-row{padding:.8rem 1.2rem;cursor:pointer;border-left:3px solid transparent}
-    .era-row.active{background:rgba(200,169,110,.08);border-left-color:var(--gold)}
-    .map-row{padding:.5rem 1.2rem .5rem 1.7rem;cursor:pointer;border-bottom:1px solid #0E0A06}
-    .map-row.active{background:rgba(200,169,110,.1)}
-    .ax-dots{display:flex;gap:3px}
-    .adot{width:9px;height:9px;border-radius:1px;background:var(--vfaint)}
-    .adot.on{background:var(--gold)}
-    .pill{display:inline-flex;padding:.28rem .6rem;font-size:.68rem;border-radius:var(--r);margin-right:.3rem;margin-bottom:.3rem}
-    .pill-g{background:#1A2A18;color:var(--green);border:1px solid #3A5A30}
-    .pill-s{background:#2A1A18;color:var(--red);border:1px solid #5A3020}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cartography & Its Trade-offs</title>
+<style>
+:root{--bg:#0A0806;--bg-card:#0E0B07;--border:#1E1A12;--border-mid:#2A2418;--text:#E0D0A8;--muted:#A09060;--vfaint:#3A2E18;--gold:#C8A96E;--teal:#5AABAB}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,serif}
+#app{display:flex;flex-direction:column;height:100vh}
+#header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+#body{display:flex;flex:1;min-height:0}
+#sidebar{width:280px;border-right:1px solid var(--border);overflow:auto}
+#main{flex:1;overflow:auto;padding:20px}
+.row{padding:10px;border-bottom:1px solid #111;cursor:pointer}
+.row:hover{background:#15120c}
+.btn{border:1px solid var(--teal);color:var(--teal);padding:4px 10px;background:none;cursor:pointer}
+.card{padding:10px;border:1px solid var(--border);margin-bottom:10px}
+</style>
 </head>
 <body>
 <div id="app">
-  <header id="header">
-    <div class="logo" onclick="nav('home')">
-      <div style="font-size:.58rem;color:var(--vfaint);text-transform:uppercase;letter-spacing:0.2em">Non-Linear History of</div>
-      <div style="font-size:1.5rem">Cartography &amp; Its Trade-offs</div>
-    </div>
-  </header>
-  <div id="axis-strip"></div>
-  <div id="def-panel"></div>
+  <div id="header">
+    <div>Cartography & Its Trade-offs</div>
+    <button id="cmpBtn" class="btn">Compare</button>
+  </div>
   <div id="body">
-    <nav id="sidebar"></nav>
-    <main id="main"></main>
+    <div id="sidebar"></div>
+    <div id="main"></div>
   </div>
 </div>
 
 <script>
-const AXES = [
-  { id: "accuracy", label: "Accuracy" },
-  { id: "usability", label: "Usability" },
-  { id: "navigation", label: "Navigation" },
-  { id: "symbolism", label: "Symbolism" },
-  { id: "politics", label: "Politics" },
-  { id: "completeness",label: "Completeness" },
-  { id: "richness", label: "Richness" }
+// ================= DATA (shortened example, extend freely) =================
+const ERAS=[
+{ id:"ancient",label:"Ancient",maps:[
+ {name:"Babylonian World Map",year:"600 BCE"},
+ {name:"Ptolemy's World Map",year:"150 CE"}
+]},
+{ id:"modern",label:"Modern",maps:[
+ {name:"Beck Underground Map",year:"1933"},
+ {name:"Google Maps",year:"2005"}
+]}
 ];
 
-const AXIS_DEFS = {
-  accuracy: "Geometric precision and spatial truth. High accuracy means the map reflects real-world coordinates and distances.",
-  usability: "How easily a person can read and interpret the map for its intended purpose.",
-  navigation: "The utility of the map for getting from Point A to Point B.",
-  symbolism: "The depth of meaning, religious framing, or artistic representation within the map.",
-  politics: "The degree to which the map asserts power, claims territory, or centers a specific worldview.",
-  completeness: "The total geographic area or amount of information covered.",
-  richness: "The density of detail, annotations, and cultural information provided."
-};
+// ================= STATE =================
+const S={page:"home",era:null,map:null,cmpMode:false,cmpA:null,cmpB:null};
 
-const ERAS = [
-  {
-    id: "ancient", label: "Ancient", years: "6200 BCE – 400 CE",
-    maps: [
-      { name: "Babylonian World Map", year: "c. 600 BCE", region: "Mesopotamia", gained: ["Cosmological framing"], sacrificed: ["Geometric accuracy"], axes: { accuracy: 1, usability: 2, navigation: 1, symbolism: 5, politics: 5, completeness: 1, richness: 3 } },
-      { name: "Ptolemy's World Map", year: "c. 150 CE", region: "Roman Egypt", gained: ["Coordinate system"], sacrificed: ["Navigational readability"], axes: { accuracy: 4, usability: 2, navigation: 2, symbolism: 2, politics: 3, completeness: 3, richness: 2 } }
-    ]
-  },
-  {
-    id: "medieval", label: "Medieval", years: "400 – 1450 CE",
-    maps: [
-      { name: "Hereford Mappa Mundi", year: "c. 1300 CE", region: "England", gained: ["Spiritual centering", "Visual encyclopedia"], sacrificed: ["Geographic accuracy"], axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 4, completeness: 4, richness: 5 } },
-      { name: "Portolan Charts", year: "c. 1275–1500 CE", region: "Mediterranean", gained: ["Navigational accuracy"], sacrificed: ["Interior land detail"], axes: { accuracy: 4, usability: 5, navigation: 5, symbolism: 1, politics: 2, completeness: 2, richness: 2 } }
-    ]
-  },
-  {
-    id: "modern", label: "Modern", years: "1800 – 1970 CE",
-    maps: [
-      { name: "Beck's London Underground Map", year: "1933", region: "England", gained: ["Topological clarity"], sacrificed: ["Geographic truth"], axes: { accuracy: 1, usability: 5, navigation: 5, symbolism: 3, politics: 1, completeness: 2, richness: 2 } },
-      { name: "Peters Projection", year: "1973", region: "Germany", gained: ["Equal-area representation"], sacrificed: ["Shape accuracy"], axes: { accuracy: 3, usability: 2, navigation: 1, symbolism: 4, politics: 5, completeness: 4, richness: 2 } }
-    ]
-  },
-  {
-    id: "digital", label: "Digital Era", years: "1970 – Present",
-    maps: [
-      { name: "Google Maps", year: "2005–present", region: "Global", gained: ["Real-time navigation"], sacrificed: ["Spatial memory"], axes: { accuracy: 5, usability: 5, navigation: 5, symbolism: 1, politics: 4, completeness: 4, richness: 2 } },
-      { name: "OpenStreetMap", year: "2004–present", region: "Global", gained: ["Community-built commons"], sacrificed: ["Editorial consistency"], axes: { accuracy: 4, usability: 3, navigation: 4, symbolism: 1, politics: 2, completeness: 5, richness: 4 } }
-    ]
-  }
-];
+// ================= DOM =================
+const sidebar=document.getElementById("sidebar");
+const main=document.getElementById("main");
+const cmpBtn=document.getElementById("cmpBtn");
 
-let currentEra = 'ancient';
+// ================= EVENTS =================
+cmpBtn.addEventListener("click",()=>{
+ S.cmpMode=!S.cmpMode;
+ S.cmpA=null;S.cmpB=null;
+ render();
+});
 
-function init() {
-  const strip = document.getElementById('axis-strip');
-  strip.innerHTML = '<span style="font-size:.58rem; color:var(--vfaint); margin-right:.5rem">DEFINITIONS:</span>' + 
-    AXES.map(a => `<button class="ax-btn" onclick="showDef('${a.id}')">${a.label}</button>`).join('');
-  renderSidebar();
-  nav('home');
+// ================= RENDER SIDEBAR =================
+function renderSidebar(){
+ sidebar.innerHTML="";
+ ERAS.forEach(era=>{
+   const eraEl=document.createElement("div");
+   eraEl.className="row";
+   eraEl.textContent=era.label;
+   eraEl.addEventListener("click",()=>{
+     S.page="era";S.era=era.id;render();
+   });
+   sidebar.appendChild(eraEl);
+
+   era.maps.forEach((m,i)=>{
+     const mapEl=document.createElement("div");
+     mapEl.className="row";
+     mapEl.style.paddingLeft="20px";
+     mapEl.textContent=m.name;
+     mapEl.addEventListener("click",()=>{
+       if(S.cmpMode){selectCompare(m);return;}
+       S.page="map";S.era=era.id;S.map=i;render();
+     });
+     sidebar.appendChild(mapEl);
+   });
+ });
 }
 
-function showDef(id) {
-  const panel = document.getElementById('def-panel');
-  panel.style.display = 'block';
-  panel.innerHTML = `<div style="font-size:.6rem; color:var(--gold); margin-bottom:.5rem">${id.toUpperCase()}</div>
-                     <div style="font-size:.8rem; color:var(--muted)">${AXIS_DEFS[id]}</div>
-                     <button onclick="this.parentElement.style.display='none'" style="color:var(--faint); font-size:.6rem; margin-top:1rem; text-decoration:underline">Close [x]</button>`;
+// ================= COMPARE =================
+function selectCompare(map){
+ if(!S.cmpA){S.cmpA=map;render();return;}
+ if(!S.cmpB){S.cmpB=map;S.page="compare";S.cmpMode=false;render();}
 }
 
-function renderSidebar() {
-  const side = document.getElementById('sidebar');
-  side.innerHTML = ERAS.map(era => `
-    <div class="era-row ${currentEra === era.id ? 'active' : ''}" onclick="currentEra='${era.id}'; renderSidebar()">
-      <div style="font-size:.7rem">${era.label}</div>
-      <div style="font-size:.55rem; color:var(--vfaint)">${era.years}</div>
-    </div>
-    ${currentEra === era.id ? era.maps.map(m => `
-      <div class="map-row" onclick="renderMap('${era.id}', '${m.name}')">
-        <div style="font-size:.7rem">${m.name}</div>
-      </div>
-    `).join('') : ''}
-  `).join('');
+// ================= RENDER =================
+function render(){
+ renderSidebar();
+ main.innerHTML="";
+
+ if(S.page==="home"){
+   main.innerHTML="<h2>Select an era</h2>";
+   return;
+ }
+
+ const era=ERAS.find(e=>e.id===S.era);
+ if(!era)return;
+
+ if(S.page==="era"){
+   const h=document.createElement("h2");
+   h.textContent=era.label;
+   main.appendChild(h);
+
+   era.maps.forEach((m,i)=>{
+     const btn=document.createElement("button");
+     btn.className="btn";
+     btn.textContent=m.name;
+     btn.addEventListener("click",()=>{
+       S.page="map";S.map=i;render();
+     });
+     main.appendChild(btn);
+   });
+ }
+
+ if(S.page==="map"){
+   const m=era.maps[S.map];
+   if(!m)return;
+
+   const card=document.createElement("div");
+   card.className="card";
+
+   const title=document.createElement("h2");
+   title.textContent=m.name;
+
+   const year=document.createElement("p");
+   year.textContent=m.year;
+
+   const cmp=document.createElement("button");
+   cmp.className="btn";
+   cmp.textContent="Compare this";
+   cmp.addEventListener("click",()=>{
+     S.cmpMode=true;S.cmpA=m;render();
+   });
+
+   card.appendChild(title);
+   card.appendChild(year);
+   card.appendChild(cmp);
+   main.appendChild(card);
+ }
+
+ if(S.page==="compare"){
+   if(!S.cmpA||!S.cmpB){S.page="home";render();return;}
+
+   const h=document.createElement("h2");
+   h.textContent=S.cmpA.name+" vs "+S.cmpB.name;
+
+   const a=document.createElement("div");
+   a.className="card";
+   a.textContent=S.cmpA.name+" ("+S.cmpA.year+")";
+
+   const b=document.createElement("div");
+   b.className="card";
+   b.textContent=S.cmpB.name+" ("+S.cmpB.year+")";
+
+   const reset=document.createElement("button");
+   reset.className="btn";
+   reset.textContent="New comparison";
+   reset.addEventListener("click",()=>{
+     S.page="home";S.cmpA=null;S.cmpB=null;render();
+   });
+
+   main.appendChild(h);
+   main.appendChild(a);
+   main.appendChild(b);
+   main.appendChild(reset);
+ }
 }
 
-function renderMap(eraId, mapName) {
-  const era = ERAS.find(e => e.id === eraId);
-  const map = era.maps.find(m => m.name === mapName);
-  const main = document.getElementById('main');
-  
-  main.innerHTML = `<h1 style="font-size:2rem; margin-bottom:.5rem">${map.name}</h1>
-           <p style="color:var(--vfaint); margin-bottom:1.5rem; letter-spacing:0.1em">${map.year} | ${map.region}</p>
-           <div style="display:flex; gap:2rem; flex-wrap:wrap; margin-bottom:2rem">
-             <div style="flex:1; min-width:250px">
-               <h3 style="font-size:.6rem; color:var(--gold); margin-bottom:1rem; letter-spacing:0.2em; text-transform:uppercase">Trade-offs</h3>
-               <div style="margin-bottom:1rem">
-                 <div style="font-size:.55rem; color:var(--green); margin-bottom:.3rem">GAINED</div>
-                 ${map.gained.map(g => `<span class="pill pill-g">+ ${g}</span>`).join('')}
-               </div>
-               <div>
-                 <div style="font-size:.55rem; color:var(--red); margin-bottom:.3rem">SACRIFICED</div>
-                 ${map.sacrificed.map(s => `<span class="pill pill-s">- ${s}</span>`).join('')}
-               </div>
-             </div>
-             <div style="flex:1; min-width:200px">
-               <h3 style="font-size:.6rem; color:var(--gold); margin-bottom:1rem; letter-spacing:0.2em; text-transform:uppercase">Axis Scores</h3>
-               ${AXES.map(a => `
-                 <div style="display:flex; justify-content:space-between; margin-bottom:.5rem; align-items:center">
-                   <span style="font-size:.6rem; color:var(--faint); text-transform:uppercase">${a.label}</span>
-                   <div class="ax-dots">${[1,2,3,4,5].map(v => `<div class="adot ${v <= map.axes[a.id] ? 'on' : ''}"></div>`).join('')}</div>
-                 </div>
-               `).join('')}
-             </div>
-           </div>`;
-}
-
-function nav(page) {
-  if(page === 'home') {
-    document.getElementById('main').innerHTML = `<h1 style="margin-bottom:1rem">A History of Cartography</h1><p style="color:var(--muted); max-width:600px">Select a map from the sidebar to explore how different societies throughout history prioritized different values—like accuracy, symbolism, and usability—over others.</p>`;
-  }
-}
-
-init();
+// ================= INIT =================
+render();
 </script>
 </body>
 </html>
