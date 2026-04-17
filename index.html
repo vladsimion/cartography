@@ -565,7 +565,7 @@
       <div>
         <div style="font-size:0.7rem;letter-spacing:0.25em;color:var(--gold2);text-transform:uppercase;margin-bottom:0.4rem">Thematic Tours</div>
         <h2 style="font-family:'IM Fell English',serif;font-weight:400;font-size:1.6rem;color:var(--gold)">Follow the argument through history</h2>
-        <p style="font-size:0.9rem;color:var(--text3);margin-top:0.4rem">Each tour traces a single idea across centuries of cartography — select one to begin.</p>
+        <p style="font-size:0.9rem;color:var(--text3);margin-top:0.4rem">Each tour traces a single idea across centuries of cartography - select one to begin.</p>
       </div>
       <button class="btn btn-sm" onclick="closeTourSelector()" style="flex-shrink:0;align-self:flex-start">✕ Close</button>
     </div>
@@ -1904,7 +1904,7 @@ function renderCompare(main) {
               <span style="font-size:0.7rem;min-width:1rem;text-align:right;color:${va>=vb?eraA.hue:'var(--text4)'}">${va}</span>
               <span class="vs-sep">vs</span>
               <span style="font-size:0.7rem;min-width:1rem;color:${vb>=va?eraB.hue:'var(--text4)'}">${vb}</span>
-              <span style="font-size:0.73rem;margin-left:0.25rem;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'};font-weight:600">${diff>0?'+'+diff:diff===0?'—':diff}</span>
+              <span style="font-size:0.73rem;margin-left:0.25rem;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'};font-weight:600">${diff>0?'+'+diff:diff===0?'-':diff}</span>
             </div>`;}).join('')}
         </div>
 
@@ -2055,11 +2055,11 @@ const TOURS = [
     id: 'politics-of-erasure',
     title: 'The Politics of Erasure',
     tagline: 'How power decides what a map leaves out',
-    argument: 'Every map is also an act of deletion. This tour follows the recurring pattern by which dominant powers — theological, imperial, algorithmic — have used cartographic form to erase inconvenient geographies, peoples, and traditions.',
+    argument: 'Every map is also an act of deletion. This tour follows the recurring pattern by which dominant powers - theological, imperial, algorithmic - have used cartographic form to erase inconvenient geographies, peoples, and traditions.',
     stops: [
       {
         map: 'Al-Balkhi School Maps (KMMS)',
-        prose: 'We begin with a tradition that erased its own accuracy deliberately. The Balkhī school cartographers knew perfectly well that the world was not made of straight lines and right angles — but they mapped the Islamic administrative world as if it were. Geography was subordinated to political legibility. The first erasure is always of physical reality in favour of the order that power requires.'
+        prose: 'We begin with a tradition that erased its own accuracy deliberately. The Balkhī school cartographers knew perfectly well that the world was not made of straight lines and right angles - but they mapped the Islamic administrative world as if it were. Geography was subordinated to political legibility. The first erasure is always of physical reality in favour of the order that power requires.'
       },
       {
         map: 'Waldseemüller Map (Universalis Cosmographia)',
@@ -2067,19 +2067,19 @@ const TOURS = [
       },
       {
         map: "Mercator's World Map",
-        prose: 'Mercator\'s 1569 projection was designed for navigators, not colonisers. But its adoption as the standard world map for classrooms and atlases accomplished something its author never intended: it made the colonial powers appear geographically dominant. Europe is inflated; Africa is shrunk; the global south appears small. The projection did not create imperialism, but it made it look natural — which may have been worse.'
+        prose: 'Mercator\'s 1569 projection was designed for navigators, not colonisers. But its adoption as the standard world map for classrooms and atlases accomplished something its author never intended: it made the colonial powers appear geographically dominant. Europe is inflated; Africa is shrunk; the global south appears small. The projection did not create imperialism, but it made it look natural - which may have been worse.'
       },
       {
         map: "Diogo Ribeiro's World Map (Carta Universal)",
-        prose: 'Ribeiro\'s 1529 map is cartographic erasure at its most precise and most cynical. The Moluccas — the Spice Islands — fell on the Portuguese side of the Tordesillas line. Ribeiro, paid by Spain, moved them. The geographic truth was erased and replaced with a geometric argument that served imperial economic interests. The map looked scientific. It was a lie that cost Portugal the Spice Islands for a generation.'
+        prose: 'Ribeiro\'s 1529 map is cartographic erasure at its most precise and most cynical. The Moluccas - the Spice Islands - fell on the Portuguese side of the Tordesillas line. Ribeiro, paid by Spain, moved them. The geographic truth was erased and replaced with a geometric argument that served imperial economic interests. The map looked scientific. It was a lie that cost Portugal the Spice Islands for a generation.'
       },
       {
         map: 'USGS Topographic Survey Maps',
-        prose: 'The USGS topographic survey renamed thousands of places across the American continent, replacing indigenous names accumulated over millennia with English names honouring surveyors, politicians, and settlers. The indigenous geographic imagination — which encoded ecological knowledge, spiritual significance, and thousands of years of inhabitation — was overwritten by a coordinate grid. The survey was technically extraordinary and culturally destructive simultaneously.'
+        prose: 'The USGS topographic survey renamed thousands of places across the American continent, replacing indigenous names accumulated over millennia with English names honouring surveyors, politicians, and settlers. The indigenous geographic imagination - which encoded ecological knowledge, spiritual significance, and thousands of years of inhabitation - was overwritten by a coordinate grid. The survey was technically extraordinary and culturally destructive simultaneously.'
       },
       {
         map: 'Google Maps',
-        prose: 'The last stop is the most ubiquitous erasure in history. Google Maps shows different political borders to users in different countries, without indicating that borders are contested. It under-maps indigenous territories, informal settlements, and sacred sites that cannot be monetised. It is replacing human spatial memory — the internal map each person builds of their lived world — with algorithmic dependency. The erasure now operates inside the navigator rather than on the map.'
+        prose: 'The last stop is the most ubiquitous erasure in history. Google Maps shows different political borders to users in different countries, without indicating that borders are contested. It under-maps indigenous territories, informal settlements, and sacred sites that cannot be monetised. It is replacing human spatial memory - the internal map each person builds of their lived world - with algorithmic dependency. The erasure now operates inside the navigator rather than on the map.'
       }
     ]
   },
@@ -2087,15 +2087,15 @@ const TOURS = [
     id: 'imperial-tool',
     title: 'The Map as Imperial Tool',
     tagline: 'Cartography in the service of conquest',
-    argument: 'For five centuries, the most accurate maps in the world were instruments of empire. This tour follows the inseparable relationship between cartographic precision and colonial power — showing that accuracy and imperialism have historically advanced together.',
+    argument: 'For five centuries, the most accurate maps in the world were instruments of empire. This tour follows the inseparable relationship between cartographic precision and colonial power - showing that accuracy and imperialism have historically advanced together.',
     stops: [
       {
         map: 'Cantino Planisphere',
-        prose: 'The Cantino Planisphere of 1502 is the founding document of imperial cartography. It shows the Tordesillas line — a line drawn through the Atlantic by papal decree dividing the world between Portugal and Spain, before either empire had seen most of what they were dividing. The map is accurate along surveyed coastlines and fabricated everywhere else. Empire, from the beginning, required maps that claimed more than they knew.'
+        prose: 'The Cantino Planisphere of 1502 is the founding document of imperial cartography. It shows the Tordesillas line - a line drawn through the Atlantic by papal decree dividing the world between Portugal and Spain, before either empire had seen most of what they were dividing. The map is accurate along surveyed coastlines and fabricated everywhere else. Empire, from the beginning, required maps that claimed more than they knew.'
       },
       {
         map: "Diogo Ribeiro's World Map (Carta Universal)",
-        prose: 'By 1529, the stakes had concentrated on a single geographical question: which empire owned the Spice Islands? Ribeiro\'s map answered the question in Spain\'s favour through cartographic manipulation. This is imperial cartography at its most refined — not crude forgery, but a geometrically precise argument dressed as scientific survey. The accuracy of the coastlines made the falsification of the Moluccas\' position more, not less, credible.'
+        prose: 'By 1529, the stakes had concentrated on a single geographical question: which empire owned the Spice Islands? Ribeiro\'s map answered the question in Spain\'s favour through cartographic manipulation. This is imperial cartography at its most refined - not crude forgery, but a geometrically precise argument dressed as scientific survey. The accuracy of the coastlines made the falsification of the Moluccas\' position more, not less, credible.'
       },
       {
         map: "Mercator's World Map",
@@ -2103,11 +2103,11 @@ const TOURS = [
       },
       {
         map: "Cook's Pacific Charts",
-        prose: 'Cook\'s three Pacific voyages produced the most accurate charts of the Pacific ever made — and within fifty years, the coastlines he charted had been colonised. Australia, New Zealand, and Hawaii were British within a generation of Cook\'s surveys. The relationship between charting and claiming was not incidental. Cook\'s ships carried naturalists and astronomers; they also carried the Crown\'s territorial ambitions. To map a coastline in the eighteenth century was, in effect, to claim it.'
+        prose: 'Cook\'s three Pacific voyages produced the most accurate charts of the Pacific ever made - and within fifty years, the coastlines he charted had been colonised. Australia, New Zealand, and Hawaii were British within a generation of Cook\'s surveys. The relationship between charting and claiming was not incidental. Cook\'s ships carried naturalists and astronomers; they also carried the Crown\'s territorial ambitions. To map a coastline in the eighteenth century was, in effect, to claim it.'
       },
       {
         map: 'Cassini Map of France',
-        prose: 'The Cassini survey was not colonial in the overseas sense — it mapped France itself. But it perfected the techniques and established the institutional model that would be exported globally: the state-funded triangulation survey, the standardised symbol set, the national coordinate grid. Every colonial mapping programme from the Survey of India to the Ordnance Survey of Ireland follows the Cassini model. The empire mapped itself first, then mapped everything it intended to possess.'
+        prose: 'The Cassini survey was not colonial in the overseas sense - it mapped France itself. But it perfected the techniques and established the institutional model that would be exported globally: the state-funded triangulation survey, the standardised symbol set, the national coordinate grid. Every colonial mapping programme from the Survey of India to the Ordnance Survey of Ireland follows the Cassini model. The empire mapped itself first, then mapped everything it intended to possess.'
       },
       {
         map: 'USGS Topographic Survey Maps',
@@ -2123,11 +2123,11 @@ const TOURS = [
     stops: [
       {
         map: 'Tabula Peutingeriana',
-        prose: 'The Roman Empire stretched from Scotland to Mesopotamia, and the Peutinger Table compressed it into a horizontal scroll seven metres long and thirty centimetres wide. The geographic shape is entirely wrong. The distances are meaningless. What the map shows, with extraordinary precision, is the road network: every station, every route, every distance in Roman miles. The first great navigational sacrifice — geography abandoned for the path that gets you there.'
+        prose: 'The Roman Empire stretched from Scotland to Mesopotamia, and the Peutinger Table compressed it into a horizontal scroll seven metres long and thirty centimetres wide. The geographic shape is entirely wrong. The distances are meaningless. What the map shows, with extraordinary precision, is the road network: every station, every route, every distance in Roman miles. The first great navigational sacrifice - geography abandoned for the path that gets you there.'
       },
       {
         map: 'Portolan Charts',
-        prose: 'The portolan charts appeared in the Mediterranean in the late thirteenth century and were built from something entirely new: accumulated compass bearings taken by working sailors. The coastlines are startlingly accurate. The interior of every continent is blank — not because the cartographers did not know the interior existed, but because it was irrelevant to a sailor who needed to know where the harbour was. Navigation and geography occupy the same page; navigation wins entirely.'
+        prose: 'The portolan charts appeared in the Mediterranean in the late thirteenth century and were built from something entirely new: accumulated compass bearings taken by working sailors. The coastlines are startlingly accurate. The interior of every continent is blank - not because the cartographers did not know the interior existed, but because it was irrelevant to a sailor who needed to know where the harbour was. Navigation and geography occupy the same page; navigation wins entirely.'
       },
       {
         map: 'Marshall Islands Stick Charts',
@@ -2139,7 +2139,7 @@ const TOURS = [
       },
       {
         map: 'Google Maps',
-        prose: 'Google Maps is the apotheosis of the navigational tradition — and its reductio ad absurdum. The navigation is perfect: accurate, real-time, turn-by-turn, globally comprehensive. The sacrifice is spatial memory itself. Research consistently shows that GPS navigation prevents users from forming mental models of the places they travel through. The Peutinger Table asked you to follow a road; Beck\'s map asked you to learn a system; Google Maps asks you to follow instructions. Each generation of navigational map has required less of its user. The final map is the one that navigates for you.'
+        prose: 'Google Maps is the apotheosis of the navigational tradition - and its reductio ad absurdum. The navigation is perfect: accurate, real-time, turn-by-turn, globally comprehensive. The sacrifice is spatial memory itself. Research consistently shows that GPS navigation prevents users from forming mental models of the places they travel through. The Peutinger Table asked you to follow a road; Beck\'s map asked you to learn a system; Google Maps asks you to follow instructions. Each generation of navigational map has required less of its user. The final map is the one that navigates for you.'
       }
     ]
   },
@@ -2151,31 +2151,31 @@ const TOURS = [
     stops: [
       {
         map: 'Babylonian World Map (Imago Mundi)',
-        prose: 'The oldest surviving world map places Babylon at the centre of a flat disc surrounded by the Bitter River. This was not geographic error — Babylon\'s cartographers knew that other civilisations existed and had their own claims to centrality. The choice was deliberate: the map encodes Babylonian cosmic supremacy as a geographic fact. Egypt, Greece, India, and China were real and known; they were excluded because the map was not a description of the world but an argument about who stood at its centre.'
+        prose: 'The oldest surviving world map places Babylon at the centre of a flat disc surrounded by the Bitter River. This was not geographic error - Babylon\'s cartographers knew that other civilisations existed and had their own claims to centrality. The choice was deliberate: the map encodes Babylonian cosmic supremacy as a geographic fact. Egypt, Greece, India, and China were real and known; they were excluded because the map was not a description of the world but an argument about who stood at its centre.'
       },
       {
         map: 'T-O Map (Isidore of Seville)',
-        prose: 'The T-O map reduces the Babylonian gesture to its irreducible minimum. Three strokes: a circle, a T dividing it into Asia, Europe, and Africa. Jerusalem at the crossing. The East — where Paradise lay — at the top. The simplicity is not primitive; it is monumental. A single diagram encodes an entire theological world order. Christian Europe placed itself at the hinge of history, the meeting point of continents, the geographic site where salvation would be decided. The centre had moved from Babylon to Jerusalem.'
+        prose: 'The T-O map reduces the Babylonian gesture to its irreducible minimum. Three strokes: a circle, a T dividing it into Asia, Europe, and Africa. Jerusalem at the crossing. The East - where Paradise lay - at the top. The simplicity is not primitive; it is monumental. A single diagram encodes an entire theological world order. Christian Europe placed itself at the hinge of history, the meeting point of continents, the geographic site where salvation would be decided. The centre had moved from Babylon to Jerusalem.'
       },
       {
         map: "Al-Idrisi's Tabula Rogeriana",
-        prose: 'Al-Idrisi\'s 1154 map is usually reproduced upside-down — because al-Idrisi placed south at the top, following Islamic cartographic convention. The world looks unfamiliar precisely because a different civilisation had a different centre of gravity. Al-Idrisi\'s Mediterranean is still at the map\'s heart, but it is the Arab Mediterranean, seen from the south and east. The accuracy is genuinely superior to any European contemporary. The orientation is a quiet argument that north-up is a choice, not a fact.'
+        prose: 'Al-Idrisi\'s 1154 map is usually reproduced upside-down - because al-Idrisi placed south at the top, following Islamic cartographic convention. The world looks unfamiliar precisely because a different civilisation had a different centre of gravity. Al-Idrisi\'s Mediterranean is still at the map\'s heart, but it is the Arab Mediterranean, seen from the south and east. The accuracy is genuinely superior to any European contemporary. The orientation is a quiet argument that north-up is a choice, not a fact.'
       },
       {
         map: 'Kangnido Map',
-        prose: 'Korea, 1402. The world extends from the Atlantic coast in the far west to Japan in the east. China is enormous — as the Middle Kingdom, it occupies the dominant portion of the image. Korea is somewhat larger than its actual size. Europe is a small, vaguely sketched peninsula in the northwest. The Americas are absent — not imagined. This is the world as it appears from the centre of East Asian civilisation, and from that centre it looks entirely reasonable.'
+        prose: 'Korea, 1402. The world extends from the Atlantic coast in the far west to Japan in the east. China is enormous - as the Middle Kingdom, it occupies the dominant portion of the image. Korea is somewhat larger than its actual size. Europe is a small, vaguely sketched peninsula in the northwest. The Americas are absent - not imagined. This is the world as it appears from the centre of East Asian civilisation, and from that centre it looks entirely reasonable.'
       },
       {
         map: "Matteo Ricci's Kunyu Wanguo Quantu",
-        prose: 'Ricci\'s 1602 map is unique in cartographic history: a deliberate act of geometric diplomacy. He split the map at a different meridian, placing the Pacific at the margins and China at the visual centre — while retaining the accuracy of the European Ptolemaic tradition for all other regions. Two worldviews, each claiming to be universal, were formally superimposed. Ricci understood that the Emperor would not accept a map that placed Europe at the centre. The centre had to travel to where the audience was.'
+        prose: 'Ricci\'s 1602 map is unique in cartographic history: a deliberate act of geometric diplomacy. He split the map at a different meridian, placing the Pacific at the margins and China at the visual centre - while retaining the accuracy of the European Ptolemaic tradition for all other regions. Two worldviews, each claiming to be universal, were formally superimposed. Ricci understood that the Emperor would not accept a map that placed Europe at the centre. The centre had to travel to where the audience was.'
       },
       {
         map: "Mercator's World Map",
-        prose: 'Mercator\'s projection places no single country at the geometric centre — the equator divides the map horizontally. But the combined effect of its area distortions is to make the Northern Hemisphere, and Europe in particular, appear large and dominant. The map\'s centre of gravity is European not because Europe is at the middle of the image but because Europe appears, visually, most substantial. This is a more insidious form of centrality: not explicit like the T-O map or the Babylonian disc, but embedded in the mathematics of projection.'
+        prose: 'Mercator\'s projection places no single country at the geometric centre - the equator divides the map horizontally. But the combined effect of its area distortions is to make the Northern Hemisphere, and Europe in particular, appear large and dominant. The map\'s centre of gravity is European not because Europe is at the middle of the image but because Europe appears, visually, most substantial. This is a more insidious form of centrality: not explicit like the T-O map or the Babylonian disc, but embedded in the mathematics of projection.'
       },
       {
         map: 'Google Maps',
-        prose: 'Google Maps defaults to showing you where you are — your location is always the centre. For the first time in cartographic history, the centre of the world is personalised: wherever you happen to be, the map centres on you. This appears to be the end of political centrality, the final democratisation of the map\'s organizing principle. It is also the most perfect form of it: the centre of the world is wherever the user is, which means the centre of the world is wherever Google\'s algorithm decides to show.'
+        prose: 'Google Maps defaults to showing you where you are - your location is always the centre. For the first time in cartographic history, the centre of the world is personalised: wherever you happen to be, the map centres on you. This appears to be the end of political centrality, the final democratisation of the map\'s organizing principle. It is also the most perfect form of it: the centre of the world is wherever the user is, which means the centre of the world is wherever Google\'s algorithm decides to show.'
       }
     ]
   },
@@ -2183,35 +2183,35 @@ const TOURS = [
     id: 'measure-of-earth',
     title: 'The Measure of the Earth',
     tagline: 'Three thousand years of trying to get it right',
-    argument: 'The history of cartographic accuracy is an asymptotic project — each generation gets closer to the correct figure, each advance reveals new errors in the previous certainty. This tour follows the long, humbling struggle to calculate where things actually are.',
+    argument: 'The history of cartographic accuracy is an asymptotic project - each generation gets closer to the correct figure, each advance reveals new errors in the previous certainty. This tour follows the long, humbling struggle to calculate where things actually are.',
     stops: [
       {
         map: "Eratosthenes' World Map",
-        prose: 'In around 240 BCE, Eratosthenes of Alexandria calculated the circumference of the Earth using two sticks, one shadow, and the known distance between two Egyptian cities. He got it right to within 2%. He then built a world map on this mathematical foundation — with a grid of parallels and meridians, and coordinates derived from astronomical observation. The first map to treat the Earth as a measurable object had been made. Everything that came after is an elaboration of this gesture.'
+        prose: 'In around 240 BCE, Eratosthenes of Alexandria calculated the circumference of the Earth using two sticks, one shadow, and the known distance between two Egyptian cities. He got it right to within 2%. He then built a world map on this mathematical foundation - with a grid of parallels and meridians, and coordinates derived from astronomical observation. The first map to treat the Earth as a measurable object had been made. Everything that came after is an elaboration of this gesture.'
       },
       {
         map: "Ptolemy's World Map",
-        prose: 'Ptolemy\'s Geographia systematised Eratosthenes\' gesture into a complete coordinate framework: 8,000 place-names with latitude and longitude, three projection methods, a treatise on how to construct a world map from data. It was the most rigorous cartographic system ever produced — and it contained a catastrophic error. Ptolemy made the Earth too small and Asia too wide, and he enclosed the Indian Ocean with a hypothetical land bridge. His errors, encoded in a coordinate system of overwhelming authority, were copied for fifteen centuries.'
+        prose: 'Ptolemy\'s Geographia systematised Eratosthenes\' gesture into a complete coordinate framework: 8,000 place-names with latitude and longitude, three projection methods, a treatise on how to construct a world map from data. It was the most rigorous cartographic system ever produced - and it contained a catastrophic error. Ptolemy made the Earth too small and Asia too wide, and he enclosed the Indian Ocean with a hypothetical land bridge. His errors, encoded in a coordinate system of overwhelming authority, were copied for fifteen centuries.'
       },
       {
         map: 'Portolan Charts',
-        prose: 'The portolan charts achieved something Ptolemy never did: they got the Mediterranean right. Not through theory, but through practice — thousands of compass bearings, accumulated over generations of sailing, producing a coastline of geometric precision. The lesson is uncomfortable: empirical accumulation by working sailors produced more accurate results than the theoretical framework of the greatest geographer in the ancient world. Measurement from practice beat measurement from principle.'
+        prose: 'The portolan charts achieved something Ptolemy never did: they got the Mediterranean right. Not through theory, but through practice - thousands of compass bearings, accumulated over generations of sailing, producing a coastline of geometric precision. The lesson is uncomfortable: empirical accumulation by working sailors produced more accurate results than the theoretical framework of the greatest geographer in the ancient world. Measurement from practice beat measurement from principle.'
       },
       {
         map: 'Cassini Map of France',
-        prose: 'The Cassini survey, spanning four generations and seventy years, established the method that would define all subsequent scientific cartography: triangulation from a measured baseline, extended systematically across an entire territory. Every point geometrically related to every other point. The result was the first national map that could be trusted — every road, settlement, and watercourse in France located with a precision that had never existed before. The measurement had become industrial.'
+        prose: 'The Cassini survey, spanning four generations and seventy years, established the method that would define all subsequent scientific cartography: triangulation from a measured baseline, extended systematically across an entire territory. Every point geometrically related to every other point. The result was the first national map that could be trusted - every road, settlement, and watercourse in France located with a precision that had never existed before. The measurement had become industrial.'
       },
       {
         map: "Cook's Pacific Charts",
-        prose: 'Cook carried the most advanced navigational instruments of the eighteenth century — including one of the first marine chronometers, which solved the longitude problem that had defeated navigators for two centuries. His Pacific charts were geometrically reliable to a degree that no previous map of those waters had approached. But Cook\'s charts also measured something that had already been navigated for two thousand years by Polynesian sailors using the stick charts. Accuracy is not the same as knowledge.'
+        prose: 'Cook carried the most advanced navigational instruments of the eighteenth century - including one of the first marine chronometers, which solved the longitude problem that had defeated navigators for two centuries. His Pacific charts were geometrically reliable to a degree that no previous map of those waters had approached. But Cook\'s charts also measured something that had already been navigated for two thousand years by Polynesian sailors using the stick charts. Accuracy is not the same as knowledge.'
       },
       {
         map: 'USGS Topographic Survey Maps',
-        prose: 'The USGS survey extended the Cassini model to a continent: systematic, standardised, comprehensive. Contour lines encoding three-dimensional terrain. Consistent scales. Every geological feature, every settlement, every watershed. The measurement had become total — every square mile of American territory described in a reproducible geometric language. The accumulation of individual surveys into a single coherent system took a century. It remains the largest sustained cartographic enterprise in history.'
+        prose: 'The USGS survey extended the Cassini model to a continent: systematic, standardised, comprehensive. Contour lines encoding three-dimensional terrain. Consistent scales. Every geological feature, every settlement, every watershed. The measurement had become total - every square mile of American territory described in a reproducible geometric language. The accumulation of individual surveys into a single coherent system took a century. It remains the largest sustained cartographic enterprise in history.'
       },
       {
         map: 'LiDAR Terrain Maps',
-        prose: 'LiDAR fires millions of laser pulses per second from aircraft and measures the time each takes to return. The result is a three-dimensional point cloud accurate to sub-centimetre precision — an elevation model that captures every ditch, every earthwork, every buried structure beneath the vegetation. In 2018, a single LiDAR survey of the Maya lowlands revealed 60,000 previously unknown structures under the forest canopy. The measure of the Earth has become so fine that it can see through trees. Eratosthenes got within 2% with two sticks. We are now measuring the same Earth to within a centimetre from the air.'
+        prose: 'LiDAR fires millions of laser pulses per second from aircraft and measures the time each takes to return. The result is a three-dimensional point cloud accurate to sub-centimetre precision - an elevation model that captures every ditch, every earthwork, every buried structure beneath the vegetation. In 2018, a single LiDAR survey of the Maya lowlands revealed 60,000 previously unknown structures under the forest canopy. The measure of the Earth has become so fine that it can see through trees. Eratosthenes got within 2% with two sticks. We are now measuring the same Earth to within a centimetre from the air.'
       }
     ]
   },
@@ -2219,23 +2219,23 @@ const TOURS = [
     id: 'maps-changed-mind',
     title: 'Maps That Changed a Mind',
     tagline: 'Singular images that shifted how people understood the world',
-    argument: 'Some maps do not describe reality — they reconstitute it. Each map in this tour produced a before-and-after moment in human understanding: naming a continent, inventing a science, quantifying catastrophe, launching a movement.',
+    argument: 'Some maps do not describe reality - they reconstitute it. Each map in this tour produced a before-and-after moment in human understanding: naming a continent, inventing a science, quantifying catastrophe, launching a movement.',
     stops: [
       {
         map: 'Waldseemüller Map (Universalis Cosmographia)',
-        prose: 'In April 1507, a printed map circulated across Europe with the word "America" written across the southern landmass of the western hemisphere. Before this map, educated Europeans debated whether Columbus had reached Asia. After this map — printed in a thousand copies, distributed to every major intellectual centre — there was a fourth continent and it had a name. Waldseemüller later regretted the attribution to Vespucci and removed the name from his subsequent maps. It was too late. A thousand printed copies had already changed the world.'
+        prose: 'In April 1507, a printed map circulated across Europe with the word "America" written across the southern landmass of the western hemisphere. Before this map, educated Europeans debated whether Columbus had reached Asia. After this map - printed in a thousand copies, distributed to every major intellectual centre - there was a fourth continent and it had a name. Waldseemüller later regretted the attribution to Vespucci and removed the name from his subsequent maps. It was too late. A thousand printed copies had already changed the world.'
       },
       {
         map: "Humboldt's Naturgemälde",
-        prose: 'Alexander von Humboldt\'s 1807 cross-section of Chimborazo showed altitude zones of vegetation, climate, and species for the first time in a single image — and in doing so invented the discipline of ecology. The map argued that nature was a system: that altitude and latitude produced equivalent climatic effects, that the tropical mountain contained the Arctic inside it, that all living things were connected in a web of mutual dependency. No prose description could have made this argument with equal clarity. The image was the argument.'
+        prose: 'Alexander von Humboldt\'s 1807 cross-section of Chimborazo showed altitude zones of vegetation, climate, and species for the first time in a single image - and in doing so invented the discipline of ecology. The map argued that nature was a system: that altitude and latitude produced equivalent climatic effects, that the tropical mountain contained the Arctic inside it, that all living things were connected in a web of mutual dependency. No prose description could have made this argument with equal clarity. The image was the argument.'
       },
       {
         map: "Snow's Cholera Map",
-        prose: 'In 1854, Dr John Snow plotted every cholera death in a Soho outbreak as a dot on a street map and saw, immediately, that the dots clustered around a single water pump on Broad Street. The map did not prove the waterborne theory of cholera transmission — Snow had to do that through investigation. But the map made the pattern visible in a way that no table of statistics could have done. Epidemiology was born in the moment Snow put dots on a map and saw what they were pointing at.'
+        prose: 'In 1854, Dr John Snow plotted every cholera death in a Soho outbreak as a dot on a street map and saw, immediately, that the dots clustered around a single water pump on Broad Street. The map did not prove the waterborne theory of cholera transmission - Snow had to do that through investigation. But the map made the pattern visible in a way that no table of statistics could have done. Epidemiology was born in the moment Snow put dots on a map and saw what they were pointing at.'
       },
       {
         map: "Minard's Napoleon March Map",
-        prose: 'Charles Minard\'s 1869 map of Napoleon\'s Russian campaign encodes six variables — geography, army size, direction, temperature, time, and death — in a single image. The band that begins in Poland at 422,000 men and re-enters it at 10,000 is not a statistic. It is a shape. Edward Tufte called it the greatest statistical graphic ever drawn. What changed was not the facts — the casualties were already known — but their moral weight. Minard made loss visible as geometry, and geometry as grief.'
+        prose: 'Charles Minard\'s 1869 map of Napoleon\'s Russian campaign encodes six variables - geography, army size, direction, temperature, time, and death - in a single image. The band that begins in Poland at 422,000 men and re-enters it at 10,000 is not a statistic. It is a shape. Edward Tufte called it the greatest statistical graphic ever drawn. What changed was not the facts - the casualties were already known - but their moral weight. Minard made loss visible as geometry, and geometry as grief.'
       },
       {
         map: 'Peters Projection',
@@ -2243,7 +2243,7 @@ const TOURS = [
       },
       {
         map: 'NASA Blue Marble',
-        prose: 'On 7 December 1972, the crew of Apollo 17 photographed the whole Earth from 45,000 kilometres away. The image shows a sphere: blue, finite, alone. No borders. No nations. No hierarchy. The photograph was published in the months before the first Earth Day and became the symbol of the environmental movement — the image that made the planet\'s fragility and unity simultaneously visible. Of all the maps in this tour, this is the one that changed the most minds in the shortest time.'
+        prose: 'On 7 December 1972, the crew of Apollo 17 photographed the whole Earth from 45,000 kilometres away. The image shows a sphere: blue, finite, alone. No borders. No nations. No hierarchy. The photograph was published in the months before the first Earth Day and became the symbol of the environmental movement - the image that made the planet\'s fragility and unity simultaneously visible. Of all the maps in this tour, this is the one that changed the most minds in the shortest time.'
       }
     ]
   },
@@ -2251,27 +2251,27 @@ const TOURS = [
     id: 'what-was-lost',
     title: 'What Was Lost',
     tagline: 'The geographic knowledge that accurate maps destroyed',
-    argument: 'Every advance in cartographic accuracy erased something. Meaning, tradition, names, memory — the cost of each step forward was paid not by the cartographers but by the people whose knowledge was overwritten.',
+    argument: 'Every advance in cartographic accuracy erased something. Meaning, tradition, names, memory - the cost of each step forward was paid not by the cartographers but by the people whose knowledge was overwritten.',
     stops: [
       {
         map: 'Hereford Mappa Mundi',
-        prose: 'The Hereford map is not a failed attempt at accuracy. It is a successful attempt at something else entirely: the encoding of cosmological meaning, salvation history, and moral geography in a single image. When the coordinate grid arrived in Europe and accuracy became the dominant cartographic value, this tradition was not improved — it was discarded. What was lost was not an error but a different theory of what a map was for. The world was no longer the site of salvation; it was a problem to be measured.'
+        prose: 'The Hereford map is not a failed attempt at accuracy. It is a successful attempt at something else entirely: the encoding of cosmological meaning, salvation history, and moral geography in a single image. When the coordinate grid arrived in Europe and accuracy became the dominant cartographic value, this tradition was not improved - it was discarded. What was lost was not an error but a different theory of what a map was for. The world was no longer the site of salvation; it was a problem to be measured.'
       },
       {
         map: 'Waldseemüller Map (Universalis Cosmographia)',
-        prose: 'The Waldseemüller map named a continent in 1507 and in doing so erased the geographic knowledge of every people who had lived on that continent for millennia. The Americas were not unmapped before Columbus — they were mapped in extraordinary detail by indigenous peoples whose maps encoded ecological knowledge, trade routes, spiritual geographies, and thousands of years of habitation. None of that knowledge survived the printing press. The continent was renamed; its geography was reimagined from the outside.'
+        prose: 'The Waldseemüller map named a continent in 1507 and in doing so erased the geographic knowledge of every people who had lived on that continent for millennia. The Americas were not unmapped before Columbus - they were mapped in extraordinary detail by indigenous peoples whose maps encoded ecological knowledge, trade routes, spiritual geographies, and thousands of years of habitation. None of that knowledge survived the printing press. The continent was renamed; its geography was reimagined from the outside.'
       },
       {
         map: 'Marshall Islands Stick Charts',
-        prose: 'The Marshall Islands stick charts encode a complete navigational system for the Pacific — wave refraction patterns, swell directions, island positions, current behaviour — in a form that can only be read by someone trained in the tradition. When European colonial administration arrived in Micronesia, the stick charts did not survive the encounter intact. The European charts that replaced them were geometrically more accurate; they encoded the ocean as a coordinate space rather than as a felt body of water. The knowledge of how to navigate by feel was lost within a generation.'
+        prose: 'The Marshall Islands stick charts encode a complete navigational system for the Pacific - wave refraction patterns, swell directions, island positions, current behaviour - in a form that can only be read by someone trained in the tradition. When European colonial administration arrived in Micronesia, the stick charts did not survive the encounter intact. The European charts that replaced them were geometrically more accurate; they encoded the ocean as a coordinate space rather than as a felt body of water. The knowledge of how to navigate by feel was lost within a generation.'
       },
       {
         map: 'USGS Topographic Survey Maps',
-        prose: 'The USGS survey renamed thousands of American places, replacing indigenous names with English ones. Those indigenous names were not arbitrary labels — they encoded ecological observation, seasonal knowledge, spiritual significance, and the accumulated geographic intelligence of peoples who had inhabited those landscapes for centuries. A name like "Chemquasabamticook" (the Penobscot name for a Maine river) encodes information about the river\'s nature, its behaviour, its meaning in a landscape. Its replacement with "St. John River" encodes the name of a saint. The survey was technically superb. Its toponymy was a catastrophe.'
+        prose: 'The USGS survey renamed thousands of American places, replacing indigenous names with English ones. Those indigenous names were not arbitrary labels - they encoded ecological observation, seasonal knowledge, spiritual significance, and the accumulated geographic intelligence of peoples who had inhabited those landscapes for centuries. A name like "Chemquasabamticook" (the Penobscot name for a Maine river) encodes information about the river\'s nature, its behaviour, its meaning in a landscape. Its replacement with "St. John River" encodes the name of a saint. The survey was technically superb. Its toponymy was a catastrophe.'
       },
       {
         map: 'Google Maps',
-        prose: 'The final loss in this tour is ongoing and invisible. Navigation research consistently shows that GPS-dependent navigation prevents the formation of spatial memory — the internal map each person builds of their lived environment. People who use Google Maps navigate their cities without ever learning their shape. They can get anywhere and describe nowhere. What is being lost is not a named tradition or an explicit body of knowledge; it is the latent geographic intelligence that all humans have always built through physical movement through space. We are outsourcing spatial cognition to an algorithm, and the faculty is atrophying.'
+        prose: 'The final loss in this tour is ongoing and invisible. Navigation research consistently shows that GPS-dependent navigation prevents the formation of spatial memory - the internal map each person builds of their lived environment. People who use Google Maps navigate their cities without ever learning their shape. They can get anywhere and describe nowhere. What is being lost is not a named tradition or an explicit body of knowledge; it is the latent geographic intelligence that all humans have always built through physical movement through space. We are outsourcing spatial cognition to an algorithm, and the faculty is atrophying.'
       }
     ]
   },
@@ -2279,31 +2279,31 @@ const TOURS = [
     id: 'secret-map',
     title: 'The Secret Map',
     tagline: 'Geographic knowledge as state property',
-    argument: 'For five centuries, the most accurate world maps were state secrets. This tour tracks the slow, incomplete, and still-contested democratisation of geographic knowledge — from the locked vaults of Lisbon and Seville to the server farms of Mountain View.',
+    argument: 'For five centuries, the most accurate world maps were state secrets. This tour tracks the slow, incomplete, and still-contested democratisation of geographic knowledge - from the locked vaults of Lisbon and Seville to the server farms of Mountain View.',
     stops: [
       {
         map: 'Cantino Planisphere',
-        prose: 'The Cantino Planisphere was a state secret. Portuguese cartographic knowledge — the routes to Africa, India, and Brazil — was a strategic asset worth more than most kingdoms. Alberto Cantino paid twelve gold ducats to an anonymous Lisbon cartographer to obtain a copy and smuggle it to the Duke of Ferrara. The name of the cartographer who took the money is lost to history. The map itself has survived five centuries. This is where the history of cartographic secrecy begins: in a Lisbon workshop, 1502, with a bribe.'
+        prose: 'The Cantino Planisphere was a state secret. Portuguese cartographic knowledge - the routes to Africa, India, and Brazil - was a strategic asset worth more than most kingdoms. Alberto Cantino paid twelve gold ducats to an anonymous Lisbon cartographer to obtain a copy and smuggle it to the Duke of Ferrara. The name of the cartographer who took the money is lost to history. The map itself has survived five centuries. This is where the history of cartographic secrecy begins: in a Lisbon workshop, 1502, with a bribe.'
       },
       {
         map: 'Piri Reis Map',
-        prose: 'Piri Reis was an Ottoman admiral who assembled his 1513 world map from approximately twenty sources — including Portuguese charts, Arab geographic texts, and one of Columbus\'s own charts, obtained by methods he describes in his annotations but that remain somewhat opaque. The map is a monument to intelligence gathering: an outsider synthesising secret sources from multiple competing empires to produce a vision of the Atlantic that no single one of those empires possessed. The secret map could be partially reconstructed by anyone with access to enough other secret maps.'
+        prose: 'Piri Reis was an Ottoman admiral who assembled his 1513 world map from approximately twenty sources - including Portuguese charts, Arab geographic texts, and one of Columbus\'s own charts, obtained by methods he describes in his annotations but that remain somewhat opaque. The map is a monument to intelligence gathering: an outsider synthesising secret sources from multiple competing empires to produce a vision of the Atlantic that no single one of those empires possessed. The secret map could be partially reconstructed by anyone with access to enough other secret maps.'
       },
       {
         map: "Diogo Ribeiro's World Map (Carta Universal)",
-        prose: 'Ribeiro\'s 1529 Carta Universal was the official state document of Spanish geographic knowledge — the Padrón Real, the master chart of the Casa de Contratación, updated with every returning voyage. It was both the most comprehensive and the most deliberately falsified map of its era. The secrecy of the Padrón Real was absolute: unauthorised copying was a capital offence. Yet the map that was state secret was also, simultaneously, a state lie. Geographic knowledge was controlled not only to protect it but to weaponise it.'
+        prose: 'Ribeiro\'s 1529 Carta Universal was the official state document of Spanish geographic knowledge - the Padrón Real, the master chart of the Casa de Contratación, updated with every returning voyage. It was both the most comprehensive and the most deliberately falsified map of its era. The secrecy of the Padrón Real was absolute: unauthorised copying was a capital offence. Yet the map that was state secret was also, simultaneously, a state lie. Geographic knowledge was controlled not only to protect it but to weaponise it.'
       },
       {
         map: 'Cassini Map of France',
-        prose: 'The Cassini survey was a state project — funded by the Crown, executed by royal engineers, and the data was the property of the French state. When the Revolution came, the Committee of Public Safety confiscated the copper plates and the survey data for military use. The first comprehensive topographic map of a nation was born as a military asset and remained one throughout its production. The democratisation of the Cassini data — its eventual publication and public availability — took longer than the survey itself.'
+        prose: 'The Cassini survey was a state project - funded by the Crown, executed by royal engineers, and the data was the property of the French state. When the Revolution came, the Committee of Public Safety confiscated the copper plates and the survey data for military use. The first comprehensive topographic map of a nation was born as a military asset and remained one throughout its production. The democratisation of the Cassini data - its eventual publication and public availability - took longer than the survey itself.'
       },
       {
         map: 'USGS Topographic Survey Maps',
-        prose: 'The USGS represents a genuine turning point: a national mapping programme whose data is explicitly public domain, freely available for copying, reproduction, and commercial use without restriction. This was a deliberate political choice, and a revolutionary one. For the first time in the history of systematic national cartography, the state\'s geographic knowledge of its own territory belonged to its citizens. The open-access policy seeded an entire ecosystem of derivative products — and eventually, OpenStreetMap.'
+        prose: 'The USGS represents a genuine turning point: a national mapping programme whose data is explicitly public domain, freely available for copying, reproduction, and commercial use without restriction. This was a deliberate political choice, and a revolutionary one. For the first time in the history of systematic national cartography, the state\'s geographic knowledge of its own territory belonged to its citizens. The open-access policy seeded an entire ecosystem of derivative products - and eventually, OpenStreetMap.'
       },
       {
         map: 'Google Maps',
-        prose: 'Google Maps is free to use, but it is not public domain. The data belongs to Google. The borders shown vary by country of access, without any indication that they are contested. The algorithm that decides what appears on the map operates without transparency or accountability. Geographic knowledge has been democratised in access while being privatised in ownership. The secret map of the twenty-first century is not locked in a government vault — it is served from a server farm, free to view, impossible to fully audit, controlled by a corporation whose interests are not identical to those of the people who depend on it.'
+        prose: 'Google Maps is free to use, but it is not public domain. The data belongs to Google. The borders shown vary by country of access, without any indication that they are contested. The algorithm that decides what appears on the map operates without transparency or accountability. Geographic knowledge has been democratised in access while being privatised in ownership. The secret map of the twenty-first century is not locked in a government vault - it is served from a server farm, free to view, impossible to fully audit, controlled by a corporation whose interests are not identical to those of the people who depend on it.'
       }
     ]
   },
@@ -2319,23 +2319,23 @@ const TOURS = [
       },
       {
         map: 'Cantino Planisphere',
-        prose: 'The most valuable information in 1502 was geographic. The Portuguese routes to the spice trade were worth more than kingdoms — which is why Alberto Cantino paid twelve gold ducats to smuggle a copy of the Padrón Real to Italy. The commercial value of geographic knowledge had become so extreme that states classified their maps as state secrets and punished unauthorised copying with death. The portolan chart\'s honest commercial logic had become the logic of imperial intelligence.'
+        prose: 'The most valuable information in 1502 was geographic. The Portuguese routes to the spice trade were worth more than kingdoms - which is why Alberto Cantino paid twelve gold ducats to smuggle a copy of the Padrón Real to Italy. The commercial value of geographic knowledge had become so extreme that states classified their maps as state secrets and punished unauthorised copying with death. The portolan chart\'s honest commercial logic had become the logic of imperial intelligence.'
       },
       {
         map: "Ortelius's Theatrum Orbis Terrarum",
-        prose: 'Abraham Ortelius was, before he was a cartographer, a map dealer. His 1570 Theatrum Orbis Terrarum — the first modern commercial atlas — was a publishing product: standardised format, consistent scale, scholarly bibliography, forty-two editions in his lifetime. Ortelius did not survey new territory. He compiled, simplified, and packaged the geographic knowledge of others for an educated European readership with money to spend on books. The map had become a commodity available to anyone who could afford it.'
+        prose: 'Abraham Ortelius was, before he was a cartographer, a map dealer. His 1570 Theatrum Orbis Terrarum - the first modern commercial atlas - was a publishing product: standardised format, consistent scale, scholarly bibliography, forty-two editions in his lifetime. Ortelius did not survey new territory. He compiled, simplified, and packaged the geographic knowledge of others for an educated European readership with money to spend on books. The map had become a commodity available to anyone who could afford it.'
       },
       {
         map: "Blaeu's Atlas Maior",
-        prose: 'Joan Blaeu\'s 1662 Atlas Maior was the most expensive book produced in the seventeenth century. Eleven volumes, 594 maps, hand-coloured by Amsterdam colourists, sold for 350 guilders — the price of a luxury house. It was not a navigational tool or a scientific document; it was a status object, a physical embodiment of Dutch commercial and intellectual supremacy at the apex of the Golden Age. Geographic knowledge had become luxury goods: something you displayed to demonstrate that you could afford to know the world.'
+        prose: 'Joan Blaeu\'s 1662 Atlas Maior was the most expensive book produced in the seventeenth century. Eleven volumes, 594 maps, hand-coloured by Amsterdam colourists, sold for 350 guilders - the price of a luxury house. It was not a navigational tool or a scientific document; it was a status object, a physical embodiment of Dutch commercial and intellectual supremacy at the apex of the Golden Age. Geographic knowledge had become luxury goods: something you displayed to demonstrate that you could afford to know the world.'
       },
       {
         map: "Diogo Ribeiro's World Map (Carta Universal)",
-        prose: 'The commercial stakes of geographic knowledge reached their apex in the Spice Islands dispute. The Moluccas produced nutmeg, cloves, and mace — commodities worth their weight in gold in European markets. Which empire controlled them depended on which empire\'s cartographer could place them most persuasively on the correct side of a treaty line. Ribeiro\'s falsification of the Moluccas\' position was a commercial act as much as an imperial one: empire, in this period, was a mechanism for controlling trade, and the map was the instrument of both.'
+        prose: 'The commercial stakes of geographic knowledge reached their apex in the Spice Islands dispute. The Moluccas produced nutmeg, cloves, and mace - commodities worth their weight in gold in European markets. Which empire controlled them depended on which empire\'s cartographer could place them most persuasively on the correct side of a treaty line. Ribeiro\'s falsification of the Moluccas\' position was a commercial act as much as an imperial one: empire, in this period, was a mechanism for controlling trade, and the map was the instrument of both.'
       },
       {
         map: 'Google Maps',
-        prose: 'Google Maps is free, and its business model is the oldest commercial cartographic model in history: the map is paid for by the interests it serves. Google\'s map serves advertisers, whose pins appear on every search; it serves data brokers, who buy the location analytics generated by a billion users; and it serves Google itself, whose market capitalisation depends in part on its dominance of geographic data. Every free map has always been paid for by someone whose interests shaped what it showed. The commercial map has not changed — only the mechanism of payment has.'
+        prose: 'Google Maps is free, and its business model is the oldest commercial cartographic model in history: the map is paid for by the interests it serves. Google\'s map serves advertisers, whose pins appear on every search; it serves data brokers, who buy the location analytics generated by a billion users; and it serves Google itself, whose market capitalisation depends in part on its dominance of geographic data. Every free map has always been paid for by someone whose interests shaped what it showed. The commercial map has not changed - only the mechanism of payment has.'
       }
     ]
   },
@@ -2343,11 +2343,11 @@ const TOURS = [
     id: 'speed-of-discovery',
     title: 'Speed of Discovery',
     tagline: 'The extraordinary acceleration of geographic knowledge',
-    argument: 'For fourteen centuries after Ptolemy, the world map barely changed. Then in fifty years — 1490 to 1540 — it was transformed beyond recognition. This tour uses maps as a time-lapse of geographic knowledge, asking what it means to learn so much so fast.',
+    argument: 'For fourteen centuries after Ptolemy, the world map barely changed. Then in fifty years - 1490 to 1540 - it was transformed beyond recognition. This tour uses maps as a time-lapse of geographic knowledge, asking what it means to learn so much so fast.',
     stops: [
       {
         map: "Ptolemy's World Map",
-        prose: 'Ptolemy\'s Geographia, written in Alexandria around 150 CE, established the world map that European scholars would work from for the next fourteen centuries. Asia was too wide. Africa was too small. The Indian Ocean was enclosed by a hypothetical land bridge. These errors were known to be errors within a generation of Ptolemy\'s death — Arab geographers had more accurate information about sub-Saharan Africa and the Indian Ocean by the tenth century — but the authority of the coordinate system was so great that the errors persisted. Geographic knowledge can stagnate even when the correct information exists, if the wrong framework holds authority.'
+        prose: 'Ptolemy\'s Geographia, written in Alexandria around 150 CE, established the world map that European scholars would work from for the next fourteen centuries. Asia was too wide. Africa was too small. The Indian Ocean was enclosed by a hypothetical land bridge. These errors were known to be errors within a generation of Ptolemy\'s death - Arab geographers had more accurate information about sub-Saharan Africa and the Indian Ocean by the tenth century - but the authority of the coordinate system was so great that the errors persisted. Geographic knowledge can stagnate even when the correct information exists, if the wrong framework holds authority.'
       },
       {
         map: 'Fra Mauro World Map',
@@ -2359,23 +2359,23 @@ const TOURS = [
       },
       {
         map: 'Waldseemüller Map (Universalis Cosmographia)',
-        prose: 'By 1507, Waldseemüller could show two continental landmasses in the western hemisphere, separated from Asia, and hint at a vast ocean beyond them. The Pacific had not yet been crossed by Europeans — that would take another fifteen years — but the cartographic logic demanded it. When Vespucci\'s accounts suggested that the western landmass was a continent, the existence of a western ocean became a cartographic inference before it became an empirical fact. The map was running ahead of the ships.'
+        prose: 'By 1507, Waldseemüller could show two continental landmasses in the western hemisphere, separated from Asia, and hint at a vast ocean beyond them. The Pacific had not yet been crossed by Europeans - that would take another fifteen years - but the cartographic logic demanded it. When Vespucci\'s accounts suggested that the western landmass was a continent, the existence of a western ocean became a cartographic inference before it became an empirical fact. The map was running ahead of the ships.'
       },
       {
         map: "Diogo Ribeiro's World Map (Carta Universal)",
-        prose: 'Ribeiro\'s 1529 map is the document that captures the acceleration at its peak. Magellan\'s circumnavigation had returned in 1522; Estêvão Gomes had surveyed the North American coast in 1524-25. The Pacific Ocean — entirely absent from Fra Mauro\'s 1450 map, merely implied by Waldseemüller in 1507 — appears in Ribeiro\'s map at its correct scale: a full half of the globe, dwarfing the Atlantic. In eighty years, the world had doubled in size. The speed at which geographic knowledge was accumulating had no historical precedent.'
+        prose: 'Ribeiro\'s 1529 map is the document that captures the acceleration at its peak. Magellan\'s circumnavigation had returned in 1522; Estêvão Gomes had surveyed the North American coast in 1524-25. The Pacific Ocean - entirely absent from Fra Mauro\'s 1450 map, merely implied by Waldseemüller in 1507 - appears in Ribeiro\'s map at its correct scale: a full half of the globe, dwarfing the Atlantic. In eighty years, the world had doubled in size. The speed at which geographic knowledge was accumulating had no historical precedent.'
       },
       {
         map: "Mercator's World Map",
-        prose: 'Mercator\'s 1569 map represents the consolidation after the acceleration. The basic outlines of the world were now known. What remained was the mathematical problem of representing a sphere accurately on a flat surface for navigational purposes. Mercator solved it. The remaining unknown continents — Antarctica, Australia\'s interior, the Arctic — would not be mapped for another two centuries. After the extraordinary sprint of 1490 to 1540, the pace of geographic discovery slowed back toward the historical norm. The world had been found; now it had to be administered.'
+        prose: 'Mercator\'s 1569 map represents the consolidation after the acceleration. The basic outlines of the world were now known. What remained was the mathematical problem of representing a sphere accurately on a flat surface for navigational purposes. Mercator solved it. The remaining unknown continents - Antarctica, Australia\'s interior, the Arctic - would not be mapped for another two centuries. After the extraordinary sprint of 1490 to 1540, the pace of geographic discovery slowed back toward the historical norm. The world had been found; now it had to be administered.'
       },
       {
         map: "Cook's Pacific Charts",
-        prose: 'Cook\'s three voyages between 1768 and 1779 represent the last great phase of geographic acceleration — the systematic charting of the Pacific, the accurate mapping of New Zealand and Australia\'s east coast, the first serious exploration of the Antarctic and Arctic regions. By the time Cook died in Hawaii in 1779, the broad outlines of every continent were known to European cartography. The acceleration that began with Dias rounding the Cape in 1488 had taken three centuries to complete. After Cook, the work was refinement rather than discovery.'
+        prose: 'Cook\'s three voyages between 1768 and 1779 represent the last great phase of geographic acceleration - the systematic charting of the Pacific, the accurate mapping of New Zealand and Australia\'s east coast, the first serious exploration of the Antarctic and Arctic regions. By the time Cook died in Hawaii in 1779, the broad outlines of every continent were known to European cartography. The acceleration that began with Dias rounding the Cape in 1488 had taken three centuries to complete. After Cook, the work was refinement rather than discovery.'
       },
       {
         map: 'LiDAR Terrain Maps',
-        prose: 'LiDAR represents a second acceleration — not of geographic extent, but of geometric precision. The broad outlines have been known for centuries; what LiDAR reveals is the fine structure: the Maya cities under the jungle canopy, the Roman field systems under the English farmland, the Bronze Age earthworks under the Welsh moorland. We are not discovering new places; we are discovering new things about known places. The speed of this second acceleration is, if anything, faster than the first. A single survey can reveal in hours what archaeology could not have found in decades. The measure of the Earth continues to accelerate long after the Earth itself has been found.'
+        prose: 'LiDAR represents a second acceleration - not of geographic extent, but of geometric precision. The broad outlines have been known for centuries; what LiDAR reveals is the fine structure: the Maya cities under the jungle canopy, the Roman field systems under the English farmland, the Bronze Age earthworks under the Welsh moorland. We are not discovering new places; we are discovering new things about known places. The speed of this second acceleration is, if anything, faster than the first. A single survey can reveal in hours what archaeology could not have found in decades. The measure of the Earth continues to accelerate long after the Earth itself has been found.'
       }
     ]
   }
