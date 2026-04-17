@@ -206,7 +206,12 @@
   .overview-title { font-family: 'IM Fell English', serif; font-size: 1.7rem; color: var(--gold); margin-bottom: 0.5rem; font-weight: 400; }
   .overview-sub { font-size: 1rem; color: var(--text2); font-style: italic; margin-bottom: 1.5rem; line-height: 1.7; }
   .tradeoff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1.8rem; }
-  .tradeoff-cell { background: var(--bg); padding: 0.85rem 1rem; }
+  .tradeoff-cell { background: var(--bg); padding: 0.85rem 1rem; transition: background 0.15s; }
+  .tradeoff-cell.clickable { cursor: pointer; }
+  .tradeoff-cell.clickable:hover { background: rgba(106,187,187,0.08); }
+  .tradeoff-cell.clickable:hover .t-ex { color: var(--teal); }
+  .tradeoff-cell .compare-hint { font-size: 0.62rem; color: var(--text4); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.3rem; opacity: 0; transition: opacity 0.15s; }
+  .tradeoff-cell.clickable:hover .compare-hint { opacity: 1; }
   .tradeoff-row { display: flex; gap: 0.5rem; margin-bottom: 0.28rem; flex-wrap: wrap; }
   .t-gain { font-size: 0.8rem; color: var(--gain); }
   .t-vs { font-size: 0.8rem; color: var(--text3); }
@@ -1000,6 +1005,31 @@ var COMPARE_TEXTS = {
   [cmpKey("Google Maps","OpenStreetMap")]: `<p>Launched within a year of each other — OpenStreetMap in 2004, Google Maps in 2005 — these two platforms define the two poles of digital cartography's political economy. Google Maps is a corporate product: funded by advertising, optimised for commercial use cases, comprehensive in wealthy markets and sparse in poor ones, and built on a surveillance infrastructure that tracks every movement of its billion users. OpenStreetMap is a commons: funded by volunteers, optimised for openness, variable in quality by region, and built on the principle that geographic knowledge belongs to everyone.</p><p>Both score 5/5 on Completeness and 4-5/5 on Navigation. Google scores 5/5 on Usability; OpenStreetMap scores 3/5, reflecting the unevenness of volunteer contribution. The most important difference is not technical but political: who owns the data, who controls what appears on the map, and who benefits from the knowledge it encodes. Google Maps' version of the world changes silently at corporate discretion; OpenStreetMap's version changes publicly, through community debate. One is the most usable map ever made. The other is the most democratic. They are not the same thing.</p>`,
 
   [cmpKey("Piri Reis Map","Cantino Planisphere")]: `<p>Both maps were made within eleven years of each other — the Cantino in 1502, Piri Reis in 1513 — and both represent the state of Atlantic geographic knowledge in the immediate aftermath of Columbus's voyages. The Cantino was made by anonymous Portuguese cartographers working from state-secret surveys; Piri Reis was made by an Ottoman admiral who explicitly listed his sources, including one of Columbus's own charts. Both show the Atlantic coasts of Africa and South America with striking accuracy for their date.</p><p>What separates them is perspective. The Cantino is a Portuguese imperial document, showing Portuguese discoveries from a Portuguese standpoint and drawing the Tordesillas Treaty line that divided the world between two Iberian crowns. The Piri Reis map is an Ottoman intellectual synthesis, viewing the same discoveries from Constantinople, asking what this new Atlantic geography means for a power whose interests lay eastward. Same coastlines, different questions. The comparison reveals that the Age of Exploration's cartographic revolution was not a single European event but a global moment of geographic recalibration that different powers interpreted differently for their own strategic purposes.</p>`,
+
+  [cmpKey("Ptolemy's World Map","Portolan Charts")]: `<p>Ptolemy and the portolan charts represent the most fundamental fork in the history of navigational knowledge: the difference between a theory of space and a practice of it. Ptolemy's Geographia gave European scholarship a coordinate system — latitude and longitude, projection geometry, the tools to think about the whole world at once. The portolan charts gave Mediterranean sailors something more immediately useful: coastlines drawn from thousands of accumulated compass bearings, dense with harbour names, stripped of everything that couldn't help a ship reach port. One map was for scholars; the other was for sailors.</p><p>The axes tell the story precisely. Ptolemy scores 4/5 on Accuracy and 4/5 on Completeness — his framework spans the known world from Ireland to China. The portolans score 5/5 on Navigation and 5/5 on Usability — they are the most practically effective maps made before the modern era. Neither could do what the other did. Ptolemy gave cartography its theoretical architecture; the portolans gave it its first reliable tool. What is remarkable is that both traditions existed simultaneously for centuries without either influencing the other — scholars worked from Ptolemy, sailors worked from portolans, and the two communities rarely spoke.</p>`,
+
+  [cmpKey("Portolan Charts","Hereford Mappa Mundi")]: `<p>These two maps were made in the same century, in the same broad cultural world, and they could not be more different. The Hereford Mappa Mundi, completed around 1300, places Jerusalem at the centre of a flat disc and fills its margins with monsters, saints, and scripture. A portolan chart of the same period shows the Mediterranean coastline with startling geometric precision, its interior blank, its surface covered with compass roses and rhumb lines. One map asks: what does the world mean? The other asks: how do I get there?</p><p>The comparison makes visible something that cartographic history tends to obscure: the medieval period did not have one kind of map. It had at least two, serving completely different purposes and different communities, coexisting without apparent contradiction. The Hereford map was made for a cathedral, to be read as theology. The portolan was made for a ship's chest, to be read as navigation. The monks who made the Hereford map knew that sailors used portolans. The sailors who used portolans knew that the world had a spiritual meaning. Both things were simply true, and the maps divided the labour of representing them.</p>`,
+
+  [cmpKey("Fra Mauro World Map","Hereford Mappa Mundi")]: `<p>Fra Mauro's map of around 1450 and the Hereford map of around 1300 are separated by a century and a half and by an unbridgeable epistemological distance. The Hereford map is a theological document: Jerusalem at the centre, Eden at the top, salvation history encoded in geography. Fra Mauro's map — made by a Venetian monk, like the Hereford map made by a Christian cleric — is something altogether different: an encyclopedic geographic synthesis that explicitly rejected Ptolemy's errors, showed Africa as circumnavigable, and drew on Arab, Persian, Chinese, and merchant sources. The monks are the same; the worlds they mapped are not.</p><p>Fra Mauro scores 5/5 on Richness and Completeness, 4/5 on Accuracy. The Hereford map scores 5/5 on Symbolism and Richness, 1/5 on Accuracy and Navigation. Both are extraordinary achievements in encyclopedic annotation — the Hereford map has over 1,100 inscriptions, Fra Mauro's has over 3,000. But where the Hereford map's richness encodes theological meaning, Fra Mauro's encodes geographic information. Between them, European cartography shifted from asking what the world means to asking what the world is. That shift took a century and a half. It was not progress; it was a change of question.</p>`,
+
+  [cmpKey("Tabula Peutingeriana","Ptolemy's World Map")]: `<p>Both are products of the Roman world, separated by perhaps two centuries, and they represent opposite answers to the question of what a map is for. Ptolemy's Geographia built a coordinate framework for representing the entire known world as a geometrically coherent object — every place locatable by latitude and longitude, the globe projectable onto a flat surface by mathematical rules. The Tabula Peutingeriana takes the same Roman world and compresses it into a horizontal scroll seven metres long and thirty centimetres wide, showing roads, travel times, and city symbols, with no pretence of geographic shape. Ptolemy mapped space; the Peutinger Table mapped routes.</p><p>The scores reflect the trade-off cleanly: Ptolemy 4/5 Accuracy, 2/5 Usability, 2/5 Navigation. Peutinger 2/5 Accuracy, 5/5 Usability, 5/5 Navigation. Neither map was wrong for its purpose. Ptolemy was making a scientific argument about the nature of geographic space; the Peutinger Table was giving a Roman administrator or traveller the information needed to move through the Empire. The intellectual tradition and the practical tradition existed simultaneously in the same civilisation, making radically different trade-offs, serving radically different users. Beck's London Underground map, made fifteen centuries later, made exactly the Peutinger Table's choice: sacrifice geography for the network.</p>`,
+
+  [cmpKey("Waldseemüller Map (Universalis Cosmographia)","Piri Reis Map")]: `<p>Four years separate these two maps — Waldseemüller in 1507, Piri Reis in 1513 — and they represent the same geographic moment from opposite ends of the Mediterranean. Both respond to Columbus's voyages. Both show the Atlantic and its new western coastlines. Both are synthetic documents, assembling geographic knowledge from multiple sources. And both encode the worldview of their makers as thoroughly as they encode geography.</p><p>Waldseemüller's map was made in a workshop in Lorraine for a humanist scholarly audience; it named America, printed a thousand copies, and spread across Europe. Piri Reis's map was made in Constantinople by an Ottoman admiral; it synthesised Arab, Portuguese, and Spanish sources including one of Columbus's own charts, and it viewed the Atlantic discoveries from a power whose interests lay in the eastern Mediterranean and the Indian Ocean. Waldseemüller looked west and named a new world. Piri Reis looked at the same discovery and asked what it meant for a civilisation whose trade routes ran east. Both maps got the Atlantic broadly right. Both got everything else wrong in different ways. The comparison reveals that the 'Age of Exploration' was not a single European event but a moment of global geographic reckoning that every major power interpreted through its own strategic lens.</p>`,
+
+  [cmpKey("Al-Balkhi School Maps (KMMS)","Al-Idrisi's Tabula Rogeriana")]: `<p>Both are products of Islamic geographic scholarship, separated by roughly two centuries, and they make opposite choices about what a map should do. The Balkhī school maps, flourishing in the tenth century, used abstract geometric forms — straight lines, right angles, circular arcs — to represent the administrative world of the dar al-Islam. They were deliberately schematic: the world as a political and religious system, not as a physical space. Al-Idrisi, working at the Norman court of Roger II of Sicily in 1154, went in entirely the opposite direction: his Tabula Rogeriana is the most geographically accurate world map of its century, drawing on Greek, Arab, Persian, and traveller sources to produce a synthesis of genuine empirical cartography.</p><p>Al-Balkhi scores 1/5 Accuracy, 4/5 Usability, 5/5 Politics. Al-Idrisi scores 4/5 Accuracy, 3/5 Usability, 3/5 Politics. The contrast is not between a bad map and a good one — both are masterworks of their tradition. It is between two theories of what geographic knowledge is for. The Balkhī school mapped the Islamic world as a community of faith and governance; al-Idrisi mapped the physical world as it geometrically was. That al-Idrisi worked at a Christian court, synthesising Islamic and Greek knowledge for a Norman king, while the Balkhī maps were made within the Islamic scholarly mainstream, makes the irony sharper: the more cosmopolitan map came from the court, the more ideological one from the tradition.</p>`,
+
+  [cmpKey("Kangnido Map","Fra Mauro World Map")]: `<p>The Kangnido was made in Korea in 1402; Fra Mauro completed his map in Venice around 1450. Neither knew of the other's existence. Both represent the most ambitious world-geographic vision their respective traditions could produce at the same historical moment — the half-century before Columbus. Both correctly show Africa as a triangular landmass extending southward into open ocean, from sources entirely independent of each other. The Kangnido's Africa derives from Chinese and Islamic geographic networks; Fra Mauro's from Arab texts and Venetian merchant intelligence. Two traditions, one continent, the same correct answer.</p><p>The comparison explodes the Eurocentric narrative of geographic discovery. Fra Mauro's map is rightly celebrated as the greatest pre-Columbian European world map. The Kangnido is its equal in ambition and in several respects its superior in geographic completeness for the Eurasian landmass. Both score 4/5 on Accuracy, 5/5 on Richness. The difference is political legacy: Fra Mauro's map fed into the Portuguese exploration programme that reshaped the world; the Kangnido sat in a Japanese temple for five centuries while Western historians wrote histories of cartography that barely mentioned Korea. The maps are comparable. Their afterlives are not.</p>`,
+
+  [cmpKey("Diogo Ribeiro's World Map (Carta Universal)","Cantino Planisphere")]: `<p>The Cantino Planisphere of 1502 and Ribeiro's Carta Universal of 1529 bracket the most transformative quarter-century in the history of geographic knowledge. The Cantino was made in the immediate aftermath of Vasco da Gama's return from India and just years after Columbus's first voyages — it is a snapshot of the world at the moment of first contact, coastlines hastily measured, the Americas barely understood, Africa and India suddenly real. Ribeiro's map was made after Magellan's circumnavigation, after Estêvão Gomes had mapped the North American coast, after twenty years of systematic accumulation at the Casa de Contratación in Seville. Both are Portuguese cartographers working at the cutting edge of Iberian imperial geography. The difference is the difference between a first draft and a considered argument.</p><p>Both score 4/5 on Accuracy and 5/5 on Politics. Both show the Tordesillas line. Both are state secrets. But Ribeiro's map shows a Pacific Ocean at something approaching its true scale — a revelation that the Cantino, made before Magellan, could not have imagined — and it places the Moluccas on the Spanish side of the globe in a deliberate act of cartographic falsification. The Cantino recorded what was genuinely known; Ribeiro recorded what was politically convenient. Twenty-seven years of exploration produced a more accurate map and a more dishonest one simultaneously.</p>`,
+
+  [cmpKey("Minard's Napoleon March Map","USGS Topographic Survey Maps")]: `<p>These two map traditions represent the two poles of nineteenth-century cartography's ambition. The USGS topographic programme, launched in 1879, aimed at total geometric description of an entire continent: every contour, every road, every settlement, every watercourse, recorded in a standardised reproducible format. Minard's map of 1869 aimed at something else entirely — the communication of a single moral argument about the cost of military ambition, encoded in six variables in a single image. One tradition wanted to record everything; the other wanted to say one thing clearly.</p><p>The USGS scores 5/5 on Accuracy, Completeness, and Navigation. Minard scores 5/5 on Symbolism and Richness, 3/5 on Accuracy, 1/5 on Navigation. The comparison makes visible a tension at the heart of modern cartography: between the map as comprehensive record and the map as argument. The USGS maps are extraordinarily accurate and almost entirely neutral — they describe the land without interpreting it. Minard's map is approximately accurate and entirely rhetorical — it uses geographic form to make a claim about what the data means. Both were revolutionary. The USGS tradition produced the infrastructure of modern geographic knowledge; the Minard tradition produced the language of data visualisation. We need both, but they are not the same project.</p>`,
+
+  [cmpKey("Booth's Poverty Map of London","USGS Topographic Survey Maps")]: `<p>Both are products of the same decades — the 1880s and 1890s — and both represent cartography pressed into the service of systematic knowledge production. The USGS topographic survey mapped the physical landscape of a continent with geometric precision; Charles Booth's poverty map mapped the social landscape of a single city with moral urgency. Both are empirical projects. Both are also political ones: the USGS survey encoded a particular vision of American territory, erasing indigenous place names in favour of settler geography; Booth's survey encoded a particular vision of London's poor, classifying streets by the class assumptions of wealthy Victorian interviewers.</p><p>The USGS scores 5/5 on Accuracy, Completeness; 1/5 on Symbolism. Booth scores 4/5 on Accuracy, Richness, Politics; 1/5 on Navigation. The comparison reveals what the objective style of both maps conceals: that every systematic survey encodes the priorities and blind spots of the people who designed it. The USGS map looks like the land itself; it is actually the land as the American state needed it to be. Booth's map looks like social reality; it is actually social reality as a wealthy reformer classified it from a distance. Both maps generated genuine knowledge. Both also generated the illusion that the knowledge was more complete and more neutral than it was.</p>`,
+
+  [cmpKey("Peters Projection","Mercator's World Map")]: `<p>No pair in cartographic history has generated more polemical heat. Mercator published his projection in 1569 for navigators: a conformal cylindrical projection in which every compass bearing appears as a straight line, allowing sailors to plot courses by ruler. Peters presented his equal-area projection in 1973 as a political corrective: a map that shows every country in its correct proportional size, explicitly challenging the Eurocentrism he argued was embedded in the Mercator's inflated northern hemisphere. Both men were right about what their maps did. Both were wrong about what their maps were.</p><p>Mercator's politics are buried in geometry: his navigational tool, adopted as the standard world map for classrooms and atlases, made Europe and North America appear dominant and Africa and South America appear small. Peters diagnosed this correctly. But his cure — trading shape fidelity for area fidelity — produced a map whose stretched continents struck professional cartographers as equally distorting, simply in a different direction. Both score 5/5 on Politics; Mercator scores 5/5 on Navigation, Peters 1/5. The deeper lesson of the comparison is that no world projection is politically neutral. Every flat map of a round world makes trade-offs that have consequences for how power is perceived. The choice is not between a political map and an objective one. It is between different political maps, with different arguments embedded in their mathematics.</p>`,
+
+  [cmpKey("Google Maps","Beck's London Underground Map")]: `<p>Harry Beck's Underground map of 1933 and Google Maps launched in 2005 are the two most influential navigational maps of the twentieth and twenty-first centuries, and they represent opposite philosophies. Beck stripped away everything except what a passenger needs to know: lines, stations, connections, the Thames as a geographic anchor. The result is a diagram, not a map — deliberately, radically simplified. Google Maps records everything: every road, every building, every business, every satellite image, every Street View photograph. The result is the most comprehensive geographic record ever assembled — and, navigation studies suggest, one that atrophies the spatial cognition of its users precisely because it makes navigation so effortless.</p><p>Beck scores 5/5 on Usability and Navigation, 1/5 on Accuracy. Google scores 5/5 on Accuracy, Usability, Navigation, and Completeness. The comparison is not simply about scale. It is about what navigation requires of the navigator. Beck's map asks you to learn a system — the logic of lines and connections — and then apply it. Google Maps asks you to follow instructions. Beck's users develop a mental model of the network; Google's users develop dependency on the interface. Both maps are masterworks of design for their respective purposes. But only one of them makes you understand where you are.</p>`,
+
 };
 
 // ═══════════════════════════════════════════════════════
@@ -1113,6 +1143,39 @@ var COMPARE_BIBS = {
 
   [cmpBibKey("Diogo Ribeiro's World Map (Carta Universal)","Ortelius's Theatrum Orbis Terrarum")]:
     `Brotton, <em>A History of the World in Twelve Maps</em> (2012), Chapters 6 & 8Broecke, Marcel van den, <em>Ortelius Atlas Maps</em> (HES, 1996)Brotton, Jerry, <em>Trading Territories: Mapping the Early Modern World</em> (Reaktion Books, 1997) — the essential study of cartography as commercial and political commodity in this period;`,
+
+[cmpBibKey("Ptolemy's World Map","Portolan Charts")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Berggren &amp; Jones, <em>Ptolemy's Geography</em> (Princeton UP, 2000)</li><li>Campbell, Tony, "Portolan Charts," in Harley &amp; Woodward, <em>History of Cartography Vol. 1</em> (1987)</li><li>Dilke, O.A.W., "The Culmination of Greek Cartography in Ptolemy," same volume</li><li>Snyder, John P., <em>Flattening the Earth</em> (Chicago, 1993) — for the projection theory context</li></ul>`,
+
+  [cmpBibKey("Portolan Charts","Hereford Mappa Mundi")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Harvey, P.D.A., <em>Mappa Mundi: The Hereford World Map</em> (British Library, 1996)</li><li>Campbell, Tony, "Portolan Charts," in Harley &amp; Woodward, <em>History of Cartography Vol. 1</em> (1987)</li><li>Edson, Evelyn, <em>Mapping Time and Space</em> (British Library, 1997) — the essential comparison of medieval traditions</li><li>Wood, Denis, <em>The Power of Maps</em> (Guilford, 1992) — for the theory of parallel cartographic purposes</li></ul>`,
+
+  [cmpBibKey("Fra Mauro World Map","Hereford Mappa Mundi")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Harvey, P.D.A., <em>Mappa Mundi</em> (1996)</li><li>Falchetta, Piero, <em>Fra Mauro's World Map</em> (Brepols, 2006)</li><li>Edson, Evelyn, <em>The World Map, 1300–1492</em> (Johns Hopkins UP, 2007) — covers the transition between these two traditions directly</li><li>Harley, J.B., "Deconstructing the Map," in <em>The New Nature of Maps</em> (Johns Hopkins UP, 2001)</li></ul>`,
+
+  [cmpBibKey("Tabula Peutingeriana","Ptolemy's World Map")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Talbert, R.J.A., <em>Rome's World: The Peutinger Map Reconsidered</em> (Cambridge UP, 2010)</li><li>Berggren &amp; Jones, <em>Ptolemy's Geography</em> (Princeton UP, 2000)</li><li>Harley &amp; Woodward (eds.), <em>History of Cartography Vol. 1</em> (Chicago, 1987), Chapters 11 &amp; 12 — ancient Roman cartography and Ptolemy side by side</li><li>Monmonier, Mark, <em>How to Lie with Maps</em>, 3rd ed. (Chicago, 2018) — for the theory of navigational schematism</li></ul>`,
+
+  [cmpBibKey("Waldseemüller Map (Universalis Cosmographia)","Piri Reis Map")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Lester, Toby, <em>The Fourth Part of the World</em> (Free Press, 2009)</li><li>McIntosh, Gregory C., <em>The Piri Reis Map of 1513</em> (Georgia UP, 2000)</li><li>Soucek, Svat, <em>Piri Reis and Turkish Mapmaking after Columbus</em> (Oxford UP, 1996)</li><li>Brotton, Jerry, <em>A History of the World in Twelve Maps</em> (Allen Lane, 2012), Chapters 5 &amp; 6</li></ul>`,
+
+  [cmpBibKey("Al-Balkhi School Maps (KMMS)","Al-Idrisi's Tabula Rogeriana")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Tibbetts, G.R., "The Balkhī School," in Harley &amp; Woodward, <em>History of Cartography Vol. 2, Book 1</em> (Chicago, 1992)</li><li>Ahmad, S. Maqbul, "Cartography of Al-Sharif Al-Idrisi," same volume</li><li>Pinto, Karen C., <em>Medieval Islamic Maps</em> (Chicago, 2016) — the essential study comparing Islamic mapping traditions</li><li>Edney, Matthew H., <em>Cartography: The Ideal and Its History</em> (Chicago, 2019)</li></ul>`,
+
+  [cmpBibKey("Kangnido Map","Fra Mauro World Map")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Ledyard, Gari, "Cartography in Korea," in Harley &amp; Woodward, <em>History of Cartography Vol. 2, Book 2</em> (Chicago, 1994)</li><li>Falchetta, Piero, <em>Fra Mauro's World Map</em> (Brepols, 2006)</li><li>Needham, Joseph, <em>Science and Civilisation in China, Vol. 3</em> (Cambridge UP, 1959)</li><li>Brotton, Jerry, <em>A History of the World in Twelve Maps</em> (2012) — for the political legacy comparison</li></ul>`,
+
+  [cmpBibKey("Minard's Napoleon March Map","USGS Topographic Survey Maps")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Tufte, Edward R., <em>The Visual Display of Quantitative Information</em>, 2nd ed. (Graphics Press, 2001)</li><li>Thompson, Morris M., <em>Maps for America</em>, 3rd ed. (USGS, 1988)</li><li>Rendgen, Sandra, <em>The Minard System</em> (Princeton Architectural Press, 2018)</li><li>Robinson, Arthur H., <em>Early Thematic Mapping in the History of Cartography</em> (Chicago, 1982) — essential for the argument vs record tension</li></ul>`,
+
+  [cmpBibKey("Booth's Poverty Map of London","USGS Topographic Survey Maps")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Bales, Kevin, <em>Understanding Charles Booth</em> (Polity Press, 1996)</li><li>Thompson, Morris M., <em>Maps for America</em>, 3rd ed. (USGS, 1988)</li><li>Schulten, Susan, <em>Mapping the Nation</em> (Chicago, 2012)</li><li>Harley, J.B., "Silences and Secrecy: The Hidden Agenda of Cartography," <em>Imago Mundi</em> 40 (1988) — foundational for reading political bias in apparently neutral surveys</li></ul>`,
+
+  [cmpBibKey("Peters Projection","Mercator's World Map")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Monmonier, Mark, <em>Rhumb Lines and Map Wars</em> (Chicago, 2004) — the definitive account of the Peters-Mercator controversy</li><li>Crane, Nicholas, <em>Mercator: The Man Who Mapped the Planet</em> (Weidenfeld &amp; Nicolson, 2002)</li><li>Peters, Arno, <em>The New Cartography</em> (Friendship Press, 1983)</li><li>Snyder, John P., <em>Flattening the Earth</em> (Chicago, 1993) — the mathematical context of both projections</li></ul>`,
+
+  [cmpBibKey("Google Maps","Beck's London Underground Map")]:
+    `<ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Garland, Ken, <em>Mr Beck's Underground Map</em> (Capital Transport, 1994)</li><li>Zuboff, Shoshana, <em>The Age of Surveillance Capitalism</em> (PublicAffairs, 2019), Ch. 8</li><li>Ishikawa, Toru and Montello, Daniel R., "Spatial knowledge acquisition from direct experience," <em>Cognitive Psychology</em> 52(2), 2006 — the spatial memory research</li><li>Crampton, Jeremy W., <em>Mapping: A Critical Introduction</em> (Wiley-Blackwell, 2010)</li></ul>`,
 
 };
 
@@ -1454,38 +1517,73 @@ function showView(v) {
   buildSidebar(); renderMain();
 }
 
+// ── Find a map by name across all eras ──
+function findMapByName(name) {
+  for (const era of ERAS) {
+    for (const map of era.maps) {
+      if (map.name === name) return {map, era};
+    }
+  }
+  return null;
+}
+
+// ── Launch a comparison directly from overview grid ──
+function compareFromOverview(nameA, nameB) {
+  const a = findMapByName(nameA);
+  const b = findMapByName(nameB);
+  if (!a || !b) return;
+
+  // Enter compare mode cleanly
+  state.compareMode = true;
+  state.compareA = {...a.map, era: a.era};
+  state.compareB = {...b.map, era: b.era};
+  state.view = 'compare';
+
+  // Update UI chrome
+  document.getElementById('cmp-banner').classList.add('open');
+  document.getElementById('cmp-cancel-wrap').style.display = 'inline';
+  document.getElementById('cmp-toggle').classList.add('active');
+  updateCmpBanner();
+  buildSidebar();
+  renderMain();
+}
+
 // ── Overview ──
 function renderOverview(main) {
   const tradeoffs = [
-    {gain:'Accuracy', loss:'Usability', ex:'Ptolemy\'s grid vs portolan charts'},
-    {gain:'Navigation', loss:'Symbolism', ex:'Portolans vs Hereford Mappa Mundi'},
-    {gain:'Completeness', loss:'Honest blank space', ex:'Fra Mauro vs earlier mappae mundi'},
-    {gain:'Road network', loss:'Geographic shape', ex:'Peutinger Table vs any spatial map'},
-    {gain:'New World claim', loss:'Indigenous geography', ex:'Waldseemüller vs Piri Reis'},
-    {gain:'Political framing', loss:'Physical geography', ex:'Al-Balkhi KMMS vs Al-Idrisi'},
-    {gain:'Non-Eurocentric centre', loss:'European recognition', ex:'Kangnido vs Fra Mauro'},
-    {gain:'Tactile navigation', loss:'Visual readability', ex:'Stick Charts vs Cook\'s charts'},
-    {gain:'Correct Pacific scale', loss:'Scientific neutrality', ex:'Ribeiro\'s Carta Universal vs Cantino Planisphere'},
-    {gain:'Data tragedy', loss:'Geographic accuracy', ex:'Minard\'s march vs survey maps'},
-    {gain:'Social insight', loss:'Objectivity', ex:'Booth\'s Poverty Map vs USGS topo'},
-    {gain:'Equal-area', loss:'Shape truth', ex:'Peters vs Mercator projection'},
-    {gain:'Real-time navigation', loss:'Spatial memory', ex:'Google Maps vs wayfinding'},
-    {gain:'Open geographic commons', loss:'Consistency', ex:'OpenStreetMap vs Google Maps'},
+    {gain:'Accuracy', loss:'Usability', ex:'Ptolemy\'s grid vs portolan charts', a:'Ptolemy\'s World Map', b:'Portolan Charts'},
+    {gain:'Navigation', loss:'Symbolism', ex:'Portolans vs Hereford Mappa Mundi', a:'Portolan Charts', b:'Hereford Mappa Mundi'},
+    {gain:'Completeness', loss:'Honest blank space', ex:'Fra Mauro vs earlier mappae mundi', a:'Fra Mauro World Map', b:'Hereford Mappa Mundi'},
+    {gain:'Road network', loss:'Geographic shape', ex:'Peutinger Table vs any spatial map', a:'Tabula Peutingeriana', b:'Ptolemy\'s World Map'},
+    {gain:'New World claim', loss:'Indigenous geography', ex:'Waldseemüller vs Piri Reis', a:'Waldseemüller Map (Universalis Cosmographia)', b:'Piri Reis Map'},
+    {gain:'Political framing', loss:'Physical geography', ex:'Al-Balkhi KMMS vs Al-Idrisi', a:'Al-Balkhi School Maps (KMMS)', b:'Al-Idrisi\'s Tabula Rogeriana'},
+    {gain:'Non-Eurocentric centre', loss:'European recognition', ex:'Kangnido vs Fra Mauro', a:'Kangnido Map', b:'Fra Mauro World Map'},
+    {gain:'Tactile navigation', loss:'Visual readability', ex:'Stick Charts vs Cook\'s charts', a:'Marshall Islands Stick Charts', b:'Cook\'s Pacific Charts'},
+    {gain:'Correct Pacific scale', loss:'Scientific neutrality', ex:'Ribeiro\'s Carta Universal vs Cantino Planisphere', a:'Diogo Ribeiro\'s World Map (Carta Universal)', b:'Cantino Planisphere'},
+    {gain:'Data tragedy', loss:'Geographic accuracy', ex:'Minard\'s march vs survey maps', a:'Minard\'s Napoleon March Map', b:'USGS Topographic Survey Maps'},
+    {gain:'Social insight', loss:'Objectivity', ex:'Booth\'s Poverty Map vs USGS topo', a:'Booth\'s Poverty Map of London', b:'USGS Topographic Survey Maps'},
+    {gain:'Equal-area', loss:'Shape truth', ex:'Peters vs Mercator projection', a:'Peters Projection', b:'Mercator\'s World Map'},
+    {gain:'Real-time navigation', loss:'Spatial memory', ex:'Google Maps vs wayfinding', a:'Google Maps', b:'Beck\'s London Underground Map'},
+    {gain:'Open geographic commons', loss:'Consistency', ex:'OpenStreetMap vs Google Maps', a:'OpenStreetMap', b:'Google Maps'},
   ];
   main.innerHTML = `
     <div style="max-width:100%">
       <h2 class="overview-title">A map is a truth constrained by purpose, shaped by power, and shadowed by absence.</h2>
       <p class="overview-sub">Every map that replaced another gained something and sacrificed something. This explorer tracks both — across 40 landmark maps, 7 eras, and 8,000 years.</p>
       <div class="tradeoff-grid">
-        ${tradeoffs.map(r=>`
-          <div class="tradeoff-cell">
+        ${tradeoffs.map(r=>{
+          const clickable = r.a && r.b;
+          return `
+          <div class="tradeoff-cell${clickable ? ' clickable' : ''}"${clickable ? ` onclick="compareFromOverview('${r.a.replace(/'/g,"\\'")}','${r.b.replace(/'/g,"\\'")}')` : ''}" title="${clickable ? 'Click to compare these maps' : ''}">
             <div class="tradeoff-row">
               <span class="t-gain">↑ ${r.gain}</span>
               <span class="t-vs">vs</span>
               <span class="t-loss">↓ ${r.loss}</span>
             </div>
             <div class="t-ex">${r.ex}</div>
-          </div>`).join('')}
+            ${clickable ? '<div class="compare-hint">⇄ click to compare</div>' : ''}
+          </div>`;
+        }).join('')}
       </div>
       <p class="overview-help">Open the sidebar (☰) to select an era or map. Use <strong style="color:var(--teal)">⇄ Compare Maps</strong> to pick any two maps for a side-by-side trade-off analysis with written commentary. Click any axis button in the bar above to filter and define dimensions.</p>
     </div>`;
