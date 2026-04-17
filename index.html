@@ -277,22 +277,69 @@
   .prose p:last-child { margin-bottom: 0; }
 
   /* ── COMPARE ── */
-  .compare-top { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; margin-bottom: 1.2rem; align-items: start; }
-  .compare-card { padding: 1rem; border-radius: 2px; }
-  .compare-card-era { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.25rem; }
-  .compare-card-name { font-size: 0.98rem; color: #E8D4A8; margin-bottom: 0.15rem; line-height: 1.3; }
-  .compare-card-year { font-size: 0.76rem; color: var(--text3); font-style: italic; margin-bottom: 0.7rem; }
-  .compare-axis-col { padding: 1rem 0.8rem; background: #0E0C08; border: 1px solid var(--border); min-width: 200px; }
-  .compare-axis-title { font-size: 0.68rem; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; margin-bottom: 0.6rem; }
-  .compare-axis-row { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.32rem; }
-  .compare-axis-name { font-size: 0.75rem; color: var(--text2); width: 84px; text-align: right; cursor: pointer; flex-shrink: 0; }
+  .compare-top {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto auto minmax(0,1fr);
+    gap: 0; margin-bottom: 1.4rem; align-items: stretch;
+    border: 1px solid var(--border); background: var(--border);
+  }
+  .compare-card {
+    padding: 1rem 1.1rem; background: var(--bg2); min-width: 0;
+    display: flex; flex-direction: column;
+  }
+  .compare-card-era { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .compare-card-name { font-size: 0.95rem; color: #E8D4A8; margin-bottom: 0.1rem; line-height: 1.3; }
+  .compare-card-year { font-size: 0.74rem; color: var(--text3); font-style: italic; margin-bottom: 0.8rem; }
+  .compare-card-axes { display: flex; flex-direction: column; gap: 0.22rem; }
+  .compare-card-axis-row { display: flex; align-items: center; gap: 0.4rem; }
+  .compare-card-axis-label { font-size: 0.7rem; color: var(--text3); width: 74px; text-align: right; flex-shrink: 0; }
+  .compare-card-body { display: grid; grid-template-columns: auto 1fr; gap: 0.8rem; align-items: start; flex: 1; }
+  .compare-card-pills { display: flex; flex-direction: column; gap: 0.2rem; padding-left: 0.6rem; border-left: 1px solid var(--border2); min-width: 0; }
+  .compare-card-pill-label { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.2rem; margin-top: 0.4rem; }
+  .compare-card-pill-label:first-child { margin-top: 0; }
+  /* Radar column — centred, no border so the SVG breathes */
+  .compare-radar-col {
+    background: var(--bg); padding: 1.4rem 1.6rem 1rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+    justify-content: center;
+  }
+  .compare-radar-legend { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  /* Axis deltas column — fills height with evenly spaced rows */
+  .compare-axis-col {
+    background: var(--bg2); padding: 1rem 1.2rem;
+    display: flex; flex-direction: column; min-width: 160px;
+    justify-content: space-between;
+  }
+  .compare-axis-title { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--text4); text-transform: uppercase; margin-bottom: 0; }
+  .compare-axis-row { display: flex; align-items: center; gap: 0.4rem; flex: 1; }
+  .compare-axis-name { font-size: 0.74rem; color: var(--text2); width: 78px; text-align: right; cursor: pointer; flex-shrink: 0; }
   .compare-axis-name:hover { color: var(--gold); }
-  .vs-sep { font-size: 0.72rem; color: var(--text4); width: 1rem; text-align: center; flex-shrink: 0; }
+  .vs-sep { font-size: 0.7rem; color: var(--text4); width: 1rem; text-align: center; flex-shrink: 0; }
   .compare-prose { font-size: 0.96rem; color: var(--text2); line-height: 1.82; margin-top: 0.6rem; }
   .compare-prose p { margin-bottom: 1rem; }
   .compare-prose p:last-child { margin-bottom: 0; }
 
-  /* ── ERA/MAP NAVIGATION ── */
+  /* ── BIBLIOGRAPHY BLOCKS ── */
+  /* Shared style for all Further Reading sections — map bibs, era bibs, compare bibs */
+  .bib-block {
+    font-size: 0.88rem; color: var(--text3); line-height: 1.75;
+  }
+  .bib-block strong, .bib-heading {
+    color: var(--gold2); letter-spacing: 0.05em; font-size: 0.78rem;
+    text-transform: uppercase;
+  }
+  .bib-block a, .bib-block a:visited { color: var(--teal); }
+  .bib-block a:hover { text-decoration: underline; }
+  .bib-block ul { margin: 0.4rem 0 0 1.1rem; padding: 0; list-style: disc; }
+  .bib-block li { margin-bottom: 0.25rem; }
+  /* Compare bib section */
+  .compare-bib-section {
+    border-top: 1px solid var(--border2); margin-top: 0.5rem; padding-top: 1.2rem;
+  }
+  .compare-bib-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; color: var(--teal);
+    text-transform: uppercase; margin-bottom: 0.6rem;
+  }
   .era-nav {
     display: flex; justify-content: space-between; align-items: stretch;
     gap: 1rem; margin-top: 2.5rem; padding-top: 1.2rem;
@@ -374,8 +421,9 @@
 
     .era-two-col { grid-template-columns: 1fr !important; gap: 1rem !important; }
 
-    .compare-top { grid-template-columns: 1fr; gap: 0.8rem; }
-    .compare-axis-col { min-width: unset; }
+    .compare-top { grid-template-columns: 1fr 1fr !important; }
+    .compare-radar-col { grid-column: 1 / -1; }
+    .compare-axis-col { grid-column: 1 / -1; border-left: none !important; border-top: 1px solid var(--border); }
     .compare-card { padding: 0.75rem; }
 
     .tradeoff-grid { grid-template-columns: 1fr 1fr; }
@@ -388,6 +436,10 @@
     .compare-pills-grid { grid-template-columns: 1fr !important; }
 
     #cmp-cancel-wrap { display: none !important; }
+
+    /* Tour grid responsive */
+    #tour-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    #tour-overlay-inner { padding: 1.2rem; }
 
     /* Ensure nothing overflows horizontally */
     .compare-prose, .prose { overflow-wrap: break-word; word-break: break-word; }
@@ -409,8 +461,9 @@
   @media (min-width: 701px) and (max-width: 1024px) {
     .map-top-row { grid-template-columns: 200px 1fr; }
     .map-tradeoff-col { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
-    .compare-top { grid-template-columns: 1fr 1fr; }
-    .compare-axis-col { grid-column: 1 / -1; }
+    .compare-top { grid-template-columns: 1fr 1fr !important; }
+    .compare-radar-col { grid-column: 1 / -1; }
+    .compare-axis-col { grid-column: 1 / -1; border-left: none !important; }
   }
   /* ══════════════════════════════════
      TOUR SYSTEM
@@ -450,12 +503,12 @@
   #tour-overlay {
     display: none; position: fixed; inset: 0; z-index: 300;
     background: rgba(10,8,6,0.92); backdrop-filter: blur(4px);
-    overflow-y: auto; padding: 2rem 1rem;
+    overflow-y: auto; padding: 2rem 1.5rem;
   }
   #tour-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
   #tour-overlay-inner {
     background: var(--bg2); border: 1px solid var(--border2);
-    border-radius: 4px; max-width: 860px; width: 100%; padding: 2rem;
+    border-radius: 4px; max-width: 1400px; width: 100%; padding: 2rem;
   }
   #tour-overlay-header {
     display: flex; justify-content: space-between; align-items: flex-start;
@@ -463,7 +516,7 @@
     border-bottom: 1px solid var(--border);
   }
   #tour-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    display: grid; grid-template-columns: repeat(5, 1fr);
     gap: 1px; background: var(--border);
   }
   .tour-card {
@@ -900,8 +953,8 @@ var ERAS = [
       {
         name:"Diogo Ribeiro's World Map (Carta Universal)", year:"1529 CE", region:"Spain / Global",
         img:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Diogo_Ribeiro_1529.jpg/320px-Diogo_Ribeiro_1529.jpg",
-        gained:["First map to show the full extent of the Pacific Ocean at correct scale","First continuous North American coastline, incorporating Estêvão Gomes's 1524–25 surveys","Empirically grounded world map directly post-dating Magellan's circumnavigation","Established the Padrón Real as the world's most current state-of-the-art geographic document"],
-        sacrificed:["Scientific neutrality - the Moluccas placement was a deliberate political falsehood","Southern hemisphere geography - Australia and Antarctica entirely absent","Indian subcontinent severely undersized","The cartographer's Portuguese loyalty, exchanged for Spanish imperial service"],
+        gained:["First map to show the full extent of the Pacific Ocean at correct scale","First continuous North American coastline, incorporating Estêvão Gomes's 1524–25 surveys","Empirically grounded world map directly post-dating Magellan's circumnavigation"],
+        sacrificed:["Scientific neutrality - the Moluccas placement was a deliberate political falsehood","Southern hemisphere geography - Australia and Antarctica entirely absent","Indian subcontinent severely undersized"],
         axes:{accuracy:4,usability:4,navigation:5,symbolism:2,politics:5,completeness:3,richness:3},
         description:`<p>Diogo Ribeiro's 1529 Carta Universal - formally titled <em>Carta universal en que se contiene todo lo que del mundo se ha descubierto fasta agora</em> ("Universal chart containing all that has been discovered in the world until now") - is one of the most consequential and most dishonest maps in the history of cartography, and it is both things simultaneously. Made in Seville by a Portuguese cartographer in the service of the Spanish crown, presented by the Emperor Charles V to Pope Clement VII in the very year of its completion, it represents the pinnacle of Renaissance empirical cartography and a brazen act of geopolitical fabrication.</p><p>Ribeiro was the unlikely embodiment of the Age of Exploration's cartographic world. Born in Portugal, trained as a sailor on Vasco da Gama's voyages to India, he defected to Spain around 1516 along with Ferdinand Magellan and a cohort of Portuguese navigators who had fallen out with King Manuel I. At the Casa de Contratación in Seville - Spain's official body for regulating Atlantic trade and maintaining the Padrón Real, the official master chart - Ribeiro became royal cosmographer, responsible for incorporating every new discovery into the state's authoritative map of the world. He was personally acquainted with Magellan, participated in the planning of Magellan's circumnavigation, and worked alongside Sebastian Cabot. When Magellan's expedition returned in 1522 under Elcano - the first to circumnavigate the globe - Ribeiro was positioned to incorporate that knowledge into the definitive world map of the age.</p><p>The 1529 Vatican planisphere is the most lavish and complete of six surviving Ribeiro maps. Its technical achievements are genuine and remarkable. It is the first map to show the Pacific Ocean at anything approaching its correct scale - a full half of the globe, dwarfing the Atlantic. It shows the first continuous North American coastline, incorporating the surveys of Estêvão Gomes, who explored from Nova Scotia to Florida in 1524–25 and whose route is explicitly named on the map as "Tierra de Esteva Gomez." It places latitude lines correctly and uses observed astronomical data rather than estimated distances. Measured against its contemporaries - Waldseemüller's map of 1507, the Cantino planisphere of 1502, the Piri Reis map of 1513 - it is strikingly accurate along the coasts that had been surveyed.</p><p>But the map's most famous feature is its most dishonest one. At the centre of the great geopolitical dispute of the 1520s was the question of whether the Moluccas - the Spice Islands, source of the most valuable commodities in the world - fell on the Spanish or Portuguese side of the antimeridian of the Treaty of Tordesillas. Portugal controlled the eastern route; Spain controlled the western. Magellan's circumnavigation had proved that the world could be circumnavigated via the Pacific, and Spain needed the Moluccas to be on its side of the line. Ribeiro, paid by the Spanish, placed them there. Modern cartographic analysis confirms that he was wrong - the Moluccas fall in the Portuguese hemisphere - but the deception was geometrically precise enough to be politically effective for decades. The map appears in the historical record as a scientific document; it was in practice a diplomatic weapon. Brotton calls it "the most brilliant and effective act of cartographic deception in history."</p><p>The irony is layered. Ribeiro was Portuguese, mapping on behalf of Spain, to dispossess Portugal of the islands that had been the goal of Portuguese exploration for a generation. And in the same year the map was completed, Charles V sold Spain's rights to the Moluccas to Portugal anyway for 350,000 gold ducats under the Treaty of Zaragoza - the deception outlived its usefulness almost immediately. Ribeiro died in 1533, four years after his masterpiece, never knowing how quickly the political stakes it had been designed to resolve would shift. The map remained, however, as the most complete and accurate world chart of its era, influential on Mercator and the entire subsequent tradition of European Renaissance cartography.</p><hr style="border:none;border-top:1px solid #2A2418;margin:1.2rem 0"><p style="font-size:0.88rem;color:#9A8555;line-height:1.7"><strong style="color:#C8B060;letter-spacing:0.05em">Further Reading</strong><br>
 <ul style="margin:0.5rem 0 0 1.1rem;padding:0;list-style:disc"><li>Brotton, Jerry. <em>A History of the World in Twelve Maps</em> (Allen Lane, 2012)</li><li>Vigneras, L.A., "The Cartography of Diogo Ribeiro," <em>Imago Mundi</em> (available via JSTOR)</li><li>Davies, Surekha, "The Navigational Iconography of Diogo Ribeiro's 1529 Vatican Planisphere," <em>Imago Mundi</em> 55 (2003) </li><li>Cortesão, Armando and Mota, Avelino Teixeira da, <em>Portugaliae Monumenta Cartographica</em>, 6 vols (Lisbon, 1960–62)</li><li>The Vatican copy (Carte Nautiche Borgiano III) is held at the Biblioteca Apostolica Vaticana; the Weimar copy at the Herzogin Anna Amalia Bibliothek. High-resolution images of both via <a href="https://artsandculture.google.com/asset/universal-chart-diego-ribero/LQGnpKkgJs97lQ" target="_blank" style="color:#6ABBBB">artsandculture.google.com</a></li></ul></p>`
@@ -1450,7 +1503,17 @@ function applysidebar() {
 // ═══════════════════════════════════════════════════════
 function init() {
   buildAxisBar();
+  const hadURL = readURL();
   buildSidebar();
+  if (hadURL && state.compareMode) {
+    document.getElementById('cmp-banner').classList.add('open');
+    document.getElementById('cmp-cancel-wrap').style.display = 'inline';
+    document.getElementById('cmp-toggle').classList.add('active');
+    updateCmpBanner();
+  }
+  if (hadURL && state.tourMode) {
+    updateTourBanner();
+  }
   renderMain();
 }
 
@@ -1590,7 +1653,7 @@ function selectEra(era) {
   state.view = 'era';
   buildSidebar();
   renderMain();
-  // On mobile, close sidebar after selecting
+  pushURL();
   if (window.innerWidth <= 700) closeSidebar();
 }
 
@@ -1603,6 +1666,7 @@ function selectMap(map, era) {
       state.compareB = {...map, era};
       state.view = 'compare';
       updateCmpBanner(); buildSidebar(); renderMain();
+      pushURL();
       if (window.innerWidth <= 700) closeSidebar();
     }
     return;
@@ -1611,6 +1675,7 @@ function selectMap(map, era) {
   state.selectedEra = era;
   state.view = 'map';
   buildSidebar(); renderMain();
+  pushURL();
   if (window.innerWidth <= 700) closeSidebar();
 }
 
@@ -1638,6 +1703,7 @@ function cancelCompare() {
   document.getElementById('cmp-toggle').classList.remove('active');
   if (state.view === 'compare') { state.view = 'overview'; renderMain(); }
   buildSidebar();
+  pushURL();
 }
 
 function updateCmpBanner() {
@@ -1668,6 +1734,7 @@ function showView(v) {
   if (state.compareMode) cancelCompare();
   if (state.tourMode) exitTour();
   buildSidebar(); renderMain();
+  pushURL();
 }
 
 // ── Find a map by name across all eras ──
@@ -1680,25 +1747,120 @@ function findMapByName(name) {
   return null;
 }
 
+// ═══════════════════════════════════════════════════════
+// DEEP-LINKING
+// ═══════════════════════════════════════════════════════
+
+// Build slug ↔ name lookup tables once
+const _slugToName = {};
+const _nameToSlug = {};
+(function buildSlugs() {
+  for (const era of ERAS) {
+    // Era slugs
+    _slugToName[era.id] = {type:'era', id:era.id};
+    for (const map of era.maps) {
+      const slug = map.name
+        .toLowerCase()
+        .replace(/['']/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      _slugToName[slug] = {type:'map', name:map.name};
+      _nameToSlug[map.name] = slug;
+    }
+  }
+})();
+
+function nameToSlug(name) { return _nameToSlug[name] || null; }
+
+function pushURL() {
+  const url = new URL(window.location.href);
+  url.search = '';  // clear all params
+  if (state.view === 'compare' && state.compareA && state.compareB) {
+    const sa = nameToSlug(state.compareA.name);
+    const sb = nameToSlug(state.compareB.name);
+    if (sa && sb) { url.searchParams.set('compare', sa); url.searchParams.set('vs', sb); }
+  } else if (state.view === 'era' && state.selectedEra) {
+    url.searchParams.set('era', state.selectedEra.id);
+  } else if (state.view === 'map' && state.selectedMap) {
+    const s = nameToSlug(state.selectedMap.name);
+    if (s) url.searchParams.set('map', s);
+  } else if (state.view === 'tour' && state.activeTour) {
+    url.searchParams.set('tour', state.activeTour.id);
+    url.searchParams.set('stop', state.tourStop);
+  }
+  history.pushState(null, '', url.toString());
+}
+
+function readURL() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.has('compare') && p.has('vs')) {
+    const ra = _slugToName[p.get('compare')];
+    const rb = _slugToName[p.get('vs')];
+    if (ra?.type==='map' && rb?.type==='map') {
+      const fa = findMapByName(ra.name);
+      const fb = findMapByName(rb.name);
+      if (fa && fb) {
+        state.compareMode = true;
+        state.compareA = {...fa.map, era:fa.era};
+        state.compareB = {...fb.map, era:fb.era};
+        state.view = 'compare';
+        return true;
+      }
+    }
+  }
+  if (p.has('map')) {
+    const r = _slugToName[p.get('map')];
+    if (r?.type==='map') {
+      const f = findMapByName(r.name);
+      if (f) { state.selectedMap = f.map; state.selectedEra = f.era; state.view = 'map'; return true; }
+    }
+  }
+  if (p.has('era')) {
+    const era = ERAS.find(e => e.id === p.get('era'));
+    if (era) { state.selectedEra = era; state.view = 'era'; return true; }
+  }
+  if (p.has('tour')) {
+    const tour = TOURS.find(t => t.id === p.get('tour'));
+    if (tour) {
+      const stop = Math.min(parseInt(p.get('stop') || '0'), tour.stops.length - 1);
+      state.tourMode = true; state.activeTour = tour; state.tourStop = stop;
+      const f = findMapByName(tour.stops[stop].map);
+      if (f) { state.selectedMap = f.map; state.selectedEra = f.era; state.view = 'tour'; return true; }
+    }
+  }
+  return false;
+}
+
+// Patch all navigation functions to call pushURL
+// Share button helper — copies current URL to clipboard
+function copyShareURL() {
+  pushURL();
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.getElementById('share-btn');
+    if (btn) { const orig = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(()=>btn.textContent=orig, 2000); }
+  }).catch(() => {
+    prompt('Copy this link:', window.location.href);
+  });
+}
+
 // ── Launch a comparison directly from overview grid ──
 function compareFromOverview(nameA, nameB) {
   const a = findMapByName(nameA);
   const b = findMapByName(nameB);
   if (!a || !b) return;
 
-  // Enter compare mode cleanly
   state.compareMode = true;
   state.compareA = {...a.map, era: a.era};
   state.compareB = {...b.map, era: b.era};
   state.view = 'compare';
 
-  // Update UI chrome
   document.getElementById('cmp-banner').classList.add('open');
   document.getElementById('cmp-cancel-wrap').style.display = 'inline';
   document.getElementById('cmp-toggle').classList.add('active');
   updateCmpBanner();
   buildSidebar();
   renderMain();
+  pushURL();
 }
 
 // ── Overview ──
@@ -1858,97 +2020,99 @@ function renderCompare(main) {
     <div style="max-width:100%">
       <div class="content-eyebrow" style="color:var(--teal)">Trade-off Comparison</div>
       <h2 class="content-title" style="font-size:1.5rem">${a.name} <span style="color:var(--text4);font-size:1rem">vs</span> ${b.name}</h2>
-      <div class="content-meta">${a.year} · ${a.region} &nbsp;|&nbsp; ${b.year} · ${b.region}</div>
+      <div class="content-meta" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <span>${a.year} · ${a.region} &nbsp;|&nbsp; ${b.year} · ${b.region}</span>
+        <button id="share-btn" onclick="copyShareURL()" class="btn btn-sm" style="font-size:0.65rem;padding:0.15rem 0.55rem;border-color:var(--border2);color:var(--text3)" title="Copy shareable link to this comparison">⬡ Share</button>
+      </div>
 
-      <!-- Dual-radar header row -->
+      <!-- 4-column compare row -->
       <div class="compare-top">
 
-        <!-- Card A -->
-        <div class="compare-card" style="border:1px solid ${eraA.hue}40;background:${eraA.hue}08">
+        <!-- Col 1: Card A -->
+        <div class="compare-card" style="border-right:1px solid ${eraA.hue}30;background:${eraA.hue}06">
           <div class="compare-card-era" style="color:${eraA.hue}">${eraA.label} · ${a.year}</div>
           <div class="compare-card-name">${a.name}</div>
           <div class="compare-card-year">${a.region}</div>
-          <div style="display:flex;gap:0.8rem;align-items:flex-start;margin-top:0.5rem">
-            ${renderRadarSVG(a.axes, eraA.hue, 90)}
-            <div>${AXES.map(ax=>`
-              <div class="axis-row" style="margin-bottom:0.25rem">
-                <span style="font-size:0.73rem;color:var(--text2);width:76px;text-align:right">${ax.label}</span>
-                <div class="dot-bar">${[1,2,3,4,5].map(i=>`<div class="dot" style="width:8px;height:8px;${i<=a.axes[ax.id]?'background:'+eraA.hue+';border-color:'+eraA.hue+'80':''}"></div>`).join('')}</div>
-                <span style="font-size:0.68rem;color:var(--text3)">${a.axes[ax.id]}</span>
-              </div>`).join('')}</div>
+          <div class="compare-card-body">
+            <div class="compare-card-axes">
+              ${AXES.map(ax=>`
+                <div class="compare-card-axis-row">
+                  <span class="compare-card-axis-label">${ax.label}</span>
+                  <div class="dot-bar">${[1,2,3,4,5].map(i=>`<div class="dot" style="width:8px;height:8px;${i<=a.axes[ax.id]?'background:'+eraA.hue+';border-color:'+eraA.hue+'80':''}"></div>`).join('')}</div>
+                  <span style="font-size:0.68rem;color:var(--text4);min-width:0.8rem">${a.axes[ax.id]}</span>
+                </div>`).join('')}
+            </div>
+            <div class="compare-card-pills">
+              <div class="compare-card-pill-label" style="color:var(--gain)">↑ Gained</div>
+              ${a.gained.map(g=>`<div class="pill pill-gain" style="font-size:0.74rem;padding:0.2rem 0.45rem;display:block;margin-bottom:0.18rem"><span class="pill-arrow">↑</span>${g}</div>`).join('')}
+              <div class="compare-card-pill-label" style="color:var(--loss)">↓ Sacrificed</div>
+              ${a.sacrificed.map(s=>`<div class="pill pill-loss" style="font-size:0.74rem;padding:0.2rem 0.45rem;display:block;margin-bottom:0.18rem"><span class="pill-arrow">↓</span>${s}</div>`).join('')}
+            </div>
           </div>
         </div>
 
-        <!-- Centre: dual radar overlay + axis deltas -->
-        <div class="compare-axis-col">
-          <!-- Overlaid radar -->
-          <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:0.8rem">
-            ${renderDualRadarSVG(a.axes, eraA.hue, b.axes, eraB.hue, 160)}
-            <!-- Legend -->
-            <div style="display:flex;gap:1.2rem;margin-top:0.5rem">
-              <span style="font-size:0.68rem;color:${eraA.hue};display:flex;align-items:center;gap:0.3rem">
-                <span style="display:inline-block;width:16px;height:2px;background:${eraA.hue};border-radius:1px"></span>${a.name.split(' ').slice(0,2).join(' ')}
-              </span>
-              <span style="font-size:0.68rem;color:${eraB.hue};display:flex;align-items:center;gap:0.3rem">
-                <span style="display:inline-block;width:16px;height:2px;background:${eraB.hue};border-radius:1px;border-top:2px dashed ${eraB.hue};background:none"></span>${b.name.split(' ').slice(0,2).join(' ')}
-              </span>
-            </div>
+        <!-- Col 2: Large overlaid radar — the visual hero -->
+        <div class="compare-radar-col">
+          ${renderDualRadarSVG(a.axes, eraA.hue, b.axes, eraB.hue, 220)}
+          <div class="compare-radar-legend">
+            <span style="font-size:0.72rem;color:${eraA.hue};display:flex;align-items:center;gap:0.35rem">
+              <span style="display:inline-block;width:18px;height:2px;background:${eraA.hue};border-radius:1px;flex-shrink:0"></span>
+              <span>${a.name.split(/[\s(]/)[0]}</span>
+            </span>
+            <span style="font-size:0.72rem;color:${eraB.hue};display:flex;align-items:center;gap:0.35rem">
+              <span style="display:inline-block;width:18px;height:0;border-top:2px dashed ${eraB.hue};flex-shrink:0"></span>
+              <span>${b.name.split(/[\s(]/)[0]}</span>
+            </span>
           </div>
-          <!-- Axis deltas -->
-          <div class="compare-axis-title">Axis comparison</div>
+        </div>
+
+        <!-- Col 3: Axis deltas -->
+        <div class="compare-axis-col" style="border-left:1px solid var(--border)">
+          <div class="compare-axis-title">Axis deltas</div>
           ${AXES.map(ax=>{
             const va=a.axes[ax.id], vb=b.axes[ax.id], diff=va-vb;
             return `
             <div class="compare-axis-row">
               <span class="compare-axis-name" onclick="openDef('${ax.id}')">${ax.label}</span>
-              <span style="font-size:0.7rem;min-width:1rem;text-align:right;color:${va>=vb?eraA.hue:'var(--text4)'}">${va}</span>
+              <span style="font-size:0.72rem;min-width:1rem;text-align:right;color:${va>=vb?eraA.hue:'var(--text4)'}">${va}</span>
               <span class="vs-sep">vs</span>
-              <span style="font-size:0.7rem;min-width:1rem;color:${vb>=va?eraB.hue:'var(--text4)'}">${vb}</span>
-              <span style="font-size:0.73rem;margin-left:0.25rem;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'};font-weight:600">${diff>0?'+'+diff:diff===0?'-':diff}</span>
+              <span style="font-size:0.72rem;min-width:1rem;color:${vb>=va?eraB.hue:'var(--text4)'}">${vb}</span>
+              <span style="font-size:0.75rem;margin-left:0.15rem;min-width:2rem;font-weight:700;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'}">${diff>0?'+'+diff:diff===0?'—':diff}</span>
             </div>`;}).join('')}
         </div>
 
-        <!-- Card B -->
-        <div class="compare-card" style="border:1px solid ${eraB.hue}40;background:${eraB.hue}08">
+        <!-- Col 4: Card B -->
+        <div class="compare-card" style="border-left:1px solid ${eraB.hue}30;background:${eraB.hue}06">
           <div class="compare-card-era" style="color:${eraB.hue}">${eraB.label} · ${b.year}</div>
           <div class="compare-card-name">${b.name}</div>
           <div class="compare-card-year">${b.region}</div>
-          <div style="display:flex;gap:0.8rem;align-items:flex-start;margin-top:0.5rem">
-            ${renderRadarSVG(b.axes, eraB.hue, 90)}
-            <div>${AXES.map(ax=>`
-              <div class="axis-row" style="margin-bottom:0.25rem">
-                <span style="font-size:0.73rem;color:var(--text2);width:76px;text-align:right">${ax.label}</span>
-                <div class="dot-bar">${[1,2,3,4,5].map(i=>`<div class="dot" style="width:8px;height:8px;${i<=b.axes[ax.id]?'background:'+eraB.hue+';border-color:'+eraB.hue+'80':''}"></div>`).join('')}</div>
-                <span style="font-size:0.68rem;color:var(--text3)">${b.axes[ax.id]}</span>
-              </div>`).join('')}</div>
+          <div class="compare-card-body">
+            <div class="compare-card-axes">
+              ${AXES.map(ax=>`
+                <div class="compare-card-axis-row">
+                  <span class="compare-card-axis-label">${ax.label}</span>
+                  <div class="dot-bar">${[1,2,3,4,5].map(i=>`<div class="dot" style="width:8px;height:8px;${i<=b.axes[ax.id]?'background:'+eraB.hue+';border-color:'+eraB.hue+'80':''}"></div>`).join('')}</div>
+                  <span style="font-size:0.68rem;color:var(--text4);min-width:0.8rem">${b.axes[ax.id]}</span>
+                </div>`).join('')}
+            </div>
+            <div class="compare-card-pills">
+              <div class="compare-card-pill-label" style="color:var(--gain)">↑ Gained</div>
+              ${b.gained.map(g=>`<div class="pill pill-gain" style="font-size:0.74rem;padding:0.2rem 0.45rem;display:block;margin-bottom:0.18rem"><span class="pill-arrow">↑</span>${g}</div>`).join('')}
+              <div class="compare-card-pill-label" style="color:var(--loss)">↓ Sacrificed</div>
+              ${b.sacrificed.map(s=>`<div class="pill pill-loss" style="font-size:0.74rem;padding:0.2rem 0.45rem;display:block;margin-bottom:0.18rem"><span class="pill-arrow">↓</span>${s}</div>`).join('')}
+            </div>
           </div>
         </div>
+
       </div>
 
       <div class="divider" style="background:linear-gradient(to right,var(--teal)50,transparent)"></div>
 
       <div class="compare-prose">${compareText}</div>
 
-      <div class="divider" style="background:linear-gradient(to right,var(--border2),transparent);margin-top:1.2rem"></div>
-
-      <div class="compare-pills-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1rem">
-        ${[{m:a,e:eraA,label:'What A gained'},{m:b,e:eraB,label:'What B gained'}].map(({m,e,label})=>`
-          <div>
-            <div style="font-size:0.7rem;letter-spacing:0.15em;color:${e.hue};text-transform:uppercase;margin-bottom:0.45rem">${label}</div>
-            ${m.gained.map(g=>`<div class="pill pill-gain"><span class="pill-arrow">↑</span>${g}</div><br>`).join('')}
-          </div>`).join('')}
-      </div>
-      <div class="compare-pills-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:0.8rem;margin-bottom:1.5rem">
-        ${[{m:a,e:eraA,label:'What A sacrificed'},{m:b,e:eraB,label:'What B sacrificed'}].map(({m,e,label})=>`
-          <div>
-            <div style="font-size:0.7rem;letter-spacing:0.15em;color:${e.hue};text-transform:uppercase;margin-bottom:0.45rem">${label}</div>
-            ${m.sacrificed.map(s=>`<div class="pill pill-loss"><span class="pill-arrow">↓</span>${s}</div><br>`).join('')}
-          </div>`).join('')}
-      </div>
-
-      <div style="border-top:1px solid #2A2418;margin-top:0.5rem;padding-top:1.2rem">
-        <div style="font-size:0.7rem;letter-spacing:0.2em;color:var(--teal);text-transform:uppercase;margin-bottom:0.6rem">Further Reading on This Comparison</div>
-        <p style="font-size:0.88rem;color:#9A8555;line-height:1.75">${getCompareBib(a, b)}</p>
+      <div class="compare-bib-section">
+        <div class="compare-bib-label">Further Reading on This Comparison</div>
+        <div class="bib-block">${getCompareBib(a, b)}</div>
       </div>
     </div>`;
 }
@@ -1981,9 +2145,9 @@ function renderRadarSVG(vals, color, size=90) {
 }
 
 // Dual overlaid radar for compare view
-function renderDualRadarSVG(valsA, colorA, valsB, colorB, size=160) {
-  const cx=size/2, cy=size/2, r=size*0.38, n=AXES.length;
-  const labelR = r + 14;
+function renderDualRadarSVG(valsA, colorA, valsB, colorB, size=220) {
+  const cx=size/2, cy=size/2, r=size*0.36, n=AXES.length;
+  const labelR = r + 18;
 
   const pts = (vals) => AXES.map((ax,i) => {
     const angle=(Math.PI*2*i)/n-Math.PI/2, v=(vals[ax.id]||0)/5;
@@ -2010,19 +2174,19 @@ function renderDualRadarSVG(valsA, colorA, valsB, colorB, size=160) {
     const lx=cx+labelR*Math.cos(angle), ly=cy+labelR*Math.sin(angle);
     const anchor = lx < cx-2 ? 'end' : lx > cx+2 ? 'start' : 'middle';
     const dy = ly < cy-2 ? '-0.3em' : ly > cy+2 ? '0.9em' : '0.35em';
-    return `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dy="${dy}" font-size="8" fill="#6A5A35" font-family="inherit">${ax.label}</text>`;
+    return `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dy="${dy}" font-size="9" fill="#8A7A50" font-family="inherit">${ax.label}</text>`;
   }).join('');
 
   // Score dots on the outer ring for each map
   const dotsA = AXES.map((ax,i)=>{
     const angle=(Math.PI*2*i)/n-Math.PI/2, v=(valsA[ax.id]||0)/5;
     const x=cx+r*v*Math.cos(angle), y=cy+r*v*Math.sin(angle);
-    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="${colorA}" opacity="0.9"/>`;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${colorA}" opacity="0.9"/>`;
   }).join('');
   const dotsB = AXES.map((ax,i)=>{
     const angle=(Math.PI*2*i)/n-Math.PI/2, v=(valsB[ax.id]||0)/5;
     const x=cx+r*v*Math.cos(angle), y=cy+r*v*Math.sin(angle);
-    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="${colorB}" opacity="0.9"/>`;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${colorB}" opacity="0.9"/>`;
   }).join('');
 
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="overflow:visible;display:block">
@@ -2452,6 +2616,7 @@ function navigateToTourStop() {
   // Highlight era in sidebar
   buildSidebar();
   renderMain();
+  pushURL();
 
   // Scroll to top of main content
   const mc = document.getElementById('main-content');
