@@ -292,6 +292,35 @@
   .compare-prose p { margin-bottom: 1rem; }
   .compare-prose p:last-child { margin-bottom: 0; }
 
+  /* ── ERA/MAP NAVIGATION ── */
+  .era-nav {
+    display: flex; justify-content: space-between; align-items: stretch;
+    gap: 1rem; margin-top: 2.5rem; padding-top: 1.2rem;
+    border-top: 1px solid var(--border2);
+  }
+  .era-nav-btn {
+    flex: 1; display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.75rem 1rem; border-radius: 3px;
+    border: 1px solid var(--border2); background: var(--bg2);
+    cursor: pointer; transition: background 0.15s, border-color 0.15s;
+    text-decoration: none;
+  }
+  .era-nav-btn:not(.era-nav-disabled):hover {
+    background: rgba(212,184,122,0.06); border-color: var(--gold2);
+  }
+  .era-nav-btn:not(.era-nav-disabled):hover .era-nav-arrow { color: var(--gold); }
+  .era-nav-disabled { cursor: default; opacity: 0.35; }
+  .era-nav-arrow {
+    font-size: 1.2rem; color: var(--text3); flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .era-nav-label {
+    display: flex; flex-direction: column; gap: 0.1rem; min-width: 0;
+  }
+  .era-nav-hint { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text4); }
+  .era-nav-name { font-size: 0.9rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .era-nav-years { font-size: 0.72rem; color: var(--text3); font-style: italic; }
+
   /* ── ANIMATIONS ── */
   @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -1593,6 +1622,9 @@ function renderOverview(main) {
 function renderEra(main) {
   const era = state.selectedEra;
   if (!era) return;
+  const eraIdx = ERAS.findIndex(e => e.id === era.id);
+  const prevEra = ERAS[eraIdx - 1] || null;
+  const nextEra = ERAS[eraIdx + 1] || null;
   main.innerHTML = `
     <div style="max-width:100%">
       <div class="content-eyebrow" style="color:${era.hue}">Era Overview</div>
@@ -1613,6 +1645,14 @@ function renderEra(main) {
           </div>
         </div>
       </div>
+      <div class="era-nav">
+        <div class="era-nav-btn ${prevEra ? '' : 'era-nav-disabled'}" ${prevEra ? `onclick="selectEra(ERAS[${eraIdx-1}])"` : ''}>
+          ${prevEra ? `<span class="era-nav-arrow">←</span><span class="era-nav-label"><span class="era-nav-hint">Previous era</span><span class="era-nav-name" style="color:${prevEra.hue}">${prevEra.label}</span><span class="era-nav-years">${prevEra.years}</span></span>` : '<span style="opacity:0.2">← No previous era</span>'}
+        </div>
+        <div class="era-nav-btn ${nextEra ? '' : 'era-nav-disabled'}" ${nextEra ? `onclick="selectEra(ERAS[${eraIdx+1}])"` : ''} style="text-align:right">
+          ${nextEra ? `<span class="era-nav-label" style="align-items:flex-end"><span class="era-nav-hint">Next era</span><span class="era-nav-name" style="color:${nextEra.hue}">${nextEra.label}</span><span class="era-nav-years">${nextEra.years}</span></span><span class="era-nav-arrow">→</span>` : '<span style="opacity:0.2">No next era →</span>'}
+        </div>
+      </div>
     </div>`;
 }
 
@@ -1620,6 +1660,22 @@ function renderEra(main) {
 function renderMap(main) {
   const map = state.selectedMap, era = state.selectedEra;
   if (!map || !era) return;
+  const eraIdx = ERAS.findIndex(e => e.id === era.id);
+  const mapIdx = era.maps.findIndex(m => m.name === map.name);
+  // Prev/next within era, then spill into adjacent eras
+  let prevItem = null, nextItem = null;
+  if (mapIdx > 0) {
+    prevItem = {map: era.maps[mapIdx-1], era};
+  } else if (eraIdx > 0) {
+    const prevEra = ERAS[eraIdx-1];
+    prevItem = {map: null, era: prevEra, eraOnly: true};
+  }
+  if (mapIdx < era.maps.length - 1) {
+    nextItem = {map: era.maps[mapIdx+1], era};
+  } else if (eraIdx < ERAS.length - 1) {
+    const nextEra = ERAS[eraIdx+1];
+    nextItem = {map: null, era: nextEra, eraOnly: true};
+  }
   main.innerHTML = `
     <div style="max-width:100%">
       <div class="content-eyebrow" style="color:${era.hue}">${era.label} · Map Entry</div>
@@ -1657,6 +1713,14 @@ function renderMap(main) {
       </div>
       <div class="divider" style="background:linear-gradient(to right,${era.hue}60,transparent)"></div>
       <div class="prose">${map.description}</div>
+      <div class="era-nav" style="margin-top:1.8rem">
+        <div class="era-nav-btn ${prevItem ? '' : 'era-nav-disabled'}" ${prevItem ? `onclick="${prevItem.eraOnly ? `selectEra(ERAS[${eraIdx-1}])` : `selectMap(ERAS[${eraIdx}].maps[${mapIdx-1}], ERAS[${eraIdx}])`}"` : ''}>
+          ${prevItem ? `<span class="era-nav-arrow">←</span><span class="era-nav-label"><span class="era-nav-hint">${prevItem.eraOnly ? 'Previous era' : 'Previous map'}</span><span class="era-nav-name" style="color:${prevItem.era.hue}">${prevItem.eraOnly ? prevItem.era.label : prevItem.map.name}</span>${!prevItem.eraOnly ? `<span class="era-nav-years">${prevItem.map.year}</span>` : `<span class="era-nav-years">${prevItem.era.years}</span>`}</span>` : '<span style="opacity:0.2">← Start of history</span>'}
+        </div>
+        <div class="era-nav-btn ${nextItem ? '' : 'era-nav-disabled'}" ${nextItem ? `onclick="${nextItem.eraOnly ? `selectEra(ERAS[${eraIdx+1}])` : `selectMap(ERAS[${eraIdx}].maps[${mapIdx+1}], ERAS[${eraIdx}])`}"` : ''} style="text-align:right">
+          ${nextItem ? `<span class="era-nav-label" style="align-items:flex-end"><span class="era-nav-hint">${nextItem.eraOnly ? 'Next era' : 'Next map'}</span><span class="era-nav-name" style="color:${nextItem.era.hue}">${nextItem.eraOnly ? nextItem.era.label : nextItem.map.name}</span>${!nextItem.eraOnly ? `<span class="era-nav-years">${nextItem.map.year}</span>` : `<span class="era-nav-years">${nextItem.era.years}</span>`}</span><span class="era-nav-arrow">→</span>` : '<span style="opacity:0.2">End of history →</span>'}
+        </div>
+      </div>
     </div>`;
 }
 
@@ -1672,13 +1736,16 @@ function renderCompare(main) {
       <h2 class="content-title" style="font-size:1.5rem">${a.name} <span style="color:var(--text4);font-size:1rem">vs</span> ${b.name}</h2>
       <div class="content-meta">${a.year} · ${a.region} &nbsp;|&nbsp; ${b.year} · ${b.region}</div>
 
+      <!-- Dual-radar header row -->
       <div class="compare-top">
-        <div class="compare-card" style="border:1px solid ${eraA.hue}40;background:${eraA.hue}0A">
+
+        <!-- Card A -->
+        <div class="compare-card" style="border:1px solid ${eraA.hue}40;background:${eraA.hue}08">
           <div class="compare-card-era" style="color:${eraA.hue}">${eraA.label} · ${a.year}</div>
           <div class="compare-card-name">${a.name}</div>
           <div class="compare-card-year">${a.region}</div>
-          <div style="display:flex;gap:1rem;align-items:flex-start">
-            ${renderRadarSVG(a.axes, eraA.hue, 95)}
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;margin-top:0.5rem">
+            ${renderRadarSVG(a.axes, eraA.hue, 90)}
             <div>${AXES.map(ax=>`
               <div class="axis-row" style="margin-bottom:0.25rem">
                 <span style="font-size:0.73rem;color:var(--text2);width:76px;text-align:right">${ax.label}</span>
@@ -1688,7 +1755,22 @@ function renderCompare(main) {
           </div>
         </div>
 
+        <!-- Centre: dual radar overlay + axis deltas -->
         <div class="compare-axis-col">
+          <!-- Overlaid radar -->
+          <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:0.8rem">
+            ${renderDualRadarSVG(a.axes, eraA.hue, b.axes, eraB.hue, 160)}
+            <!-- Legend -->
+            <div style="display:flex;gap:1.2rem;margin-top:0.5rem">
+              <span style="font-size:0.68rem;color:${eraA.hue};display:flex;align-items:center;gap:0.3rem">
+                <span style="display:inline-block;width:16px;height:2px;background:${eraA.hue};border-radius:1px"></span>${a.name.split(' ').slice(0,2).join(' ')}
+              </span>
+              <span style="font-size:0.68rem;color:${eraB.hue};display:flex;align-items:center;gap:0.3rem">
+                <span style="display:inline-block;width:16px;height:2px;background:${eraB.hue};border-radius:1px;border-top:2px dashed ${eraB.hue};background:none"></span>${b.name.split(' ').slice(0,2).join(' ')}
+              </span>
+            </div>
+          </div>
+          <!-- Axis deltas -->
           <div class="compare-axis-title">Axis comparison</div>
           ${AXES.map(ax=>{
             const va=a.axes[ax.id], vb=b.axes[ax.id], diff=va-vb;
@@ -1698,16 +1780,17 @@ function renderCompare(main) {
               <span style="font-size:0.7rem;min-width:1rem;text-align:right;color:${va>=vb?eraA.hue:'var(--text4)'}">${va}</span>
               <span class="vs-sep">vs</span>
               <span style="font-size:0.7rem;min-width:1rem;color:${vb>=va?eraB.hue:'var(--text4)'}">${vb}</span>
-              <span style="font-size:0.73rem;margin-left:0.25rem;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'};font-weight:600">${diff>0?'+'+diff:diff===0?'-':diff}</span>
+              <span style="font-size:0.73rem;margin-left:0.25rem;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'};font-weight:600">${diff>0?'+'+diff:diff===0?'—':diff}</span>
             </div>`;}).join('')}
         </div>
 
-        <div class="compare-card" style="border:1px solid ${eraB.hue}40;background:${eraB.hue}0A">
+        <!-- Card B -->
+        <div class="compare-card" style="border:1px solid ${eraB.hue}40;background:${eraB.hue}08">
           <div class="compare-card-era" style="color:${eraB.hue}">${eraB.label} · ${b.year}</div>
           <div class="compare-card-name">${b.name}</div>
           <div class="compare-card-year">${b.region}</div>
-          <div style="display:flex;gap:1rem;align-items:flex-start">
-            ${renderRadarSVG(b.axes, eraB.hue, 95)}
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;margin-top:0.5rem">
+            ${renderRadarSVG(b.axes, eraB.hue, 90)}
             <div>${AXES.map(ax=>`
               <div class="axis-row" style="margin-bottom:0.25rem">
                 <span style="font-size:0.73rem;color:var(--text2);width:76px;text-align:right">${ax.label}</span>
@@ -1771,6 +1854,60 @@ function renderRadarSVG(vals, color, size=90) {
     return `<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#2A2418" stroke-width="0.5"/>`;
   }).join('');
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="overflow:visible">${gridLines}${spokes}<polygon points="${poly}" fill="${color}30" stroke="${color}" stroke-width="1.5"/></svg>`;
+}
+
+// Dual overlaid radar for compare view
+function renderDualRadarSVG(valsA, colorA, valsB, colorB, size=160) {
+  const cx=size/2, cy=size/2, r=size*0.38, n=AXES.length;
+  const labelR = r + 14;
+
+  const pts = (vals) => AXES.map((ax,i) => {
+    const angle=(Math.PI*2*i)/n-Math.PI/2, v=(vals[ax.id]||0)/5;
+    return [cx+r*v*Math.cos(angle), cy+r*v*Math.sin(angle)];
+  });
+  const polyA = pts(valsA).map(p=>p.join(',')).join(' ');
+  const polyB = pts(valsB).map(p=>p.join(',')).join(' ');
+
+  const grid = f => AXES.map((_,i)=>{
+    const angle=(Math.PI*2*i)/n-Math.PI/2;
+    return [cx+r*f*Math.cos(angle), cy+r*f*Math.sin(angle)];
+  });
+  const gridLines = [0.2,0.4,0.6,0.8,1].map(f=>
+    `<polygon points="${grid(f).map(p=>p.join(',')).join(' ')}" fill="none" stroke="#2A2418" stroke-width="${f===1?'0.8':'0.4'}"/>`
+  ).join('');
+  const spokes = AXES.map((_,i)=>{
+    const a=(Math.PI*2*i)/n-Math.PI/2;
+    return `<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#2A2418" stroke-width="0.5"/>`;
+  }).join('');
+
+  // Axis labels
+  const labels = AXES.map((ax,i)=>{
+    const angle=(Math.PI*2*i)/n-Math.PI/2;
+    const lx=cx+labelR*Math.cos(angle), ly=cy+labelR*Math.sin(angle);
+    const anchor = lx < cx-2 ? 'end' : lx > cx+2 ? 'start' : 'middle';
+    const dy = ly < cy-2 ? '-0.3em' : ly > cy+2 ? '0.9em' : '0.35em';
+    return `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dy="${dy}" font-size="8" fill="#6A5A35" font-family="inherit">${ax.label}</text>`;
+  }).join('');
+
+  // Score dots on the outer ring for each map
+  const dotsA = AXES.map((ax,i)=>{
+    const angle=(Math.PI*2*i)/n-Math.PI/2, v=(valsA[ax.id]||0)/5;
+    const x=cx+r*v*Math.cos(angle), y=cy+r*v*Math.sin(angle);
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="${colorA}" opacity="0.9"/>`;
+  }).join('');
+  const dotsB = AXES.map((ax,i)=>{
+    const angle=(Math.PI*2*i)/n-Math.PI/2, v=(valsB[ax.id]||0)/5;
+    const x=cx+r*v*Math.cos(angle), y=cy+r*v*Math.sin(angle);
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="${colorB}" opacity="0.9"/>`;
+  }).join('');
+
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="overflow:visible;display:block">
+    ${gridLines}${spokes}
+    <polygon points="${polyA}" fill="${colorA}25" stroke="${colorA}" stroke-width="1.5" stroke-linejoin="round"/>
+    <polygon points="${polyB}" fill="${colorB}20" stroke="${colorB}" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="4 2"/>
+    ${dotsA}${dotsB}
+    ${labels}
+  </svg>`;
 }
 
 // ═══════════════════════════════════════════════════════
