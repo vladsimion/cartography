@@ -1,6 +1,6 @@
 # Cartography & Its Trade-offs
 
-A non-linear history of cartography — 39 maps, 7 eras.
+A non-linear history of cartography — 40 maps, 7 eras.
 
 ---
 
