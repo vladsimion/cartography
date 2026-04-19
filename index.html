@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <noscript><style>body::after{content:"JavaScript is required to run this explorer.";display:block;padding:2rem;color:#C0AD88;font-family:serif;}</style></noscript>
 <style>
-
+✦ New here? The tours trace a single argument through 8,000 years of cartography - try The Politics of Erasure.
   :root {
     --bg: #0A0806; --bg2: #0E0C08; --bg3: #141008;
     --border: #1E1A12; --border2: #2A2418;
@@ -210,6 +210,12 @@
   .map-badge { font-size: 0.6rem; padding: 0.05rem 0.3rem; border-radius: 1px; background: var(--teal); color: var(--bg); flex-shrink: 0; margin-top: 0.1rem; }
   .map-score { font-size: 0.76rem; color: var(--gold); font-weight: 600; }
   .era-connector { margin-left: 1.3rem; height: 0.35rem; border-left: 1px dashed var(--border); }
+  .axis-rank-header { padding: 0.55rem 1.2rem 0.45rem; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text4); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .score-dots { display: flex; gap: 3px; align-items: center; flex-shrink: 0; margin-left: 0.5rem; }
+  .score-dot { width: 7px; height: 7px; border-radius: 50%; background: #2A2215; border: 1px solid #3A3010; }
+  .score-dot.filled { background: var(--gold); border-color: var(--gold); }
+  .score-dot.filled.hi { background: #E8D080; border-color: #E8D080; }
+  .rank-era-tag { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.15rem; opacity: 0.75; }
 
   /* ── OVERVIEW ── */
   .overview-title { font-family: 'IM Fell English', serif; font-size: 1.7rem; color: var(--gold); margin-bottom: 0.5rem; font-weight: 400; }
@@ -1754,9 +1760,52 @@ function renderDefPanel() {
 // ═══════════════════════════════════════════════════════
 // SIDEBAR CONTENT
 // ═══════════════════════════════════════════════════════
+function buildScoreDots(score) {
+  return Array.from({length:5}, (_,i) => {
+    const filled = i < score;
+    const hi = filled && score >= 4;
+    return `<span class="score-dot${filled ? ' filled' + (hi ? ' hi' : '') : ''}"></span>`;
+  }).join('');
+}
+
 function buildSidebar() {
   const sb = document.getElementById('sidebar');
   sb.innerHTML = '';
+
+  if (state.activeAxis && !state.compareMode) {
+    const ax = AXES.find(a => a.id === state.activeAxis);
+    const header = document.createElement('div');
+    header.className = 'axis-rank-header';
+    header.innerHTML = `<span>${ax.icon} ${ax.label}</span><span>all 40 maps · ranked</span>`;
+    sb.appendChild(header);
+
+    const allMaps = [];
+    ERAS.forEach(era => era.maps.forEach(map => allMaps.push({map, era})));
+    allMaps.sort((a, b) => (b.map.axes[state.activeAxis]||0) - (a.map.axes[state.activeAxis]||0));
+
+    allMaps.forEach(({map, era}) => {
+      const mapRow = document.createElement('div');
+      const isActive = state.selectedMap?.name === map.name;
+      const score = map.axes[state.activeAxis] || 0;
+      mapRow.className = 'map-row' + (isActive ? ' active' : '');
+      mapRow.style.borderLeftColor = isActive ? era.hue : era.hue + '40';
+      mapRow.innerHTML = `
+        <div style="min-width:0;flex:1">
+          <div class="map-name">${map.name}</div>
+          <div class="map-meta">${map.year}</div>
+          <div class="rank-era-tag" style="color:${era.hue}">${era.label}</div>
+        </div>
+        <div class="score-dots" aria-label="${score} out of 5">${buildScoreDots(score)}</div>`;
+      mapRow.setAttribute('tabindex', '0');
+      mapRow.setAttribute('role', 'button');
+      mapRow.setAttribute('aria-label', `${map.name}, ${map.year}, ${era.label}, score ${score} of 5`);
+      mapRow.onclick = () => selectMap(map, era);
+      mapRow.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMap(map, era); } };
+      sb.appendChild(mapRow);
+    });
+    return;
+  }
+
   ERAS.forEach((era, ei) => {
     const eraRow = document.createElement('div');
     eraRow.className = 'era-row' + (state.selectedEra?.id === era.id ? ' active' : '');
@@ -1784,7 +1833,6 @@ function buildSidebar() {
         const isCmpB = state.compareB?.name === map.name;
         mapRow.className = 'map-row' + (isActive ? ' active' : '');
         mapRow.style.borderLeftColor = isActive ? era.hue : isCmpA||isCmpB ? 'var(--teal)' : era.hue+'30';
-        const axScore = state.activeAxis ? map.axes[state.activeAxis] : null;
         mapRow.innerHTML = `
           <div>
             <div class="map-name">${map.name}</div>
@@ -1793,7 +1841,6 @@ function buildSidebar() {
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;margin-left:0.4rem">
             ${isCmpA ? '<span class="map-badge">A</span>' : ''}
             ${isCmpB ? '<span class="map-badge">B</span>' : ''}
-            ${axScore ? `<span class="map-score">${axScore}/5</span>` : ''}
           </div>`;
         mapRow.setAttribute('tabindex', '0');
         mapRow.setAttribute('role', 'button');
