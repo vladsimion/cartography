@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <noscript><style>body::after{content:"JavaScript is required to run this explorer.";display:block;padding:2rem;color:#C0AD88;font-family:serif;}</style></noscript>
 <style>
-✦ New here? The tours trace a single argument through 8,000 years of cartography - try The Politics of Erasure.
+
   :root {
     --bg: #0A0806; --bg2: #0E0C08; --bg3: #141008;
     --border: #1E1A12; --border2: #2A2418;
@@ -1721,7 +1721,7 @@ function buildAxisBar() {
   } else if (!state.activeAxis) {
     const hint = document.createElement('span');
     hint.className = 'axis-hint';
-    hint.textContent = 'Filter maps by axis — use ? to read the definition';
+    hint.textContent = 'Filter maps by axis - use ? to read the definition';
     bar.appendChild(hint);
   }
 }
@@ -2075,7 +2075,7 @@ function renderOverview(main) {
       <p class="overview-sub">Every map that replaced another gained something and sacrificed something. This explorer tracks both - across 40 landmark maps, 7 eras, and over 8,000 years.</p>
       ${showNudge ? `
       <div class="tour-nudge" id="tour-nudge">
-        <div class="tour-nudge-text">✦ <strong>New here?</strong> The tours trace a single argument through 8,000 years of cartography — try <em>${suggestedTour.title}</em>.</div>
+        <div class="tour-nudge-text">✦ <strong>New here?</strong> The tours trace a single argument through 8,000 years of cartography - try <em>${suggestedTour.title}</em>.</div>
         <div class="tour-nudge-actions">
           <button class="btn btn-sm" onclick="startTourFromNudge(0)" style="color:var(--gold);border-color:var(--gold2)">Start tour</button>
           <button class="btn btn-sm" onclick="dismissNudge();openTourSelector()" style="color:var(--text2);border-color:var(--border2)">See all tours</button>
@@ -2097,7 +2097,7 @@ function renderOverview(main) {
           </div>`;
         }).join('')}
       </div>
-      <p class="overview-help">Open the sidebar (☰) to select an era or map. Use <strong style="color:var(--teal)">⇄ Compare Maps</strong> to pick any two maps for a side-by-side trade-off analysis with written commentary. Click an axis name above to filter the sidebar by that dimension — click <strong>?</strong> beside it to read the definition.</p>
+      <p class="overview-help">Open the sidebar (☰) to select an era or map. Use <strong style="color:var(--teal)">⇄ Compare Maps</strong> to pick any two maps for a side-by-side trade-off analysis with written commentary. Click an axis name above to filter the sidebar by that dimension - click <strong>?</strong> beside it to read the definition.</p>
     </div>`;
 }
 
@@ -2297,7 +2297,7 @@ function renderCompare(main) {
                 <span style="font-size:0.72rem;min-width:1rem;text-align:right;color:${va>=vb?eraA.hue:'var(--text4)'}">${va}</span>
                 <span class="vs-sep">vs</span>
                 <span style="font-size:0.72rem;min-width:1rem;color:${vb>=va?eraB.hue:'var(--text4)'}">${vb}</span>
-                <span style="font-size:0.75rem;margin-left:0.15rem;min-width:2rem;font-weight:700;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'}">${diff>0?'+'+diff:diff===0?'—':diff}</span>
+                <span style="font-size:0.75rem;margin-left:0.15rem;min-width:2rem;font-weight:700;color:${diff>0?'var(--gain)':diff<0?'var(--loss)':'var(--text4)'}">${diff>0?'+'+diff:diff===0?'-':diff}</span>
               </div>`;
             }).join('');
           })()}
@@ -2466,7 +2466,7 @@ function renderTimeline(main) {
   const SLOT_W = 115;
   const VH = TRACK_Y + 4 * ROW_H + 50;
 
-  // Assign each dot a label row — alternating above/below, no overlap
+  // Assign each dot a label row - alternating above/below, no overlap
   const rowLastX = {};
   const placed = allMaps.map((item, idx) => {
     const x = PAD + xPct(item.yr) * VW;
@@ -2525,7 +2525,7 @@ function renderTimeline(main) {
     '<div class="timeline-wrap">' +
     '<div class="timeline-header">' +
     '<h2 class="overview-title" style="font-size:1.4rem">8,000 Years of Cartography</h2>' +
-    '<p class="overview-sub" style="font-size:0.9rem;margin-bottom:0.7rem">40 maps across time — click any dot to explore. Scale compressed before 1000 CE.</p>' +
+    '<p class="overview-sub" style="font-size:0.9rem;margin-bottom:0.7rem">40 maps across time - click any dot to explore. Scale compressed before 1000 CE.</p>' +
     '<div class="timeline-era-legend">' +
     ERAS.map(era=>'<div class="timeline-era-pip" onclick="selectEra(ERAS.find(e=>e.id===\''+era.id+'\'))" title="'+era.label+'"><div class="timeline-era-dot" style="background:'+era.hue+'"></div><span>'+era.label+'</span></div>').join('') +
     '</div></div>' +
