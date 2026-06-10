@@ -89,3 +89,10 @@ State Management: Handled dynamically via a centralized state vector, controllin
 Inline Dynamic Linkification Engine: Features a native string-matching regex crawler that parses content arrays at build time. It auto-detects cross-references to other map entities within the body prose and safely converts raw text into deep-linked navigation paths without fracturing active client-side performance.
 
 Deep-Link State History Execution: Fully addresses state preservation. The platform updates browser history structures with custom query parameters (?map=, ?era=, ?compare=, ?vs=) dynamically as the user interacts with the app. This enables direct deep-linking, smooth routing, and complete browser forward/back native tracking without requiring external routing engines.
+
+***
+
+### 🛠️ Suggestions for Expanding the Application Architecture
+Since the workspace currently includes a modular web engine, here are a few recommended engineering paths to expand its features:
+1. **Asynchronous API Splitting:** If the dataset grows beyond the current forty entries, consider detaching the inline `var ERAS` JSON block into a distinct file asset (`data.json`) and loading it dynamically using the `fetch()` API via an asynchronous loading cycle (`async/await`).
+2. **Flexible Canvas Layers:** If you want to replace static source image paths (`images/`) with highly scalable graphics, consider using an open-source raster mapping library such as Leaflet. You can mount it within an explicit, fixed-position container block to render real-time interactive coordinate tiles.
