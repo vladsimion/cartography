@@ -1,16 +1,83 @@
-# Cartography & Its Trade-offs
+# Cartography & Its Trade-offs: A Non-Linear History
 
-A non-linear history of cartography — 40 maps, 7 eras.
+An interactive, high-fidelity web application exploring over 8,000 years of global mapping history. Built on critical cartography frameworks, this explorer shifts away from standard linear narratives of mathematical improvement. Instead, it unpacks history through a multidimensional spectrum of trade-offs: demonstrating how every cartographic leap in accuracy, usability, or control has simultaneously incurred a profound sacrifice in alternative ways of understanding, feeling, or representing human space.
+
+---
+
+## ✦ Core Conceptual Frameworks
+
+The application ranks, tracks, and isolates historical maps along **7 Analytic Dimensions (Axes)**, scored systematically from `1` (Minimal/Absent) to `5` (Absolute/Operational Customary Maxima):
+
+1. **◎ Accuracy:** Spatial, geometric, and geodetic fidelity relative to physical landmasses and geographic coordinates.
+2. **◈ Usability:** Intuitive legibility, visual hierarchy, and structural legibility for standard or public users within an era.
+3. **◇ Navigation:** Practical capacity to calculate real-time orientation, routes, straight bearings, or point-to-point intervals.
+4. **◉ Symbolism:** Architectural depth encoding myth, cultural metadata, theology, cosmology, or moral spatial structures.
+5. **◆ Politics:** Active deployment of territory delimitation, administrative claims, sovereignty enforcement, or spatial erasures.
+6. **○ Completeness:** Ambition of geographic scope—ranging from highly local networks up to total planetary coverage.
+7. **◐ Richness:** Density of layered, heterogeneous metadata (e.g., historical chronicles, biological cross-sections, ecological place-lore).
 
 ---
 
-- **7 eras** — Ancient (6200 BCE), Medieval, Non-European, Renaissance, Scientific Age, Modern, Digital Era
-- **40 maps** — each with gained/sacrificed analysis and 7-axis scoring
-- **7 scoring axes** — Accuracy, Usability, Navigation, Symbolism, Politics, Completeness, Richness
-- **Radar charts** for every map and side-by-side compare mode
-- **Axis definitions** — click any axis label to read its full rubric
-- **Timeline view** — all 40 maps plotted chronologically
-- **10 guided tours** — thematic sequences with per-stop prose (e.g. *The Politics of Erasure*, *The Map as Imperial Tool*, *The Navigators*)
-- **Deep linking** — every map, era, compare pair, and tour stop has a shareable URL
+## ⚙️ Architecture & Features
+
+### 1. Dual-Stream Navigation Matrix
+* **Era View:** Explores global structural changes divided into historical periods: *Ancient*, *Medieval*, *Non-European*, *Renaissance*, *Scientific Age*, *Modern*, and the *Digital Era*.
+* **Ranked Attribute Filter:** When selecting any singular Axis (e.g., *Symbolism*), the user interface dynamically restructures the entire database layout into a linear rank-ordered hierarchy. This isolates how cross-cultural traditions (such as the 14th-century Korean *Kangnido Map* and 20th-century corporate *Google Maps*) prioritize competing goals.
+
+### 2. Multi-Vector Deep-Link Comparison Dashboard (`⇄`)
+A specialized side-by-side comparative suite. Users can match any two map models across history to generate a bespoke comparative synthesis covering:
+* Overlaid SVG attribute radar charts.
+* Linear delta charts illustrating score shifts across all 7 axes.
+* Specialized deep-dive textual commentary unpacking the structural tensions between the paired artifacts (e.g., *Tabula Peutingeriana* vs. *Harry Beck’s London Underground Map*).
+
+### 3. Argument-Driven Narrative Tours (`✦`)
+Features custom curated linear itineraries threading historical examples together into coherent thematic arguments:
+* **The Politics of Erasure:** Investigates the mechanics by which theological, colonial, or private algorithmic platforms overwrite indigenous metadata or alternative conceptual worldviews.
+* **The Map as Imperial Tool:** Traces the explicit historical intersection where geographic precision and geodetic triangulation advanced in tandem with imperial colonization.
+* **The Shape of Power:** Follows the physical shifting of the spatial "centre" of world maps across centuries of geo-political displacement.
+* **The Measure of the Earth:** Chronicling the long mathematical history of planetary projection, calculations, and active remote sensing technologies.
+
+### 4. Adaptive Dynamic Timeline (`◈`)
+A custom SVG timeline displaying temporal data across non-linear intervals. It provides a compressed, high-density visualization for ancient eras while dynamically expanding resolution as historical data-gathering accelerates after 1000 CE.
 
 ---
+
+## 🎨 Design System & Layout Principles
+
+The visual grammar of the explorer is designed like an institutional museum archive. It utilizes an intentionally flat, linear layout that avoids complex nested container grids to ensure smooth multi-page reading experiences.
+
+* **Palette Matrix:** Implements an ultra-dark, low-saturation canvas with warm antique accents:
+  * Primary Canvas background: `#0A0806` / Secondary UI frames: `#0E0C08` / `#141008`
+  * Text profiles: Warm Cream (`#E8DEC5`), Muted Ochre (`#C0AD88`), and Gold Accent elements (`#D4B87A`)
+  * Semantic Indicators: Gained Metrics (`#96CC84` inside `#1A2A18`), Sacrificed Metrics (`#D98860` inside `#2A1A14`)
+* **Typography:** Core headings and titles are set in `IM Fell English` to mirror classical typography, while dense contextual body copy is set in the highly readable serif face `Crimson Pro`.
+* **Fluid Layout Responsiveness:** Complete styling overrides built entirely on native CSS `@media` thresholds seamlessly transition between full desktop side-by-side matrices and vertical tap-optimized single-column interfaces on mobile devices.
+
+---
+
+## 📂 Implementation Notes & Data Structures
+
+The repository features an inline, zero-dependency, client-side implementation. All application behavior is driven entirely by a self-contained vanilla JavaScript execution loop appended below the DOM tree.
+
+```js
+// Core Database Schema Schema Blueprint
+var ERAS = [
+  {
+    id: "medieval",
+    label: "Medieval",
+    years: "400 – 1450 CE",
+    hue: "#7B9E6B",
+    thesis: "Medieval maps were not failed attempts at accuracy...",
+    gained: ["Moral and theological layering...", "Integration of time..."],
+    sacrificed: ["Ptolemaic coordinate precision...", "Navigational usefulness..."],
+    maps: [
+      {
+        name: "Hereford Mappa Mundi",
+        year: "c. 1300 CE",
+        region: "England",
+        axes: { accuracy: 1, usability: 1, navigation: 1, symbolism: 5, politics: 4, completeness: 4, richness: 5 },
+        description: "<p>The Hereford Mappa Mundi...</p>"
+      }
+    ]
+  }
+];
