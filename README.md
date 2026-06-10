@@ -81,12 +81,11 @@ var ERAS = [
     ]
   }
 ];
+```
+### Advanced UI Subsystems
 
----
-Advanced UI Subsystems
+## State Management: Handled dynamically via a centralized state vector, controlling asynchronous viewport updates, custom data validation, modal state management, theme shifts, and active telemetry filters.
 
-State Management: Handled dynamically via a centralized state vector, controlling asynchronous viewport updates, custom data validation, modal state management, theme shifts, and active telemetry filters.
+## Inline Dynamic Linkification Engine: Features a native string-matching regex crawler that parses content arrays at build time. It auto-detects cross-references to other map entities within the body prose and safely converts raw text into deep-linked navigation paths without fracturing active client-side performance.
 
-Inline Dynamic Linkification Engine: Features a native string-matching regex crawler that parses content arrays at build time. It auto-detects cross-references to other map entities within the body prose and safely converts raw text into deep-linked navigation paths without fracturing active client-side performance.
-
-Deep-Link State History Execution: Fully addresses state preservation. The platform updates browser history structures with custom query parameters (?map=, ?era=, ?compare=, ?vs=) dynamically as the user interacts with the app. This enables direct deep-linking, smooth routing, and complete browser forward/back native tracking without requiring external routing engines.
+## Deep-Link State History Execution: Fully addresses state preservation. The platform updates browser history structures with custom query parameters (?map=, ?era=, ?compare=, ?vs=) dynamically as the user interacts with the app. This enables direct deep-linking, smooth routing, and complete browser forward/back native tracking without requiring external routing engines.
